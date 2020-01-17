@@ -24,6 +24,12 @@
 				"command": "protheusdoc.addDocBlock",
 				"title": "Adicionar Bloco de Documentação"
 			}
+		],
+		"snippets": [
+			{
+				"language": "advpl",
+				"path": "./snippets/protheusDoc.json"
+			}
 		]
 	},
 	"scripts": {

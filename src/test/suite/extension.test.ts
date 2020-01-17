@@ -45,7 +45,7 @@ suite('Extension Test Suite', () => {
 
 		assert.ok(protheusDoc);
 		assert.ok(protheusDoc.getProtheusDoc());
-		console.log(protheusDoc.getProtheusDoc());
+		// console.log(protheusDoc.getProtheusDoc());
 
 	});
 

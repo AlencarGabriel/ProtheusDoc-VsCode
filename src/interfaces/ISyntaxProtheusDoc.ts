@@ -58,7 +58,8 @@ export interface ISyntaxProtheusDoc {
     getIdentifier(functionName: String): String;
     getType(type: ETypesDoc): String;
     getAuthor(name: String): String;
-    getSince(date?: Date): String;
+    getSince(date?: Date|String): String;
+    // getSince(date?: String): String;
     getVersion(version: String): String;
     getParams(params?: IParamsProtheusDoc[]): String;
     getReturn(param?: IReturnProtheusDoc): String;

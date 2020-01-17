@@ -37,8 +37,9 @@ export class ProtheusDoc {
 
         bufferDoc += this._syntaxSupport.getIdentifier(this._transform.getIdentifierName());
         bufferDoc += this._syntaxSupport.getType(this._transform.getType());
+        bufferDoc += this._syntaxSupport.getVersion("12.1.17");
         bufferDoc += this._syntaxSupport.getAuthor("Gabriel Alencar");
-        bufferDoc += this._syntaxSupport.getSince(new Date());
+        bufferDoc += this._syntaxSupport.getSince("17/01/2020");
         bufferDoc += this._syntaxSupport.getParams(this._transform.getParams());
         bufferDoc += this._syntaxSupport.getReturn(this._transform.getReturn());
         bufferDoc += this._syntaxSupport.getFinisher();

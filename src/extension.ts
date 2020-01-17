@@ -23,9 +23,21 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 	context.subscriptions.push(addDocBlock());
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand("protheusdoc.addDoc", (textEditor, edit) => {
-		let snippet = new vscode.SnippetString("SELECT $4 * FROM  $1 ( NOLOCK ) \n WHERE $2_FILIAL = '01' $3 AND D_E_L_E_T_ = '' ");
+		let snippet = "";
 
-		textEditor.insertSnippet(snippet);
+		snippet += "/*/{Protheus.doc} fPdocTeste\n";
+		snippet += "${1:description}\n";
+		snippet += "@type function\n";
+		snippet += "@version ${2:12.1.17}\n";
+		snippet += "@author ${3:Gabriel Alencar}\n";
+		snippet += "@since ${4:17/01/2020}\n";
+		snippet += "@param cParam1, character, ${5:param_description}\n";
+		snippet += "@param nParam2, numeric, ${6:param_description}\n";
+		snippet += "@param xParam3, param_type, ${7:param_description}\n";
+		snippet += "@return ${8:return_type}, ${9:return_description}\n";
+		snippet += "/*/";
+
+		textEditor.insertSnippet(new vscode.SnippetString(snippet));
 	}));
 
 	vscode.languages.registerHoverProvider('advpl', {
