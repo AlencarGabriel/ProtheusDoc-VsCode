@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -80,7 +81,7 @@ class DocThisCompletionItem extends vscode.CompletionItem {
 
 		this.command = {
 			title: "ProtheusDOC",
-			command: "protheusdoc.addDoc",
+			command: "protheusdoc.addDocBlock",
 			arguments: [true]
 		};
 	}
@@ -95,6 +96,38 @@ export function addDocBlock(){
 		// textEditor?.insertSnippet // Estudar
 
 		console.log(textEditor.selection);
+
+		let document = textEditor.document;
+		let activeLine = textEditor.selection.active.line;
+		let found = false;
+		let limitSkipLines = 3;
+		let linesSkiped = 0;
+
+		while (!found) {
+			let line = document.lineAt(activeLine);
+
+			if (!line.isEmptyOrWhitespace &&
+				line.text.match(/^\s*$|(User|Static) Function ([^:\/]+)\s*$|^\s*$|Method ([^:\/]+)\s*$|Class ([^:\/\s]+)\s*$/i)) {
+				found = true;
+
+			}else{
+				activeLine++;
+				linesSkiped++;
+			}
+
+			if (linesSkiped >= limitSkipLines) {
+				break;
+			}
+
+		}
+
+		let newPosition = new vscode.Position(activeLine-1, 0);
+
+		if (found) {
+			let protheusDoc = new ProtheusDoc(ELanguageSupport.advpl, document.lineAt(activeLine).text);
+			textEditor.insertSnippet(new vscode.SnippetString(protheusDoc.getProtheusDoc()), newPosition);
+		}
+
 	});
 
 	return disposable;

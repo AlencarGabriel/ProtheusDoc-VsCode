@@ -49,7 +49,7 @@ export class TransformAdvpl implements ITransformProtheusDoc {
         if (signatureChanged.indexOf("function ") > 0) {
             length = signatureChanged.length;
             start = signatureChanged.indexOf("function ");
-            end = signatureChanged.indexOf("(") > 0 ? signatureChanged.indexOf("(") - 1 : length;
+            end = signatureChanged.indexOf("(") > 0 ? signatureChanged.indexOf("(") : length;
 
             this._type = ETypesDoc.function;
             this._identifierName = signatureOriginal.substr(start + 9, end - start - 9).trim();
