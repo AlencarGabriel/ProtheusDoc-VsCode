@@ -95,7 +95,7 @@ export function addDocBlock(){
 
 		// textEditor?.insertSnippet // Estudar
 
-		console.log(textEditor.selection);
+		// console.log(textEditor.selections);
 
 		let document = textEditor.document;
 		let activeLine = textEditor.selection.active.line;
