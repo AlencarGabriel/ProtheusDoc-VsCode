@@ -10,7 +10,7 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
         this._countTabStop = 0;
     }
 
-    private getTabStop(str: String): String{
+    private getTabStop(str: String): String {
         this._countTabStop++;
 
         return "${" + this._countTabStop.toString() + ":" + str + "}";
@@ -48,7 +48,9 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
 
         if (params) {
             params.forEach(element => {
-                result += "@param " + element.paramName + ", " + element.paramType.toString() + ", " + this.getTabStop(element.paramDescription) + "\n";
+                result += "@param " + element.paramName
+                    + ", " + (element.paramType.toString() === ETypesAdvpl.U.toString() ? this.getTabStop(element.paramType.toString()) : element.paramType.toString()) // Tratamento para parâmetros não tratados
+                    + ", " + this.getTabStop(element.paramDescription) + "\n";
             });
         }
 

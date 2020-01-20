@@ -3,7 +3,7 @@ import { ISyntaxProtheusDoc } from '../interfaces/ISyntaxProtheusDoc';
 import { SyntaxAdvpl } from './SyntaxAdvpl';
 import { ITransformProtheusDoc } from '../interfaces/ITransformProtheusDoc';
 import { TransformAdvpl } from './TransformAdvpl';
-// import * as systeminformation from 'systeminformation';
+import * as os from 'os';
 
 export enum ELanguageSupport {
     "advpl" = "advpl",
@@ -38,7 +38,7 @@ export class ProtheusDoc {
         bufferDoc += this._syntaxSupport.getIdentifier(this._transform.getIdentifierName());
         bufferDoc += this._syntaxSupport.getType(this._transform.getType());
         bufferDoc += this._syntaxSupport.getVersion("12.1.17");
-        bufferDoc += this._syntaxSupport.getAuthor("Gabriel Alencar");
+        bufferDoc += this._syntaxSupport.getAuthor(os.userInfo({ encoding: "windows1252" }).username);
         bufferDoc += this._syntaxSupport.getSince(new Date());
         bufferDoc += this._syntaxSupport.getParams(this._transform.getParams());
         bufferDoc += this._syntaxSupport.getReturn(this._transform.getReturn());

@@ -1,16 +1,28 @@
 {
-	"name": "protheusdoc",
-	"displayName": "ProtheusDoc",
-	"description": "Suporte ao ProtheusDOC para VsCode",
+	"name": "protheusdoc-vscode",
+	"displayName": "ProtheusDoc for VsCode (AdvPL)",
+	"description": "Suporte ao TOTVS ProtheusDoc para VsCode.",
 	"version": "0.0.1",
+	"publisher": "AlencarGabriel",
+	"icon": "images/Icon.png",
+	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode.git"
+	},
+	"bugs": {
+		"url": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues",
+		"email": "alencargabriel@outlook.com.br"
+	},
 	"engines": {
 		"vscode": "^1.41.0"
 	},
 	"categories": [
-		"Other"
+		"Other",
+		"Snippets"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld",
+		"onLanguage:advpl",
 		"onCommand:protheusdoc.addDocBlock"
 	],
 	"main": "./out/extension.js",
@@ -42,15 +54,15 @@
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.7",
-		"@types/node": "^12.11.7",
+		"@types/node": "^12.12.25",
 		"@types/vscode": "^1.41.0",
 		"glob": "^7.1.5",
 		"mocha": "^6.2.2",
-		"typescript": "^3.6.4",
 		"tslint": "^5.20.0",
+		"typescript": "^3.7.5",
 		"vscode-test": "^1.2.2"
 	},
 	"dependencies": {
-		"systeminformation": "^4.19.1"
+		"systeminformation": "^4.19.2"
 	}
 }

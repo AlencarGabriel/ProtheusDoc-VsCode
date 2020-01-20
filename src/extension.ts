@@ -53,31 +53,33 @@ export function activate(context: vscode.ExtensionContext) {
 		{
 			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) => {
 				const line = document.lineAt(position.line).text;
-				const prefix = line.slice(0, position.character);
 
-				if (prefix.match(/^\s*$|\/\*\*\s*$|^\s*\/\*\*+\s*$/)) {
+				// if (line.toLowerCase().match(/protheus|doc|protheusDoc/i)) {
 					return [new DocThisCompletionItem(document, position)];
-				}
+				// }
 
-				return;
+				// return;
 			}
 		},
-		"/", "*"));
+		"protheus", "doc", "protheusdoc"));
 }
 
 class DocThisCompletionItem extends vscode.CompletionItem {
 	constructor(document: vscode.TextDocument, position: vscode.Position) {
-		super("/** Document This */", vscode.CompletionItemKind.Snippet);
+		super("Add ProtheusDoc Block", vscode.CompletionItemKind.Snippet);
 		this.insertText = "";
 		this.sortText = "\0";
 
 		const line = document.lineAt(position.line).text;
-		const prefix = line.slice(0, position.character).match(/\/\**\s*$/);
-		const suffix = line.slice(position.character).match(/^\s*\**\//);
-		const start = position.translate(0, prefix ? -prefix[0].length : 0);
+		// const prefix = line.slice(0, position.character).match(/\/\**\s*$/);
+		// const suffix = line.slice(position.character).match(/^\s*\**\//);
+		// const start = position.translate(0, prefix ? -prefix[0].length : 0);
 		this.range = new vscode.Range(
-			start,
-			position.translate(0, suffix ? suffix[0].length : 0));
+			position,
+			position.translate(0, line.length));
+
+		this.detail = "Adiciona um bloco inteligente de documentação ProtheusDoc.";
+		this.documentation = new vscode.MarkdownString("Detecta a assinatura de `Função`, `Método` ou `Classe` mais próxima e monta o bloco ProtheusDoc contendo os argumentos.");
 
 		this.command = {
 			title: "ProtheusDOC",
@@ -87,50 +89,65 @@ class DocThisCompletionItem extends vscode.CompletionItem {
 	}
 }
 
-export function addDocBlock(){
-	let disposable =  vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, edit) => {
-		// let active = vscode.window.activeTextEditor;
-		// textEditor.selection // Captura da área posicionada
-		// textEditor.document.lineAt(textEditor.selection.active) // captura o texto da seleção
+export function addDocBlock() {
+	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, edit) => {
 
-		// textEditor?.insertSnippet // Estudar
-
-		// console.log(textEditor.selections);
-
-		let document = textEditor.document;
-		let activeLine = textEditor.selection.active.line;
-		let found = false;
-		let limitSkipLines = 3;
-		let linesSkiped = 0;
-
-		while (!found) {
-			let line = document.lineAt(activeLine);
-
-			if (!line.isEmptyOrWhitespace &&
-				line.text.match(/^\s*$|(User|Static) Function ([^:\/]+)\s*$|^\s*$|Method ([^:\/]+)\s*$|Class ([^:\/\s]+)\s*$/i)) {
-				found = true;
-
-			}else{
-				activeLine++;
-				linesSkiped++;
-			}
-
-			if (linesSkiped >= limitSkipLines) {
-				break;
-			}
-
-		}
-
-		let newPosition = new vscode.Position(activeLine-1, 0);
-
-		if (found) {
-			let protheusDoc = new ProtheusDoc(ELanguageSupport.advpl, document.lineAt(activeLine).text);
-			textEditor.insertSnippet(new vscode.SnippetString(protheusDoc.getProtheusDoc()), newPosition);
+		if (textEditor.document.languageId === ELanguageSupport.advpl.toString()) {
+			findAdvpl(textEditor);
+		} else {
+			vscode.window.showErrorMessage("A linguagem " + textEditor.document.languageId + " não é tratada pela Extensão.");
 		}
 
 	});
 
 	return disposable;
 }
+
+export function findAdvpl(textEditor: vscode.TextEditor) {
+	let document = textEditor.document;
+	let activeLine = textEditor.selection.active.line;
+	let multiLine = 0;
+	let found = false;
+	let limitSkipLines = 3;
+	let linesSkiped = 0;
+	let signature = "";
+
+	while (!found) {
+		let line = document.lineAt(activeLine);
+
+		if (!line.isEmptyOrWhitespace &&
+			line.text.match(/(User|Static) Function ([^:\/]+)*$|^$|Method ([^:\/]+)*$|Class [[:alnum:]]*$/i)) {
+			found = true;
+
+			signature = document.lineAt(activeLine).text.trim().replace(";", "");
+
+			multiLine = activeLine;
+
+			// Tratamento para caso de quebra de linha na assinatura
+			while (document.lineAt(multiLine).text.includes(";")) {
+				multiLine++;
+
+				signature += document.lineAt(multiLine).text.trim().replace(";", "");
+			}
+
+		} else {
+			activeLine++;
+			linesSkiped++;
+		}
+
+		if (linesSkiped >= limitSkipLines) {
+			break;
+		}
+
+	}
+
+	let newPosition = new vscode.Position(activeLine === 0 ? 0 : activeLine - 1, 0);
+
+	if (found) {
+		let protheusDoc = new ProtheusDoc(ELanguageSupport.advpl, signature);
+		textEditor.insertSnippet(new vscode.SnippetString(protheusDoc.getProtheusDoc() + (activeLine === 0 ? "\n" : "")), newPosition);
+	}
+}
+
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
