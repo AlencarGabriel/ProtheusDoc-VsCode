@@ -29,18 +29,50 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			},
-			{
 				"command": "protheusdoc.addDocBlock",
-				"title": "Adicionar Bloco de Documentação"
+				"title": "ProtheusDoc - Adicionar bloco de Documentação"
 			}
 		],
 		"snippets": [
 			{
 				"language": "advpl",
 				"path": "./snippets/protheusDoc.json"
+			}
+		],
+		"configuration": [
+			{
+				"type": "object",
+				"title": "Configurações do ProtheusDoc",
+				"properties": {
+					"protheusDoc.marcadores-ocultos": {
+						"type": "array",
+						"default": [],
+						"description": "Ocultar os seguintes marcadores não obrigatórios do ProtheusDoc.",
+						"items": {
+							"type": "string",
+							"title": "Marcadores disponíveis para ocultar",
+							"enum": [
+								"Version",
+								"Author",
+								"Since",
+								"Params",
+								"Return"
+							],
+							"uniqueItems": true
+						}
+					},
+					"protheusDoc.autor-default": {
+						"type": "string",
+						"default": "",
+						"description": "Nome do autor padrão das documentações ProtheusDoc. \n Caso esteja vazio o autor será o usuário conectado no SO."
+					},
+					"protheusDoc.versao-default": {
+						"type": "string",
+						"default": "",
+						"examples": ["12.1.25"],
+						"description": "Versão padrão do identificaor."
+					}
+				}
 			}
 		]
 	},

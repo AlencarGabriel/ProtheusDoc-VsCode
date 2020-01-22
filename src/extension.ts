@@ -1,61 +1,27 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
+import { DocThisCompletionItem as ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "protheusdoc" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
-	});
-
-	context.subscriptions.push(disposable);
 	context.subscriptions.push(addDocBlock());
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand("protheusdoc.addDoc", (textEditor, edit) => {
-		let snippet = "";
 
-		snippet += "/*/{Protheus.doc} fPdocTeste\n";
-		snippet += "${1:description}\n";
-		snippet += "@type function\n";
-		snippet += "@version ${2:12.1.17}\n";
-		snippet += "@author ${3:Gabriel Alencar}\n";
-		snippet += "@since ${4:17/01/2020}\n";
-		snippet += "@param cParam1, character, ${5:param_description}\n";
-		snippet += "@param nParam2, numeric, ${6:param_description}\n";
-		snippet += "@param xParam3, param_type, ${7:param_description}\n";
-		snippet += "@return ${8:return_type}, ${9:return_description}\n";
-		snippet += "/*/";
-
-		textEditor.insertSnippet(new vscode.SnippetString(snippet));
-	}));
-
-	vscode.languages.registerHoverProvider('advpl', {
-		provideHover(document, position, token) {
-			console.log("Hover!!");
-			return new vscode.Hover('I am a hover!');
-		}
-	});
+	// TODO: Implementar Hover detectando a documentação das funções
+	// vscode.languages.registerHoverProvider('advpl', {
+	// 	provideHover(document, position, token) {
+	// 		console.log("Hover!!");
+	// 		return new vscode.Hover('I am a hover!');
+	// 	}
+	// });
 
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
 		["advpl"],
 		{
 			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) => {
-				const line = document.lineAt(position.line).text;
 
+				// FIXME: Pensar numa expressão para sugerir o Snippet
 				// if (line.toLowerCase().match(/protheus|doc|protheusDoc/i)) {
-					return [new DocThisCompletionItem(document, position)];
+				return [new ProtheusDocCompletionItem(document, position)];
 				// }
 
 				// return;
@@ -64,34 +30,13 @@ export function activate(context: vscode.ExtensionContext) {
 		"protheus", "doc", "protheusdoc"));
 }
 
-class DocThisCompletionItem extends vscode.CompletionItem {
-	constructor(document: vscode.TextDocument, position: vscode.Position) {
-		super("Add ProtheusDoc Block", vscode.CompletionItemKind.Snippet);
-		this.insertText = "";
-		this.sortText = "\0";
-
-		const line = document.lineAt(position.line).text;
-		// const prefix = line.slice(0, position.character).match(/\/\**\s*$/);
-		// const suffix = line.slice(position.character).match(/^\s*\**\//);
-		// const start = position.translate(0, prefix ? -prefix[0].length : 0);
-		this.range = new vscode.Range(
-			position,
-			position.translate(0, line.length));
-
-		this.detail = "Adiciona um bloco inteligente de documentação ProtheusDoc.";
-		this.documentation = new vscode.MarkdownString("Detecta a assinatura de `Função`, `Método` ou `Classe` mais próxima e monta o bloco ProtheusDoc contendo os argumentos.");
-
-		this.command = {
-			title: "ProtheusDOC",
-			command: "protheusdoc.addDocBlock",
-			arguments: [true]
-		};
-	}
-}
-
+/**
+ * Registra o bloco de comando a ser executado quando este for chamado.
+ */
 export function addDocBlock() {
 	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, edit) => {
 
+		// Trata a linguagem e chama a função que interpreta a sintaxe desta
 		if (textEditor.document.languageId === ELanguageSupport.advpl.toString()) {
 			findAdvpl(textEditor);
 		} else {
@@ -103,22 +48,31 @@ export function addDocBlock() {
 	return disposable;
 }
 
+/**
+ * Busca a assinatura na sintaxe AdvPL e trata para as classes que geram o ProtheusDoc
+ * @param textEditor Editor ativo do VsCode.
+ */
 export function findAdvpl(textEditor: vscode.TextEditor) {
 	let document = textEditor.document;
 	let activeLine = textEditor.selection.active.line;
-	let multiLine = 0;
 	let found = false;
-	let limitSkipLines = 3;
-	let linesSkiped = 0;
 	let signature = "";
+	let multiLine = 0;
+	let linesSkiped = 0;
+	let limitSkipLines = 3;
 
+	// Enquanto não encontrar uma assinatura de função, método ou classe, busca na próxima linha
 	while (!found) {
 		let line = document.lineAt(activeLine);
 
+		// Não considera linhas vazias ou que não iniciem com o tipo Function, Method ou Class
 		if (!line.isEmptyOrWhitespace &&
 			line.text.match(/(User|Static) Function ([^:\/]+)*$|^$|Method ([^:\/]+)*$|Class [[:alnum:]]*$/i)) {
+
+			// Encontrou a assinatura
 			found = true;
 
+			// Retira o identificador de quebra de linha da assinatura da função
 			signature = document.lineAt(activeLine).text.trim().replace(";", "");
 
 			multiLine = activeLine;
@@ -135,16 +89,21 @@ export function findAdvpl(textEditor: vscode.TextEditor) {
 			linesSkiped++;
 		}
 
+		// Limita a quantidade de linhas que a função irá percorrer até encontrar uma assinatura (evitar loops infinitos)
 		if (linesSkiped >= limitSkipLines) {
 			break;
 		}
 
 	}
 
-	let newPosition = new vscode.Position(activeLine === 0 ? 0 : activeLine - 1, 0);
-
 	if (found) {
+		// Captura a linha anterior a assinatura encontrada
+		let newPosition = new vscode.Position(activeLine === 0 ? 0 : activeLine - 1, 0);
+
+		// Instancia a classe que irá gerar o bloco de acordo com a linguagem
 		let protheusDoc = new ProtheusDoc(ELanguageSupport.advpl, signature);
+
+		// Insere o Snippet na posição anterior a assinatura (trata quando a assinatura é a primeira linha "activeLine === 0")
 		textEditor.insertSnippet(new vscode.SnippetString(protheusDoc.getProtheusDoc() + (activeLine === 0 ? "\n" : "")), newPosition);
 	}
 }

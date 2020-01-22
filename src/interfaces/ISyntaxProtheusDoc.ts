@@ -6,8 +6,8 @@ export enum ETypesDoc {
     function = "function",
     class = "class",
     method = "method",
-    property = "property",
-    variable = "variable",
+    // property = "property",
+    // variable = "variable",
 }
 
 export enum ETypesAdvpl {
@@ -22,6 +22,10 @@ export enum ETypesAdvpl {
     U = "param_type"
 }
 
+/**
+ * Trata o parâmetro para o tipo de variável correto.
+ * @param type Primeiro caracter do parâmetro
+ */
 export function convertTypeAdvpl(type: String): ETypesAdvpl {
     switch (type.toUpperCase()) {
         case "N":
@@ -58,8 +62,7 @@ export interface ISyntaxProtheusDoc {
     getIdentifier(functionName: String): String;
     getType(type: ETypesDoc): String;
     getAuthor(name: String): String;
-    getSince(date?: Date|String): String;
-    // getSince(date?: String): String;
+    getSince(date?: Date | String): String;
     getVersion(version: String): String;
     getParams(params?: IParamsProtheusDoc[]): String;
     getReturn(param?: IReturnProtheusDoc): String;
