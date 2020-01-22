@@ -49,6 +49,7 @@
 						"type": "array",
 						"default": [],
 						"description": "Ocultar os seguintes marcadores não obrigatórios do ProtheusDoc.",
+						"uniqueItems": true,
 						"items": {
 							"type": "string",
 							"title": "Marcadores disponíveis para ocultar",
@@ -58,8 +59,7 @@
 								"Since",
 								"Params",
 								"Return"
-							],
-							"uniqueItems": true
+							]
 						}
 					},
 					"protheusDoc.autor_default": {
