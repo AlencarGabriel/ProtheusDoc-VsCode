@@ -2,9 +2,11 @@
 
 Suporte aos recursos e snippets do TOTVS ProtheusDoc para VsCode.
 
-![ProtheusDoc for VsCode](images/Example.gif)
+![ProtheusDoc for VsCode](images/Example2.gif)
 
 >**Estou muito feliz pelo seu Download e espero que goste!**
+
+---
 
 ## Necessidade
 
@@ -29,11 +31,30 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 - [ ] Implementar sintaxe do 4gl;
 - [ ] Implementar Geração de HTML das documentações;
 
+---
+
 ## Comandos da Extensão
 
-### Snippets
+### Snippets:
 
-### Command Pallet
+Em qualquer trecho de um código AdvPL (futuramente também 4gl), é possível chamar o Snippet `Add ProtheusDoc Block`.
+
+![Snippet ProtheusDoc VsCode](https://user-images.githubusercontent.com/10109480/72910730-b77a2900-3d17-11ea-885a-c7456f36b200.png)
+
+### Command Pallet:
+
+Com o cursor posicionado na assinatura da Função, Método ou Classe ou acima desta, é possível executar o comando: `CTRL + SHIFT + P` > `ProtheusDoc - Adicionar bloco de Documentação`.
+
+![image](https://user-images.githubusercontent.com/10109480/72911195-67e82d00-3d18-11ea-96cb-d91ada6345ab.png)
+
+
+> **Importante:**
+>
+>A extensão irá interpretar a sintaxe da assinatura, e montará um bloco de documentação ProtheusDoc acima da assinatura da Função, Método ou Classe.
+>
+>É necessário que o cursor de escrita esteja posicionado em até 2 (duas) linhas antes do início da assinatura da Função, Método ou Classe.
+
+---
 
 ## Configurações da Extensão
 
