@@ -30,30 +30,37 @@
     "Param": {
         "prefix": "@param",
         "body": [
-            "@param ${1:param_name}, ${2|numeric,character,date,codeblock,logical,array,object,variadic,param_type|}, ${3:param_descr}\n"
+            "@param ${1:param_name}, ${2|param_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${3:param_description}\n"
         ],
         "description": "Adiciona uma especificação de parâmetro (de função ou método), identificando-o como parameter-name."
     },
     "Return": {
         "prefix": "@return",
         "body": [
-            "@return ${1|numeric,character,date,codeblock,logical,array,object,variadic,return_type|}, ${2:return_description}\n"
+            "@return ${1|return_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${2:return_description}\n"
         ],
         "description": "Especifica o retorno (de função ou método)."
     },
     "Example": {
         "prefix": "@example",
         "body": [
-            "@example\n",
-            "(examples)\n"
+            "@example",
+            "${1:(examples)}\n"
         ],
         "description": "Cria uma entrada no tópico “Exemplos”."
     },
     "See": {
         "prefix": "@see",
         "body": [
-            "@see (links_or_references)\n"
+            "@see ${1:(links_or_references)}\n"
         ],
-        "description": "Cria uma entrada no tópico “Exemplos”."
+        "description": "Adiciona uma entrada “Veja também”."
+    },
+    "History": {
+        "prefix": "@history",
+        "body": [
+            "@history ${1:$CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR}, ${2:username}, ${3:description}.\n"
+        ],
+        "description": "Histórico de alterações no código-fonte."
     }
 }

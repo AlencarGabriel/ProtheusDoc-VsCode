@@ -2,6 +2,8 @@
 
 Suporte aos recursos e snippets do TOTVS ProtheusDoc para VsCode.
 
+![ProtheusDoc for VsCode](images/Example.gif)
+
 >**Estou muito feliz pelo seu Download e espero que goste!**
 
 ## Necessidade
@@ -17,6 +19,7 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 - [x] Implementar geração do cabeçalho lendo a declaração da Função;
 - [x] Implementar configuração para o nome do Autor Default (caso omitido apresenta o do SO);
 - [x] Implementar configuração para ocultar marcadores não obrigatórios;
+- [x] Implementar Snippets dos marcadores mais comuns do ProtheusDoc;
 - [ ] Implementar geração do cabeçalho lendo a declaração do Método;
 - [ ] Implementar geração do cabeçalho lendo a declaração da Classe;
 - [ ] Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;
@@ -36,8 +39,8 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 
 Esta extensão contribui com as seguintes configurações:
 
-* `protheusDoc.marcadores-ocultos: [];` // Ocultar marcadores não obrigatórios do ProtheusDoc (@version, @author, @since, @params, @return).
-* `protheusDoc.autor-default: "";` // Nome do autor padrão das documentações ProtheusDoc. Caso esteja vazio o autor será o usuário conectado no SO.
-* `protheusDoc.versao-default: "";` // Versão padrão do identificaor.
+* `protheusDoc.marcadores_ocultos: [];` // Ocultar marcadores não obrigatórios do ProtheusDoc (@version, @author, @since, @params, @return).
+* `protheusDoc.autor_default: "";` // Nome do autor padrão das documentações ProtheusDoc. Caso esteja vazio o autor será o usuário conectado no SO.
+* `protheusDoc.versao_default: "";` // Versão padrão do identificador.
 
 **Aproveite, me ajuda e com certeza irá te ajudar tambem!** :heart:

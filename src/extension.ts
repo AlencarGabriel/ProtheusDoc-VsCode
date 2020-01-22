@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
-import { DocThisCompletionItem as ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
+import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 
 export function activate(context: vscode.ExtensionContext) {
 

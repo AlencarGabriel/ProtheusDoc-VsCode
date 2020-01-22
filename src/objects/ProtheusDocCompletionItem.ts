@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export class DocThisCompletionItem extends vscode.CompletionItem {
+export class ProtheusDocCompletionItem extends vscode.CompletionItem {
     constructor(document: vscode.TextDocument, position: vscode.Position) {
         super("Add ProtheusDoc Block", vscode.CompletionItemKind.Snippet);
         this.insertText = "";

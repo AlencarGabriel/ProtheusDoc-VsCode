@@ -19,7 +19,8 @@
 	},
 	"categories": [
 		"Other",
-		"Snippets"
+		"Snippets",
+		"Language Packs"
 	],
 	"activationEvents": [
 		"onLanguage:advpl",
@@ -44,7 +45,7 @@
 				"type": "object",
 				"title": "Configurações do ProtheusDoc",
 				"properties": {
-					"protheusDoc.marcadores-ocultos": {
+					"protheusDoc.marcadores_ocultos": {
 						"type": "array",
 						"default": [],
 						"description": "Ocultar os seguintes marcadores não obrigatórios do ProtheusDoc.",
@@ -61,16 +62,16 @@
 							"uniqueItems": true
 						}
 					},
-					"protheusDoc.autor-default": {
+					"protheusDoc.autor_default": {
 						"type": "string",
 						"default": "",
 						"description": "Nome do autor padrão das documentações ProtheusDoc. \n Caso esteja vazio o autor será o usuário conectado no SO."
 					},
-					"protheusDoc.versao-default": {
+					"protheusDoc.versao_default": {
 						"type": "string",
 						"default": "",
 						"examples": ["12.1.25"],
-						"description": "Versão padrão do identificaor."
+						"description": "Versão padrão do identificador."
 					}
 				}
 			}
@@ -93,8 +94,5 @@
 		"tslint": "^5.20.0",
 		"typescript": "^3.7.5",
 		"vscode-test": "^1.2.2"
-	},
-	"dependencies": {
-		"systeminformation": "^4.19.2"
 	}
 }

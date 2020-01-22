@@ -47,23 +47,19 @@ export class ProtheusDoc {
         bufferDoc += this._syntaxSupport.getIdentifier(this._transform.getIdentifierName());
         bufferDoc += this._syntaxSupport.getType(this._transform.getType());
 
-        // tslint:disable-next-line: curly
+        // tslint:disable: curly
         if (!marcadoresOcultos.includes("Version"))
             bufferDoc += this._syntaxSupport.getVersion(this._util.getVersion());
 
-        // tslint:disable-next-line: curly
         if (!marcadoresOcultos.includes("Author"))
             bufferDoc += this._syntaxSupport.getAuthor(this._util.getAuthor());
 
-        // tslint:disable-next-line: curly
         if (!marcadoresOcultos.includes("Since"))
             bufferDoc += this._syntaxSupport.getSince(new Date());
 
-        // tslint:disable-next-line: curly
         if (!marcadoresOcultos.includes("Params"))
             bufferDoc += this._syntaxSupport.getParams(this._transform.getParams());
 
-        // tslint:disable-next-line: curly
         if (!marcadoresOcultos.includes("Return"))
             bufferDoc += this._syntaxSupport.getReturn(this._transform.getReturn());
 

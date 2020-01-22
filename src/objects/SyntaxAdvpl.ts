@@ -17,12 +17,17 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
      * Transforma uma string em estrutura de Tabulação no formato Snippet do VsCode.
      * @param str String a ser tabulada
      */
-    private getTabStop(str: String): String {
+    private getTabStop(str: String, choice: boolean = false): String {
 
         // Implementa o contador de tabulação
         this._countTabStop++;
 
-        return "${" + this._countTabStop.toString() + ":" + str + "}";
+        // tslint:disable: curly
+        // Tratamento para casos onde a string contém choices, para que a tabulação do Snippet funcione corretamente.
+        if (!choice)
+            return "${" + this._countTabStop.toString() + ":" + str + "}";
+        else
+            return "${" + this._countTabStop.toString() + "|" + str + "|}";
     }
 
     /**
@@ -82,7 +87,7 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
         if (params) {
             params.forEach(element => {
                 result += "@param " + element.paramName
-                    + ", " + (element.paramType.toString() === ETypesAdvpl.U.toString() ? this.getTabStop(element.paramType.toString()) : element.paramType.toString()) // Tratamento para parâmetros não tratados
+                    + ", " + (element.paramType === ETypesAdvpl.U ? this.getTabStop("param_type,numeric,character,date,codeblock,logical,array,object,variadic", true) : element.paramType.toString()) // Tratamento para parâmetros não tratados
                     + ", " + this.getTabStop(element.paramDescription) + "\n";
             });
         }
@@ -97,7 +102,11 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
     public getReturn(param?: IReturnProtheusDoc): String {
 
         if (param) {
-            return "@return " + this.getTabStop(param.returnType.toString().replace("param", "return")) + ", " + this.getTabStop(param.returnDescription) + "\n";
+            if (param.returnType === ETypesAdvpl.U) {
+                return "@return " + this.getTabStop("return_type,numeric,character,date,codeblock,logical,array,object,variadic", true) + ", " + this.getTabStop(param.returnDescription) + "\n";
+            } else {
+                return "@return " + this.getTabStop(param.returnType.toString()) + ", " + this.getTabStop(param.returnDescription) + "\n";
+            }
         } else {
             return "";
         }

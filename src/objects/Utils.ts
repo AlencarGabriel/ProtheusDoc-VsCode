@@ -25,7 +25,7 @@ export class Utils {
      * @obs Caso não esteja nas configurações, retorna o usuário do SO.
      */
     public getAuthor(): string {
-        let authorDefault = this._config.get<String>("autor-default");
+        let authorDefault = this._config.get<String>("autor_default");
 
         // Verifica se o usuário setou um autor default
         if (authorDefault && authorDefault !== "") {
@@ -40,7 +40,7 @@ export class Utils {
      * Busca a versão padrão do identificador.
      */
     public getVersion(): string {
-        let versaoDefault = this._config.get<String>("versao-default");
+        let versaoDefault = this._config.get<String>("versao_default");
 
         // Verifica se o usuário setou uma versão default
         if (versaoDefault && versaoDefault !== "") {
@@ -56,7 +56,7 @@ export class Utils {
      *  adicionados nas documentações do ProtheusDoc.
      */
     public getHiddenMarkers(): String[] {
-        let hiddenMarkers = this._config.get<Array<String>>("marcadores-ocultos");
+        let hiddenMarkers = this._config.get<Array<String>>("marcadores_ocultos");
 
         if (hiddenMarkers) {
             return hiddenMarkers;
