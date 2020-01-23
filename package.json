@@ -2,7 +2,7 @@
 	"name": "protheusdoc-vscode",
 	"displayName": "ProtheusDoc for VsCode (AdvPL)",
 	"description": "Suporte ao TOTVS ProtheusDoc para VsCode.",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "AlencarGabriel",
 	"icon": "images/Icon.png",
 	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
@@ -15,7 +15,7 @@
 		"email": "alencargabriel@outlook.com.br"
 	},
 	"engines": {
-		"vscode": "^1.41.0"
+		"vscode": "^1.38.0"
 	},
 	"categories": [
 		"Other",
@@ -70,7 +70,9 @@
 					"protheusDoc.versao_default": {
 						"type": "string",
 						"default": "",
-						"examples": ["12.1.25"],
+						"examples": [
+							"12.1.25"
+						],
 						"description": "Versão padrão do identificador."
 					}
 				}
@@ -88,7 +90,7 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.7",
 		"@types/node": "^12.12.25",
-		"@types/vscode": "^1.41.0",
+		"@types/vscode": "^1.38.0",
 		"glob": "^7.1.5",
 		"mocha": "^6.2.2",
 		"tslint": "^5.20.0",
