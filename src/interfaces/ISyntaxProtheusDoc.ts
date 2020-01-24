@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { IParamsProtheusDoc } from './IParamsProtheusDoc';
-import { IReturnProtheusDoc } from './IReturnProtheusDoc';
 
 export enum ETypesDoc {
     function = "function",
@@ -24,37 +23,70 @@ export enum ETypesAdvpl {
 
 /**
  * Trata o parâmetro para o tipo de variável correto.
- * @param type Primeiro caracter do parâmetro
+ * @param type Tipo a ser tratado para o Type ETypesAdvpl
+ * @param isChar Define se irá comparar pelo primeiro caracter, ou será de forma tipada
  */
-export function convertTypeAdvpl(type: String): ETypesAdvpl {
-    switch (type.toUpperCase()) {
-        case "N":
-            return ETypesAdvpl.N;
+export function convertTypeAdvpl(type: String, isChar: boolean = true): ETypesAdvpl {
 
-        case "C":
-            return ETypesAdvpl.C;
+    if (isChar) {
+        switch (type.toUpperCase()) {
+            case "N":
+                return ETypesAdvpl.N;
 
-        case "D":
-            return ETypesAdvpl.D;
+            case "C":
+                return ETypesAdvpl.C;
 
-        case "B":
-            return ETypesAdvpl.B;
+            case "D":
+                return ETypesAdvpl.D;
 
-        case "L":
-            return ETypesAdvpl.L;
+            case "B":
+                return ETypesAdvpl.B;
 
-        case "A":
-            return ETypesAdvpl.A;
+            case "L":
+                return ETypesAdvpl.L;
 
-        case "O":
-            return ETypesAdvpl.O;
+            case "A":
+                return ETypesAdvpl.A;
 
-        case "H":
-            return ETypesAdvpl.H;
+            case "O":
+                return ETypesAdvpl.O;
 
-        default:
-            // console.log("Type '" + type + "' is not implemented.");
-            return ETypesAdvpl.U;
+            case "H":
+                return ETypesAdvpl.H;
+
+            default:
+                // console.log("Type '" + type + "' is not implemented.");
+                return ETypesAdvpl.U;
+        }
+    } else {
+        switch (type.toUpperCase()) {
+            case ETypesAdvpl.N.toString().toUpperCase():
+                return ETypesAdvpl.N;
+
+            case ETypesAdvpl.C.toString().toUpperCase():
+                return ETypesAdvpl.C;
+
+            case ETypesAdvpl.D.toString().toUpperCase():
+                return ETypesAdvpl.D;
+
+            case ETypesAdvpl.B.toString().toUpperCase():
+                return ETypesAdvpl.B;
+
+            case ETypesAdvpl.L.toString().toUpperCase():
+                return ETypesAdvpl.L;
+
+            case ETypesAdvpl.A.toString().toUpperCase():
+                return ETypesAdvpl.A;
+
+            case ETypesAdvpl.O.toString().toUpperCase():
+                return ETypesAdvpl.O;
+
+            case ETypesAdvpl.H.toString().toUpperCase():
+                return ETypesAdvpl.H;
+
+            default:
+                return ETypesAdvpl.U;
+        }
     }
 }
 
@@ -65,6 +97,6 @@ export interface ISyntaxProtheusDoc {
     getSince(date?: Date | String): String;
     getVersion(version: String): String;
     getParams(params?: IParamsProtheusDoc[]): String;
-    getReturn(param?: IReturnProtheusDoc): String;
+    getReturn(param?: IParamsProtheusDoc): String;
     getFinisher(): String;
 }

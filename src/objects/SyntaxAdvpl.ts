@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { ISyntaxProtheusDoc, ETypesDoc, ETypesAdvpl } from '../interfaces/ISyntaxProtheusDoc';
 import { IParamsProtheusDoc } from '../interfaces/IParamsProtheusDoc';
-import { IReturnProtheusDoc } from '../interfaces/IReturnProtheusDoc';
 
 /**
  * Implementa a interface para converter a estrutura da assinatura AdvPL para o formato ProtheusDoc AdvPL.
@@ -99,13 +98,13 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
      * Retorna o "Return" do identificador no formato ProtheusDoc para AdvPL.
      * @param param Estrutura de Retorno
      */
-    public getReturn(param?: IReturnProtheusDoc): String {
+    public getReturn(param?: IParamsProtheusDoc): String {
 
         if (param) {
-            if (param.returnType === ETypesAdvpl.U) {
-                return "@return " + this.getTabStop("return_type,numeric,character,date,codeblock,logical,array,object,variadic", true) + ", " + this.getTabStop(param.returnDescription) + "\n";
+            if (param.paramType === ETypesAdvpl.U) {
+                return "@return " + this.getTabStop("return_type,numeric,character,date,codeblock,logical,array,object,variadic", true) + ", " + this.getTabStop(param.paramDescription) + "\n";
             } else {
-                return "@return " + this.getTabStop(param.returnType.toString()) + ", " + this.getTabStop(param.returnDescription) + "\n";
+                return "@return " + this.getTabStop(param.paramType.toString()) + ", " + this.getTabStop(param.paramDescription) + "\n";
             }
         } else {
             return "";

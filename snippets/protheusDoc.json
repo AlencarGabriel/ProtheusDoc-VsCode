@@ -2,42 +2,42 @@
     "Type": {
         "prefix": "@type",
         "body": [
-            "@type ${1|function,class,method,property,variable|}\n"
+            "@type ${1|function,class,method,property,variable|}"
         ],
         "description": "Adiciona uma especificação de parâmetro (de função ou método), identificando-o como parameter-name. "
     },
     "Author": {
         "prefix": "@author",
         "body": [
-            "@author ${1:author_name}\n"
+            "@author ${1:author_name}"
         ],
         "description": "Texto com o nome do autor. "
     },
     "Since": {
         "prefix": "@since",
         "body": [
-            "@since ${1:$CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR}\n"
+            "@since ${1:$CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR}"
         ],
         "description": "Identifica a partir de quando, uma determinada funcionalidade foi implementada. "
     },
     "Version": {
         "prefix": "@version",
         "body": [
-            "@version ${1:version}\n"
+            "@version ${1:version}"
         ],
         "description": "Indica para qual versão de produto ou mesmo servidor, que uma determinada funcionalidade requer."
     },
     "Param": {
         "prefix": "@param",
         "body": [
-            "@param ${1:param_name}, ${2|param_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${3:param_description}\n"
+            "@param ${1:param_name}, ${2|param_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${3:param_description}"
         ],
         "description": "Adiciona uma especificação de parâmetro (de função ou método), identificando-o como parameter-name."
     },
     "Return": {
         "prefix": "@return",
         "body": [
-            "@return ${1|return_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${2:return_description}\n"
+            "@return ${1|return_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${2:return_description}"
         ],
         "description": "Especifica o retorno (de função ou método)."
     },
@@ -45,21 +45,21 @@
         "prefix": "@example",
         "body": [
             "@example",
-            "${1:(examples)}\n"
+            "${1:(examples)}"
         ],
         "description": "Cria uma entrada no tópico “Exemplos”."
     },
     "See": {
         "prefix": "@see",
         "body": [
-            "@see ${1:(links_or_references)}\n"
+            "@see ${1:(links_or_references)}"
         ],
         "description": "Adiciona uma entrada “Veja também”."
     },
     "History": {
         "prefix": "@history",
         "body": [
-            "@history ${1:$CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR}, ${2:username}, ${3:description}.\n"
+            "@history ${1:$CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR}, ${2:username}, ${3:description}."
         ],
         "description": "Histórico de alterações no código-fonte."
     }

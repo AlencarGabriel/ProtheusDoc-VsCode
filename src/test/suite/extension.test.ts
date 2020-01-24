@@ -26,7 +26,7 @@ suite('Extension Test Suite', () => {
 		assert.equal(syntax.getSince(new Date()), "@since " + new Date().toLocaleDateString() + "\n");
 		assert.equal(syntax.getVersion("12.1.17"), "@version 12.1.17\n");
 		assert.equal(syntax.getParams([{ paramName: "cName", paramType: ETypesAdvpl.C, paramDescription: "Descrição." }]), "@param cName, character, Descrição.\n");
-		assert.equal(syntax.getReturn({ returnType: ETypesAdvpl.L, returnDescription: "Funcionou ou não." }), "@return logical, Funcionou ou não.\n");
+		assert.equal(syntax.getReturn({ paramType: ETypesAdvpl.L, paramDescription: "Funcionou ou não." }), "@return logical, Funcionou ou não.\n");
 		assert.equal(syntax.getFinisher(), "/*/");
 	});
 
