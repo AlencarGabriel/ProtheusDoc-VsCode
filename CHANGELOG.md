@@ -4,6 +4,17 @@ All notable changes to the "protheusdoc" extension will be documented in this fi
 
 ---
 
+## [0.0.8] - 2020-01-24
+
+## Added
+- Adicionado suporte para interpretar tambem a sintaxe de Parâmetros e Retornos usando Tipagem Forte [#2](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/2).
+
+## Fixed
+- Ajustes na quebra de linha dos Snippets.
+- Refatorado Interface estrutura do Return para funcionar igual os Params.
+
+---
+
 ## [0.0.5] - 2020-01-23
 
 ### Added
