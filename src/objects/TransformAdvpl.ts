@@ -68,6 +68,12 @@ export class TransformAdvpl implements ITransformProtheusDoc {
         let end = 0;
         let length = 0;
 
+        // Expressão para tratar função com Tipo de Dados ou não
+        // /((User|Static) Function)(([^:\/]+)(\([^:\/\B\)]*\))|([^:\/]\S+))(\sAs\s[^:\/]+)?/mi
+
+        // Expressão para tratar os Tipos (As) dos parâmetros
+        // \w+\sAs\s\w+ ou (\w+)\sAs\s(\w+) [Analisar uso deste segundo...]
+
         // Tratamento para caso de assinatura do tipo "Função"
         // "function " === 9 caracteres + 1 espaço
         if (signatureChanged.indexOf("function ") > 0) {

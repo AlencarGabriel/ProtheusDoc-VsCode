@@ -37,16 +37,21 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 
 ### Snippets:
 
-Em qualquer trecho de um código AdvPL (futuramente também 4gl), é possível chamar o Snippet `Add ProtheusDoc Block`.
+Em qualquer trecho de um código AdvPL (futuramente também 4gl), é possível chamar o Snippet `Add ProtheusDoc Block` das seguintes formas: `add`, `pdoc` ou `prot`.
 
-![Snippet ProtheusDoc VsCode](https://user-images.githubusercontent.com/10109480/72910730-b77a2900-3d17-11ea-885a-c7456f36b200.png)
+![Snippet ProtheusDoc VsCode](https://user-images.githubusercontent.com/10109480/73039691-d078fc00-3e35-11ea-82ca-cbc63dedbddc.png)
+
+> Caso existam snippets de ProtheusDoc oriundos de outras extensões, pode ser que o IntelliSense não processe este Snippet de primeira, sendo necessário pressionar `Esc` e depois chamar o AutoComplete novamente `Ctrl + Space`.
 
 ### Command Pallet:
 
-Com o cursor posicionado na assinatura da Função, Método ou Classe ou acima desta, é possível executar o comando: `CTRL + SHIFT + P` > `ProtheusDoc - Adicionar bloco de Documentação`.
+Com o cursor posicionado na assinatura da Função, Método ou Classe ou acima desta, é possível executar o comando: `Ctrl + Shift + P` > `ProtheusDoc - Adicionar bloco de Documentação`.
 
-![image](https://user-images.githubusercontent.com/10109480/72911195-67e82d00-3d18-11ea-96cb-d91ada6345ab.png)
+![ProtheusDoc Command VsCode](https://user-images.githubusercontent.com/10109480/73039567-5c3e5880-3e35-11ea-9a77-ca93ea5129d1.png)
 
+### Atalho:
+
+Foi implementado para o comando `ProtheusDoc - Adicionar bloco de Documentação` o atalho `Shift + Alt + D`.
 
 > **Importante:**
 >

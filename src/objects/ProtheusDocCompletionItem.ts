@@ -1,25 +1,25 @@
 import * as vscode from 'vscode';
+import { findAdvpl } from '../extension';
 
 export class ProtheusDocCompletionItem extends vscode.CompletionItem {
     constructor(document: vscode.TextDocument, position: vscode.Position) {
         super("Add ProtheusDoc Block", vscode.CompletionItemKind.Snippet);
-        this.insertText = "";
-        this.sortText = "\0";
 
-        const line = document.lineAt(position.line).text;
+        if (vscode.window.activeTextEditor) {
+            this.insertText = findAdvpl(vscode.window.activeTextEditor);
+        }
 
-        // FIXME: Ajustar para não substituir o conteúdo da linha posicionada caso passe vazio.
         this.range = new vscode.Range(
-            position,
-            position.translate(0, line.length));
+            new vscode.Position(position.line, 0),
+            new vscode.Position(position.line, position.character));
 
-        this.detail = "Adiciona um bloco inteligente de documentação ProtheusDoc.";
+        this.sortText = "\0";
+        this.detail = "ProtheusDoc for VsCode";
         this.documentation = new vscode.MarkdownString("Detecta a assinatura de `Função`, `Método` ou `Classe` mais próxima e monta o bloco ProtheusDoc contendo os argumentos.");
 
-        this.command = {
-            title: "ProtheusDOC",
-            command: "protheusdoc.addDocBlock",
-            arguments: [true]
-        };
+        // this.command = {
+        //     title: "ProtheusDocBlock",
+        //     command: "protheusdoc.addDocBlock"
+        // };
     }
 }

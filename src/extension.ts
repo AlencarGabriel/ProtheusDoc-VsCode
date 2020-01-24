@@ -6,7 +6,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(addDocBlock());
 
-	// TODO: Implementar Hover detectando a documentação das funções
+	// TODO: Implementar Hover detectando a documentação das funções.
+	// TODO: Implementar progress na status bar, enquanto carrega as documentações ProtheusDoc.
 	// vscode.languages.registerHoverProvider('advpl', {
 	// 	provideHover(document, position, token) {
 	// 		console.log("Hover!!");
@@ -18,16 +19,17 @@ export function activate(context: vscode.ExtensionContext) {
 		["advpl"],
 		{
 			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) => {
+				const line = document.lineAt(position.line).text;
+				const prefix = line.slice(0, position.character);
 
-				// FIXME: Pensar numa expressão para sugerir o Snippet
-				// if (line.toLowerCase().match(/protheus|doc|protheusDoc/i)) {
-				return [new ProtheusDocCompletionItem(document, position)];
-				// }
+				if (prefix.match(/^\s*pdoc|prot|add\w*$/i)) {
+					return [new ProtheusDocCompletionItem(document, position)];
+				} else {
+					return;
+				}
 
-				// return;
 			}
-		},
-		"protheus", "doc", "protheusdoc"));
+		}));
 }
 
 /**
@@ -38,7 +40,7 @@ export function addDocBlock() {
 
 		// Trata a linguagem e chama a função que interpreta a sintaxe desta
 		if (textEditor.document.languageId === ELanguageSupport.advpl.toString()) {
-			findAdvpl(textEditor);
+			findAdvpl(textEditor, true);
 		} else {
 			vscode.window.showErrorMessage("A linguagem " + textEditor.document.languageId + " não é tratada pela Extensão.");
 		}
@@ -51,8 +53,9 @@ export function addDocBlock() {
 /**
  * Busca a assinatura na sintaxe AdvPL e trata para as classes que geram o ProtheusDoc
  * @param textEditor Editor ativo do VsCode.
+ * @param hasCommand Identifica a origem da chamada do comando (caso seja via Snippet, o tratamento é com retorno, se não com comando).
  */
-export function findAdvpl(textEditor: vscode.TextEditor) {
+export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = false): string | vscode.SnippetString | undefined {
 	let document = textEditor.document;
 	let activeLine = textEditor.selection.active.line;
 	let found = false;
@@ -67,6 +70,7 @@ export function findAdvpl(textEditor: vscode.TextEditor) {
 
 		// Não considera linhas vazias ou que não iniciem com o tipo Function, Method ou Class
 		if (!line.isEmptyOrWhitespace &&
+			// FIXME: Rever Expressão da classe pois não está aceitando _
 			line.text.match(/(User|Static) Function ([^:\/]+)*$|^$|Method ([^:\/]+)*$|Class [[:alnum:]]*$/i)) {
 
 			// Encontrou a assinatura
@@ -103,8 +107,16 @@ export function findAdvpl(textEditor: vscode.TextEditor) {
 		// Instancia a classe que irá gerar o bloco de acordo com a linguagem
 		let protheusDoc = new ProtheusDoc(ELanguageSupport.advpl, signature);
 
-		// Insere o Snippet na posição anterior a assinatura (trata quando a assinatura é a primeira linha "activeLine === 0")
-		textEditor.insertSnippet(new vscode.SnippetString(protheusDoc.getProtheusDoc() + (activeLine === 0 ? "\n" : "")), newPosition);
+		// Se a chamada for por comando, insere o Snippet via comando do Editor de Texto
+		if (hasCommand) {
+			// Insere o Snippet na posição anterior a assinatura (trata quando a assinatura é a primeira linha "activeLine === 0")
+			textEditor.insertSnippet(new vscode.SnippetString(protheusDoc.getProtheusDoc() + (activeLine === 0 ? "\n" : "")), newPosition);
+		} else { // Se não devolve como retorno para que a classe completion resolva.
+			return new vscode.SnippetString(protheusDoc.getProtheusDoc() + (activeLine === 0 ? "\n" : ""));
+		}
+
+	} else {
+		return "";
 	}
 }
 
