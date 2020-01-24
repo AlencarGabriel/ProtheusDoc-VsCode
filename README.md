@@ -65,8 +65,12 @@ Foi implementado para o comando `ProtheusDoc - Adicionar bloco de Documentação
 
 Esta extensão contribui com as seguintes configurações:
 
-* `"protheusDoc.marcadores_ocultos": [];` // Ocultar marcadores não obrigatórios do ProtheusDoc (@version, @author, @since, @params, @return).
-* `"protheusDoc.autor_default": "";` // Nome do autor padrão das documentações ProtheusDoc. Caso esteja vazio o autor será o usuário conectado no SO.
-* `"protheusDoc.versao_default": "";` // Versão padrão do identificador.
+Configuração | Descrição
+------------ | -----------
+`"protheusDoc.marcadores_ocultos": []` | Ocultar marcadores não obrigatórios do ProtheusDoc **(@version, @author, @since, @params, @return)**
+`"protheusDoc.autor_default": ""` | Nome do autor padrão das documentações ProtheusDoc. Caso esteja vazio o autor será o usuário conectado no SO.
+`"protheusDoc.versao_default": ""` | Versão padrão do identificador.
+
+---
 
 **Aproveite, me ajuda e com certeza irá te ajudar tambem!** :heart:
