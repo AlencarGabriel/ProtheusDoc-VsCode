@@ -66,10 +66,16 @@ export function convertTypeAdvpl(type: String, isChar: boolean = true): ETypesAd
             case ETypesAdvpl.C.toString().toUpperCase():
                 return ETypesAdvpl.C;
 
+            case "CHAR":
+                return ETypesAdvpl.C;
+
             case ETypesAdvpl.D.toString().toUpperCase():
                 return ETypesAdvpl.D;
 
             case ETypesAdvpl.B.toString().toUpperCase():
+                return ETypesAdvpl.B;
+
+            case "BLOCK":
                 return ETypesAdvpl.B;
 
             case ETypesAdvpl.L.toString().toUpperCase():

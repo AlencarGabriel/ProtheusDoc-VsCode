@@ -11,6 +11,7 @@ export class TransformAdvpl implements ITransformProtheusDoc {
     private _expressionMethod: RegExp;
     private _expressionClass: RegExp;
     private _expressionParam: RegExp;
+    private _expressionClassOfMethod: RegExp;
 
     private _functionSignature: String;
     private _identifierName: String;
@@ -31,9 +32,10 @@ export class TransformAdvpl implements ITransformProtheusDoc {
 
         // Definição da sintaxe das assinaturas AdvPL
         this._expressionFunction = /((User|Static) Function)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S+))(\sAs\s[^:\/]+)?/mi;
-        this._expressionMethod = / /;
+        this._expressionMethod = /(Method)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S+))(\s+Class[^:\/]\S+)(\sAs\s[^:\/]+)?/mi;
         this._expressionClass = / /;
         this._expressionParam = /(\w+)\sAs\s(\w+)|As\s(\w+)/i;
+        this._expressionClassOfMethod = /\sClass\s(\w+)/i;
 
         // Quebra a assinatura numa estrutura de ProtheusDoc
         this.toBreak();
@@ -145,38 +147,85 @@ export class TransformAdvpl implements ITransformProtheusDoc {
             }
         }
 
-        // Tratamento para caso de assinatura do tipo "Função"
-        // "function " === 9 caracteres + 1 espaço
-        // if (signatureChanged.indexOf("function ") > 0) {
-        //     length = signatureChanged.length;
-        //     start = signatureChanged.indexOf("function ");
+        // Expressão para tratar Métodos com tipos de dados ou não
+        // /(Method)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S+))(\s+Class[^:\/]\S+)(\sAs\s[^:\/]+)?/mi
 
-        //     // O fim da assinatura da função pode ser o parêntesis dos parâmetros ou o final do arquivo
-        //     end = signatureChanged.indexOf("(") > 0 ? signatureChanged.indexOf("(") : length;
+        // Estrutura da expressão para assinatura: Method _Gabriel (dData as Date, cNome) Class TTeste As Character
+        // 0: "Method _Gabriel (dData as Date, cNome) Class TTeste As Character"
+        // 1: "Method"
+        // 2: " _Gabriel (dData as Date, cNome)"
+        // 3: " _Gabriel "
+        // 4: "(dData as Date, cNome)"
+        // 5: undefined
+        // 6: " Class TTeste"
+        // 7: " As Character"
 
-        //     // Define o tipo Função
-        //     this._type = ETypesDoc.function;
+        // Estrutura da expressão para assinatura: Method _Gabriel (dData as Date, cNome) Class TTeste
+        // 0: "Method _Gabriel (dData as Date, cNome) Class TTeste"
+        // 1: "Method"
+        // 2: " _Gabriel (dData as Date, cNome)"
+        // 3: " _Gabriel "
+        // 4: "(dData as Date, cNome)"
+        // 5: undefined
+        // 6: " Class TTeste"
+        // 7: undefined
 
-        //     // Captura o nome da função
-        //     this._identifierName = signatureOriginal.substr(start + 9, end - start - 9).trim();
+        // Estrutura da expressão para assinatura: Method _Gabriel Class TTeste
+        // 0: "Method _Gabriel Class TTeste"
+        // 1: "Method"
+        // 2: " _Gabriel"
+        // 3: undefined
+        // 4: undefined
+        // 5: " _Gabriel"
+        // 6: " Class TTeste"
+        // 7: undefined
 
-        //     // Adiciona o Return da função (ainda não é inteligente)
-        //     this._return = { paramType: ETypesAdvpl.U, paramDescription: "return_description" };
+        // Estrutura da expressão para assinatura: Method _Gabriel Class TTeste As Character
+        // 0: "Method _Gabriel Class TTeste As Character"
+        // 1: "Method"
+        // 2: " _Gabriel"
+        // 3: undefined
+        // 4: undefined
+        // 5: " _Gabriel"
+        // 6: " Class TTeste"
+        // 7: " As Character"
 
-        //     // Caso a função tenha parâmetros, trata os parâmetros
-        //     if (signatureChanged.indexOf("(") > 0 && signatureChanged.indexOf("()") <= 0) {
-        //         start = signatureChanged.indexOf("(");
-        //         end = signatureChanged.indexOf(")");
+        if (signatureOriginal.match(this._expressionMethod)) {
+            match = signatureOriginal.match(this._expressionMethod);
 
-        //         // Captura o bloco de assinatura dos parâmetros
-        //         signatureParams = signatureOriginal.substr(start + 1, end - start - 1).trim();
 
-        //         // Quebra os parâmetros em formato ProtheusDoc
-        //         this._params = this.toParamBreak(signatureParams);
-        //     }
-        // }
+            if (match) {
 
-        //TODO: Tratar Método
+                // Define o tipo Método
+                this._type = ETypesDoc.method;
+
+                // Captura o nome do Método
+                this._identifierName = match[3] === undefined ? match[2].trim() : match[3].trim();
+
+                let classOfMethod = this.matchClassOfMethod(match[6]);
+
+                if (classOfMethod) {
+                    this._identifierName = classOfMethod + "::" + this._identifierName;
+                }
+
+                // Adiciona o Return do Método
+                if (match[7]) {
+                    this._return = this.matchParam(match[7].trim(), true);
+                } else {
+                    this._return = { paramType: ETypesAdvpl.U, paramDescription: "return_description" };
+                }
+
+                // Caso o Método tenha parâmetros, trata os parâmetros
+                if (match[4]) {
+
+                    // Retira os parêntesis dos parâmetros
+                    signatureParams = match[4].trim().replace(/\(|\)/gi, "");
+
+                    // Quebra os parâmetros em formato ProtheusDoc
+                    this._params = this.toParamBreak(signatureParams);
+                }
+            }
+        }
 
         //TODO: Tratar Classe
     }
@@ -185,19 +234,22 @@ export class TransformAdvpl implements ITransformProtheusDoc {
      * Quebra os parâmetros em formato ProtheusDoc
      * @param paramSignature Assinatura completa dos parâmetros da função ou método
      */
-    private toParamBreak(paramSignature: String): IParamsProtheusDoc[] {
+    private toParamBreak(paramSignature: String): IParamsProtheusDoc[] | undefined {
         // Em AdvPL os parâmetros são separados por virgulas
         let params = paramSignature.split(",");
         let paramsMap = new Array<IParamsProtheusDoc>();
 
         // Mapeia todos os parâmetros encontratos, e converte para estrutura de ProtheusDoc
-        params.map(
-            param => {
-                paramsMap.push(this.matchParam(param));
-            }
-        );
+        if (params.length > 0) {
 
-        return paramsMap;
+            params.map(
+                param => {
+                    paramsMap.push(this.matchParam(param));
+                }
+            );
+
+            return paramsMap;
+        }
     }
 
     /**
@@ -225,7 +277,18 @@ export class TransformAdvpl implements ITransformProtheusDoc {
             };
         }
 
+    }
 
+    /**
+     * Para métodos é necessário complementar o identificador com o nome da classe.
+     * @param signature Assinatuda do Método da Classe: "Class XXXXX"
+     */
+    private matchClassOfMethod(signature: String): String | undefined {
+        let classOfMethod = signature.match(this._expressionClassOfMethod);
+
+        if (classOfMethod) {
+            return classOfMethod[1].trim();
+        }
     }
 
 }
