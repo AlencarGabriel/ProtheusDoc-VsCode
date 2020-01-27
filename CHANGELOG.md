@@ -4,6 +4,19 @@ All notable changes to the "protheusdoc" extension will be documented in this fi
 
 ---
 
+## [0.1.2] - 2020-01-27
+
+## Added
+
+- Adicionado suporte para interpratação da sintaxe de método de classe para adicionar o bloco ProtheusDoc.
+
+## Fixed
+
+- Implementado tipos Char e Block (alternativos de Character e CodeBlock) como tipos reconhecidos do ProtheusDoc [#5](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/5).
+- Ajustado para que o marcador de parâmetros não seja apresentado caso o método ou função tenha os `( )` mas não tenha definição de parâmetros [#6](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/6).
+
+---
+
 ## [0.0.8] - 2020-01-24
 
 ## Added

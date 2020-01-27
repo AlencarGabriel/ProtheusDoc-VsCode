@@ -1,3 +1,5 @@
+![Version](https://vsmarketplacebadge.apphb.com/version/AlencarGabriel.protheusdoc-vscode.svg) ![Installs](https://vsmarketplacebadge.apphb.com/installs/AlencarGabriel.protheusdoc-vscode.svg) ![Downloads](https://vsmarketplacebadge.apphb.com/downloads/AlencarGabriel.protheusdoc-vscode.svg) ![Rating](https://vsmarketplacebadge.apphb.com/rating-star/AlencarGabriel.protheusdoc-vscode.svg)
+
 # ProtheusDoc for VsCode (AdvPL)
 
 Suporte aos recursos e snippets do TOTVS ProtheusDoc para VsCode.
@@ -22,7 +24,7 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 - [x] Implementar configuração para o nome do Autor Default (caso omitido apresenta o do SO);
 - [x] Implementar configuração para ocultar marcadores não obrigatórios;
 - [x] Implementar Snippets dos marcadores mais comuns do ProtheusDoc;
-- [ ] Implementar geração do cabeçalho lendo a declaração do Método;
+- [x] Implementar geração do cabeçalho lendo a declaração do Método;
 - [ ] Implementar geração do cabeçalho lendo a declaração da Classe;
 - [ ] Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;
 - [ ] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
