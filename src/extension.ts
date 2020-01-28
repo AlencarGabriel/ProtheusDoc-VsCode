@@ -70,7 +70,7 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 
 		// Não considera linhas vazias ou que não iniciem com o tipo Function, Method ou Class
 		if (!line.isEmptyOrWhitespace &&
-			line.text.match(/(User|Static) Function ([^:\/]+)*$|Method ([^:\/]+)*$|Class [[:alnum:]\-\_]*$/i)) {
+			line.text.trim().match(/((User |Static )?Function \s*)([^:\/]+)*$|Method ([^:\/]+)*$|Class \s*[\w+\-\_]*$/i)) {
 
 			// Encontrou a assinatura
 			found = true;

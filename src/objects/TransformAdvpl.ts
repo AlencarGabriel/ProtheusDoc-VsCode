@@ -31,11 +31,11 @@ export class TransformAdvpl implements ITransformProtheusDoc {
         this._functionSignature = functionSignature;
 
         // Definição da sintaxe das assinaturas AdvPL
-        this._expressionFunction = /((User|Static) Function)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S+))(\sAs\s[^:\/]+)?/mi;
-        this._expressionMethod = /(Method)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S+))(\s+Class[^:\/]\S+)(\sAs\s[^:\/]+)?/mi;
-        this._expressionClass = / /;
-        this._expressionParam = /(\w+)\sAs\s(\w+)|As\s(\w+)/i;
-        this._expressionClassOfMethod = /\sClass\s(\w+)/i;
+        this._expressionFunction = /((User |Static )?Function \s*)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S*))(\s*As [^:\/]+)?/mi;
+        this._expressionMethod = /(Method \s*)(([^:\/]*)(\([^:\/]*\)\s*)|([^:\/]*)\s*)( Class \s*[^:\/]\S+)(\s* As\s[^:\/]+)?/mi;
+        this._expressionClass = /Class \s*([\w+\-\_*]*)$/i;
+        this._expressionParam = /(\w+)\s*As\s*(\w+)|As\s*(\w+)/i;
+        this._expressionClassOfMethod = /\sClass\s*(\w+)/i;
 
         // Quebra a assinatura numa estrutura de ProtheusDoc
         this.toBreak();
@@ -76,17 +76,7 @@ export class TransformAdvpl implements ITransformProtheusDoc {
     private toBreak() {
         let match: RegExpMatchArray | null;
         let signatureOriginal = this._functionSignature.trim();
-        let signatureChanged = this._functionSignature.toLowerCase().trim();
         let signatureParams = "";
-        let start = 0;
-        let end = 0;
-        let length = 0;
-
-        // Expressão para tratar função com Tipo de Dados ou não
-        // /((User|Static) Function)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S+))(\sAs\s[^:\/]+)?/mi
-
-        // Expressão para tratar os Tipos (As) dos parâmetros
-        // \w+\sAs\s\w+ ou (\w+)\sAs\s(\w+) [Analisar uso deste segundo...]
 
         // Estrutura da expressão para assinatura: User Function fTeste3 (data as Data) as Character
         // [0]: "User Function fTeste3 (data as Data) as Character"
@@ -146,53 +136,47 @@ export class TransformAdvpl implements ITransformProtheusDoc {
                 }
             }
         }
+        else if (signatureOriginal.match(this._expressionMethod)) {
+            // Estrutura da expressão para assinatura: Method _Gabriel (dData as Date, cNome) Class TTeste As Character
+            // [0]: "Method _Gabriel (dData as Date, cNome) Class TTeste As Character"
+            // [1]: "Method"
+            // [2]: " _Gabriel (dData as Date, cNome)"
+            // [3]: " _Gabriel "
+            // [4]: "(dData as Date, cNome)"
+            // [5]: undefined
+            // [6]: " Class TTeste"
+            // [7]: " As Character"
 
-        // Expressão para tratar Métodos com tipos de dados ou não
-        // /(Method)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S+))(\s+Class[^:\/]\S+)(\sAs\s[^:\/]+)?/mi
+            // Estrutura da expressão para assinatura: Method _Gabriel (dData as Date, cNome) Class TTeste
+            // [0]: "Method _Gabriel (dData as Date, cNome) Class TTeste"
+            // [1]: "Method"
+            // [2]: " _Gabriel (dData as Date, cNome)"
+            // [3]: " _Gabriel "
+            // [4]: "(dData as Date, cNome)"
+            // [5]: undefined
+            // [6]: " Class TTeste"
+            // [7]: undefined
 
-        // Estrutura da expressão para assinatura: Method _Gabriel (dData as Date, cNome) Class TTeste As Character
-        // 0: "Method _Gabriel (dData as Date, cNome) Class TTeste As Character"
-        // 1: "Method"
-        // 2: " _Gabriel (dData as Date, cNome)"
-        // 3: " _Gabriel "
-        // 4: "(dData as Date, cNome)"
-        // 5: undefined
-        // 6: " Class TTeste"
-        // 7: " As Character"
+            // Estrutura da expressão para assinatura: Method _Gabriel Class TTeste
+            // [0]: "Method _Gabriel Class TTeste"
+            // [1]: "Method"
+            // [2]: " _Gabriel"
+            // [3]: undefined
+            // [4]: undefined
+            // [5]: " _Gabriel"
+            // [6]: " Class TTeste"
+            // [7]: undefined
 
-        // Estrutura da expressão para assinatura: Method _Gabriel (dData as Date, cNome) Class TTeste
-        // 0: "Method _Gabriel (dData as Date, cNome) Class TTeste"
-        // 1: "Method"
-        // 2: " _Gabriel (dData as Date, cNome)"
-        // 3: " _Gabriel "
-        // 4: "(dData as Date, cNome)"
-        // 5: undefined
-        // 6: " Class TTeste"
-        // 7: undefined
-
-        // Estrutura da expressão para assinatura: Method _Gabriel Class TTeste
-        // 0: "Method _Gabriel Class TTeste"
-        // 1: "Method"
-        // 2: " _Gabriel"
-        // 3: undefined
-        // 4: undefined
-        // 5: " _Gabriel"
-        // 6: " Class TTeste"
-        // 7: undefined
-
-        // Estrutura da expressão para assinatura: Method _Gabriel Class TTeste As Character
-        // 0: "Method _Gabriel Class TTeste As Character"
-        // 1: "Method"
-        // 2: " _Gabriel"
-        // 3: undefined
-        // 4: undefined
-        // 5: " _Gabriel"
-        // 6: " Class TTeste"
-        // 7: " As Character"
-
-        if (signatureOriginal.match(this._expressionMethod)) {
+            // Estrutura da expressão para assinatura: Method _Gabriel Class TTeste As Character
+            // [0]: "Method _Gabriel Class TTeste As Character"
+            // [1]: "Method"
+            // [2]: " _Gabriel"
+            // [3]: undefined
+            // [4]: undefined
+            // [5]: " _Gabriel"
+            // [6]: " Class TTeste"
+            // [7]: " As Character"
             match = signatureOriginal.match(this._expressionMethod);
-
 
             if (match) {
 
@@ -225,9 +209,26 @@ export class TransformAdvpl implements ITransformProtheusDoc {
                     this._params = this.toParamBreak(signatureParams);
                 }
             }
+
+        } else {
+            // Estrutura da expressão para assinatura: CLASS MSCBZPL
+            // [0]: "CLASS MSCBZPL"
+            // [1]: "MSCBZPL"
+
+            if (signatureOriginal.match(this._expressionClass)) {
+                match = signatureOriginal.match(this._expressionClass);
+
+                if (match) {
+
+                    // Define o tipo Classe
+                    this._type = ETypesDoc.class;
+
+                    // Captura o nome da Classe
+                    this._identifierName = match[1];
+                }
+            }
         }
 
-        //TODO: Tratar Classe
     }
 
     /**
@@ -240,7 +241,7 @@ export class TransformAdvpl implements ITransformProtheusDoc {
         let paramsMap = new Array<IParamsProtheusDoc>();
 
         // Mapeia todos os parâmetros encontratos, e converte para estrutura de ProtheusDoc
-        if (params.length > 0) {
+        if (params.length > 0 && params[0] !== "") {
 
             params.map(
                 param => {
