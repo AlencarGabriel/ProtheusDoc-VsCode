@@ -4,6 +4,20 @@ All notable changes to the "protheusdoc" extension will be documented in this fi
 
 ---
 
+## [0.2.3] - 2020-01-28
+
+## Added
+
+- Adicionado suporte para interpratação da sintaxe de Classe para adicionar o bloco ProtheusDoc.
+
+## Fixed
+
+- Ajustado problema remanescente da situação de bloco de parâmetros vazio que não havia sido detectado totalmente na 0.1.2 [#6](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/6).
+- Melhorado expressões para aceitarem mais espaços entre as palavras [#9](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/9).
+- Implementado interpretação das funções para interpretar o tipo `Function` [#8](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/8).
+
+---
+
 ## [0.1.2] - 2020-01-27
 
 ## Added

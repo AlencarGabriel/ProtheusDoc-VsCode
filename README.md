@@ -2,7 +2,7 @@
 
 # ProtheusDoc for VsCode (AdvPL)
 
-Suporte aos recursos e snippets do TOTVS ProtheusDoc para VsCode.
+Suporte aos recursos e snippets de documentação TOTVS ProtheusDoc para VsCode.
 
 ![ProtheusDoc for VsCode](images/Example2.gif)
 
@@ -25,7 +25,7 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 - [x] Implementar configuração para ocultar marcadores não obrigatórios;
 - [x] Implementar Snippets dos marcadores mais comuns do ProtheusDoc;
 - [x] Implementar geração do cabeçalho lendo a declaração do Método;
-- [ ] Implementar geração do cabeçalho lendo a declaração da Classe;
+- [x] Implementar geração do cabeçalho lendo a declaração da Classe;
 - [ ] Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;
 - [ ] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
 - [ ] Implementar *Hover* no cabeçalho das funções para mostrar o ProtheusDOC;
