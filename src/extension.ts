@@ -1,8 +1,13 @@
 import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
 import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
+import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 
 export function activate(context: vscode.ExtensionContext) {
+
+	let decorator = new ProtheusDocDecorator();
+
+	decorator.triggerUpdateDecorations();
 
 	context.subscriptions.push(addDocBlock());
 
@@ -30,6 +35,18 @@ export function activate(context: vscode.ExtensionContext) {
 
 			}
 		}));
+
+	vscode.window.onDidChangeActiveTextEditor(editor => {
+		if (editor) {
+			decorator.triggerUpdateDecorations();
+		}
+	}, null, context.subscriptions);
+	
+	vscode.workspace.onDidChangeTextDocument(event => {
+		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
+			decorator.triggerUpdateDecorations();
+		}
+	}, null, context.subscriptions);
 }
 
 /**

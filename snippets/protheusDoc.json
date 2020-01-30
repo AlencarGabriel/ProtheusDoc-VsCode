@@ -1,47 +1,47 @@
 {
-    "Type": {
+    "TYPE": {
         "prefix": "@type",
         "body": [
             "@type ${1|function,class,method,property,variable|}"
         ],
         "description": "Adiciona uma especificação de parâmetro (de função ou método), identificando-o como parameter-name. "
     },
-    "Author": {
+    "AUTHOR": {
         "prefix": "@author",
         "body": [
             "@author ${1:author_name}"
         ],
         "description": "Texto com o nome do autor. "
     },
-    "Since": {
+    "SINCE": {
         "prefix": "@since",
         "body": [
             "@since ${1:$CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR}"
         ],
         "description": "Identifica a partir de quando, uma determinada funcionalidade foi implementada. "
     },
-    "Version": {
+    "VERSION": {
         "prefix": "@version",
         "body": [
             "@version ${1:version}"
         ],
         "description": "Indica para qual versão de produto ou mesmo servidor, que uma determinada funcionalidade requer."
     },
-    "Param": {
+    "PARAM": {
         "prefix": "@param",
         "body": [
             "@param ${1:param_name}, ${2|param_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${3:param_description}"
         ],
         "description": "Adiciona uma especificação de parâmetro (de função ou método), identificando-o como parameter-name."
     },
-    "Return": {
+    "RETURN": {
         "prefix": "@return",
         "body": [
             "@return ${1|return_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${2:return_description}"
         ],
         "description": "Especifica o retorno (de função ou método)."
     },
-    "Example": {
+    "EXAMPLE": {
         "prefix": "@example",
         "body": [
             "@example",
@@ -49,14 +49,14 @@
         ],
         "description": "Cria uma entrada no tópico “Exemplos”."
     },
-    "See": {
+    "SEE": {
         "prefix": "@see",
         "body": [
             "@see ${1:(links_or_references)}"
         ],
         "description": "Adiciona uma entrada “Veja também”."
     },
-    "History": {
+    "HISTORY": {
         "prefix": "@history",
         "body": [
             "@history ${1:$CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR}, ${2:username}, ${3:description}."
