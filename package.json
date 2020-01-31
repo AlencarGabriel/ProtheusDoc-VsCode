@@ -81,6 +81,11 @@
 							"12.1.25"
 						],
 						"description": "Versão padrão do identificador."
+					},
+					"protheusDoc.usa_decoracao": {
+						"type": "boolean",
+						"default": true,
+						"description": "Define se a extensão irá decorar os atributos ProtheusDoc."
 					}
 				}
 			}

@@ -5,10 +5,12 @@ import * as os from 'os';
  * Classe que implementa recursos úteis da extensão.
  */
 export class Utils {
-    private _config: vscode.WorkspaceConfiguration;
 
     constructor() {
-        this._config = vscode.workspace.getConfiguration("protheusDoc");
+    }
+
+    private getConfig(): vscode.WorkspaceConfiguration {
+        return vscode.workspace.getConfiguration("protheusDoc");
     }
 
     /**
@@ -25,7 +27,7 @@ export class Utils {
      * @obs Caso não esteja nas configurações, retorna o usuário do SO.
      */
     public getAuthor(): string {
-        let authorDefault = this._config.get<String>("autor_default");
+        let authorDefault = this.getConfig().get<String>("autor_default");
 
         // Verifica se o usuário setou um autor default
         if (authorDefault && authorDefault !== "") {
@@ -40,7 +42,7 @@ export class Utils {
      * Busca a versão padrão do identificador.
      */
     public getVersion(): string {
-        let versaoDefault = this._config.get<String>("versao_default");
+        let versaoDefault = this.getConfig().get<String>("versao_default");
 
         // Verifica se o usuário setou uma versão default
         if (versaoDefault && versaoDefault !== "") {
@@ -56,12 +58,25 @@ export class Utils {
      *  adicionados nas documentações do ProtheusDoc.
      */
     public getHiddenMarkers(): String[] {
-        let hiddenMarkers = this._config.get<Array<String>>("marcadores_ocultos");
+        let hiddenMarkers = this.getConfig().get<Array<String>>("marcadores_ocultos");
 
         if (hiddenMarkers) {
             return hiddenMarkers;
         } else {
             return [];
+        }
+    }
+
+    /**
+     * Verifica se o usuário deseja que as decorações de atributos ProtheusDoc sejam feitas.
+     */
+    public getUseDecorator(): boolean {
+        let useDecorator = this.getConfig().get<boolean>("usa_decoracao");
+
+        if (useDecorator !== undefined) {
+            return useDecorator;
+        } else {
+            return true;
         }
     }
 }

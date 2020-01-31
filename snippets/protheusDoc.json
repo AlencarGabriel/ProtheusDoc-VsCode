@@ -62,5 +62,12 @@
             "@history ${1:$CURRENT_DATE/$CURRENT_MONTH/$CURRENT_YEAR}, ${2:username}, ${3:description}."
         ],
         "description": "Histórico de alterações no código-fonte."
+    },
+    "OBS": {
+        "prefix": "@obs",
+        "body": [
+            "@obs ${1:obs-text}"
+        ],
+        "description": "Adiciona uma observação."
     }
 }

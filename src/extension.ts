@@ -41,12 +41,13 @@ export function activate(context: vscode.ExtensionContext) {
 			decorator.triggerUpdateDecorations();
 		}
 	}, null, context.subscriptions);
-	
+
 	vscode.workspace.onDidChangeTextDocument(event => {
 		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
 			decorator.triggerUpdateDecorations();
 		}
 	}, null, context.subscriptions);
+
 }
 
 /**
