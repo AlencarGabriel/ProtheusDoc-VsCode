@@ -14,6 +14,8 @@ Suporte aos recursos e snippets de documentação TOTVS ProtheusDoc para VsCode.
 
 Detectar a sintaxe da função, método ou classe e gerar uma documentação dinâmica no formato [ProtheusDoc.](https://tdn.totvs.com/display/tec/ProtheusDOC)
 
+> Conheça mais sobre o ProtheusDoc em meu blog: https://gabrielalencar.dev/2020/01/29/ProtheusDoc-for-VsCode/
+
 ## [Issues](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues)
 
 Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fique a vontade para abrir uma Issue ou enviar um Pull Request.
@@ -26,8 +28,8 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 - [x] Implementar Snippets dos marcadores mais comuns do ProtheusDoc;
 - [x] Implementar geração do cabeçalho lendo a declaração do Método;
 - [x] Implementar geração do cabeçalho lendo a declaração da Classe;
+- [x] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
 - [ ] Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;
-- [ ] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
 - [ ] Implementar *Hover* no cabeçalho das funções para mostrar o ProtheusDOC;
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções;
 - [ ] Implementar sintaxe do 4gl;
@@ -72,6 +74,7 @@ Configuração | Descrição
 `"protheusDoc.marcadores_ocultos": []` | Ocultar marcadores não obrigatórios do ProtheusDoc **(@version, @author, @since, @params, @return)**
 `"protheusDoc.autor_default": ""` | Nome do autor padrão das documentações ProtheusDoc. Caso esteja vazio o autor será o usuário conectado no SO.
 `"protheusDoc.versao_default": ""` | Versão padrão do identificador.
+`"protheusDoc.usa_decoracao": true` | Define se a extensão irá decorar os atributos ProtheusDoc.
 
 ---
 

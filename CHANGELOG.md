@@ -4,6 +4,18 @@ All notable changes to the "protheusdoc" extension will be documented in this fi
 
 ---
 
+## [0.3.0] - 2020-01-30
+
+## Added
+
+- Implementado *Text Decoration* para os atributos do ProtheusDoc ficarem negritos (para desativar esta decoração [veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode#configurações-da-extensão)).
+
+## Fixed
+
+- Alterado forma de buscar as configurações, para sempre buscar a configuração atual e não a do momento da ativação da extensão.
+
+---
+
 ## [0.2.3] - 2020-01-28
 
 ## Added
