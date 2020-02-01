@@ -2,10 +2,16 @@ import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
 import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
+import { Documentation } from './objects/Documentation';
+
+let documentations: Documentation[];
 
 export function activate(context: vscode.ExtensionContext) {
 
 	let decorator = new ProtheusDocDecorator();
+
+	documentations = new Array<Documentation>();
+	documentations.push(new Documentation("Gabriel", "Teste de Hover", "function"));
 
 	decorator.triggerUpdateDecorations();
 
@@ -13,12 +19,16 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// TODO: Implementar Hover detectando a documentação das funções.
 	// TODO: Implementar progress na status bar, enquanto carrega as documentações ProtheusDoc.
-	// vscode.languages.registerHoverProvider('advpl', {
-	// 	provideHover(document, position, token) {
-	// 		console.log("Hover!!");
-	// 		return new vscode.Hover('I am a hover!');
-	// 	}
-	// });
+	vscode.languages.registerHoverProvider('advpl', {
+		provideHover(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
+			let symbol = document.getText(document.getWordRangeAtPosition(position));
+			let documentation = documentations.find(doc=>doc.identifier.toUpperCase() === symbol.toUpperCase());
+
+			if (documentation) {
+				return new vscode.Hover(documentation.getDocumentation());
+			}
+		}
+	});
 
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
 		["advpl"],
@@ -39,6 +49,10 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeActiveTextEditor(editor => {
 		if (editor) {
 			decorator.triggerUpdateDecorations();
+			
+			// FIXME: Acertar essa expressão.
+			editor.document.getText().match(/\{Protheus\.doc\}[^:]*?\*\/$/im);
+				
 		}
 	}, null, context.subscriptions);
 
