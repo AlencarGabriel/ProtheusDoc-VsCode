@@ -2,7 +2,8 @@ import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
 import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
-import { Documentation } from './objects/Documentation';
+import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
+import { TransformAdvpl } from './objects/TransformAdvpl';
 
 let documentations: Documentation[];
 
@@ -11,7 +12,6 @@ export function activate(context: vscode.ExtensionContext) {
 	let decorator = new ProtheusDocDecorator();
 
 	documentations = new Array<Documentation>();
-	documentations.push(new Documentation("Gabriel", "Teste de Hover", "function"));
 
 	decorator.triggerUpdateDecorations();
 
@@ -22,10 +22,10 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.languages.registerHoverProvider('advpl', {
 		provideHover(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
 			let symbol = document.getText(document.getWordRangeAtPosition(position));
-			let documentation = documentations.find(doc=>doc.identifier.toUpperCase() === symbol.toUpperCase());
+			let documentation = documentations.find(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
 
 			if (documentation) {
-				return new vscode.Hover(documentation.getDocumentation());
+				return new vscode.Hover(documentation.getHover());
 			}
 		}
 	});
@@ -49,16 +49,45 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeActiveTextEditor(editor => {
 		if (editor) {
 			decorator.triggerUpdateDecorations();
-			
-			// FIXME: Acertar essa expressão.
-			editor.document.getText().match(/\{Protheus\.doc\}[^:]*?\*\/$/im);
-				
+
+			let match = editor.document.getText().match(/(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig);
+
+			if (match) {
+				// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
+				match.forEach(element => {
+					let doc = new ProtheusDocToDoc(element).getDocumentation();
+					let documentation = documentations.find(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
+					
+					if (!documentation) {
+						documentations.push(doc);
+					} else {
+						documentation = doc;
+					}
+				});
+			}
+
 		}
 	}, null, context.subscriptions);
 
 	vscode.workspace.onDidChangeTextDocument(event => {
 		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
 			decorator.triggerUpdateDecorations();
+
+			let match = event.document.getText().match(/(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig);
+
+			if (match) {
+				// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
+				match.forEach(element => {
+					let doc = new ProtheusDocToDoc(element).getDocumentation();
+					let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
+
+					if (docIndex > 0) {
+						documentations.push(doc);
+					} else {
+						documentations[docIndex] = doc;
+					}
+				});
+			}
 		}
 	}, null, context.subscriptions);
 

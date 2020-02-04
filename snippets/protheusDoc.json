@@ -2,7 +2,7 @@
     "TYPE": {
         "prefix": "@type",
         "body": [
-            "@type ${1|function,class,method,property,variable|}"
+            "@type ${1|function,class,method|}"
         ],
         "description": "Adiciona uma especificação de parâmetro (de função ou método), identificando-o como parameter-name. "
     },
