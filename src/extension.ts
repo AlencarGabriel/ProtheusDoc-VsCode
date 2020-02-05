@@ -22,6 +22,12 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.languages.registerHoverProvider('advpl', {
 		provideHover(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
 			let symbol = document.getText(document.getWordRangeAtPosition(position));
+
+			// Tratamento para User Functions
+			// tslint:disable-next-line: curly
+			if (symbol.toUpperCase().startsWith("U_"))
+				symbol = symbol.substr(2);
+
 			let documentation = documentations.find(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
 
 			if (documentation) {
@@ -55,13 +61,14 @@ export function activate(context: vscode.ExtensionContext) {
 			if (match) {
 				// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
 				match.forEach(element => {
-					let doc = new ProtheusDocToDoc(element).getDocumentation();
-					let documentation = documentations.find(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
-					
-					if (!documentation) {
-						documentations.push(doc);
+					let doc = new ProtheusDocToDoc(element, editor.document.uri).getDocumentation();
+					let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
+
+					// Caso a documentação já exista na lista altera
+					if (docIndex >= 0) {
+						documentations[docIndex] = doc;
 					} else {
-						documentation = doc;
+						documentations.push(doc);
 					}
 				});
 			}
@@ -78,13 +85,14 @@ export function activate(context: vscode.ExtensionContext) {
 			if (match) {
 				// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
 				match.forEach(element => {
-					let doc = new ProtheusDocToDoc(element).getDocumentation();
+					let doc = new ProtheusDocToDoc(element, event.document.uri).getDocumentation();
 					let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
 
-					if (docIndex > 0) {
-						documentations.push(doc);
-					} else {
+					// Caso a documentação já exista na lista altera
+					if (docIndex >= 0) {
 						documentations[docIndex] = doc;
+					} else {
+						documentations.push(doc);
 					}
 				});
 			}
