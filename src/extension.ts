@@ -17,29 +17,37 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(addDocBlock());
 
-	// TODO: Implementar Hover detectando a documentação das funções.
+	// DONE: Implementar Hover detectando a documentação das funções.
 	// TODO: Implementar progress na status bar, enquanto carrega as documentações ProtheusDoc.
+	// TODO: Implementar forma de apresentar todas as documentações caso o identificador seja repetido.
 	vscode.languages.registerHoverProvider('advpl', {
-		provideHover(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
+		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
 			let symbol = document.getText(document.getWordRangeAtPosition(position));
+			let _docs = new Array<vscode.MarkedString>();
 
 			// Tratamento para User Functions
 			// tslint:disable-next-line: curly
 			if (symbol.toUpperCase().startsWith("U_"))
 				symbol = symbol.substr(2);
 
-			let documentation = documentations.find(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
+			let documentation = documentations.filter(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
 
 			if (documentation) {
-				return new vscode.Hover(documentation.getHover());
+
+				documentation.forEach(doc => {
+					_docs.push(doc.getHover());
+				}
+				);
 			}
+
+			return new vscode.Hover(_docs);
 		}
 	});
 
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
 		["advpl"],
 		{
-			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) => {
+			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
 				const line = document.lineAt(position.line).text;
 				const prefix = line.slice(0, position.character);
 
@@ -57,6 +65,9 @@ export function activate(context: vscode.ExtensionContext) {
 			decorator.triggerUpdateDecorations();
 
 			let match = editor.document.getText().match(/(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig);
+			
+			// Renove todas as referências de documentação do arquivo aberto
+			documentations = documentations.filter(doc=> doc.file !== editor.document.uri);
 
 			if (match) {
 				// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
@@ -65,11 +76,11 @@ export function activate(context: vscode.ExtensionContext) {
 					let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
 
 					// Caso a documentação já exista na lista altera
-					if (docIndex >= 0) {
-						documentations[docIndex] = doc;
-					} else {
-						documentations.push(doc);
-					}
+					// if (docIndex >= 0) {
+					// 	documentations[docIndex] = doc;
+					// } else {
+					documentations.push(doc);
+					// }
 				});
 			}
 
@@ -81,6 +92,9 @@ export function activate(context: vscode.ExtensionContext) {
 			decorator.triggerUpdateDecorations();
 
 			let match = event.document.getText().match(/(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig);
+			
+			// Renove todas as referências de documentação do arquivo aberto
+			documentations = documentations.filter(doc => doc.file !== event.document.uri);
 
 			if (match) {
 				// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
@@ -89,11 +103,11 @@ export function activate(context: vscode.ExtensionContext) {
 					let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
 
 					// Caso a documentação já exista na lista altera
-					if (docIndex >= 0) {
-						documentations[docIndex] = doc;
-					} else {
-						documentations.push(doc);
-					}
+					// if (docIndex >= 0) {
+					// documentations[docIndex] = doc;
+					// } else {
+					documentations.push(doc);
+					// }
 				});
 			}
 		}
@@ -105,7 +119,7 @@ export function activate(context: vscode.ExtensionContext) {
  * Registra o bloco de comando a ser executado quando este for chamado.
  */
 export function addDocBlock() {
-	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, edit) => {
+	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, _edit) => {
 
 		// Trata a linguagem e chama a função que interpreta a sintaxe desta
 		if (textEditor.document.languageId === ELanguageSupport.advpl.toString()) {
