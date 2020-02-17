@@ -32,6 +32,10 @@
 			{
 				"command": "protheusdoc.addDocBlock",
 				"title": "ProtheusDoc - Adicionar bloco de Documentação"
+			},
+			{
+				"command": "protheusdoc.updateTableDoc",
+				"title": "ProtheusDoc - Atualizar tabela de documentações"
 			}
 		],
 		"keybindings": [

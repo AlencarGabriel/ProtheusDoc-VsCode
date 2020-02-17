@@ -16,10 +16,11 @@ export function activate(context: vscode.ExtensionContext) {
 	decorator.triggerUpdateDecorations();
 
 	context.subscriptions.push(addDocBlock());
+	context.subscriptions.push(updateTableDoc());
 
 	// DONE: Implementar Hover detectando a documentação das funções.
-	// TODO: Implementar progress na status bar, enquanto carrega as documentações ProtheusDoc.
-	// TODO: Implementar forma de apresentar todas as documentações caso o identificador seja repetido.
+	// DONE: Implementar progress na status bar, enquanto carrega as documentações ProtheusDoc.
+	// DONE: Implementar forma de apresentar todas as documentações caso o identificador seja repetido.
 	vscode.languages.registerHoverProvider('advpl', {
 		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
 			let symbol = document.getText(document.getWordRangeAtPosition(position));
@@ -61,58 +62,56 @@ export function activate(context: vscode.ExtensionContext) {
 		}));
 
 	vscode.window.onDidChangeActiveTextEditor(editor => {
+
 		if (editor) {
 			decorator.triggerUpdateDecorations();
 
-			let match = editor.document.getText().match(/(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig);
-			
-			// Renove todas as referências de documentação do arquivo aberto
-			documentations = documentations.filter(doc=> doc.file !== editor.document.uri);
-
-			if (match) {
-				// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
-				match.forEach(element => {
-					let doc = new ProtheusDocToDoc(element, editor.document.uri).getDocumentation();
-					let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
-
-					// Caso a documentação já exista na lista altera
-					// if (docIndex >= 0) {
-					// 	documentations[docIndex] = doc;
-					// } else {
-					documentations.push(doc);
-					// }
-				});
-			}
-
+			searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
 		}
+
 	}, null, context.subscriptions);
 
 	vscode.workspace.onDidChangeTextDocument(event => {
+
 		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
 			decorator.triggerUpdateDecorations();
 
-			let match = event.document.getText().match(/(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig);
-			
-			// Renove todas as referências de documentação do arquivo aberto
-			documentations = documentations.filter(doc => doc.file !== event.document.uri);
-
-			if (match) {
-				// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
-				match.forEach(element => {
-					let doc = new ProtheusDocToDoc(element, event.document.uri).getDocumentation();
-					let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
-
-					// Caso a documentação já exista na lista altera
-					// if (docIndex >= 0) {
-					// documentations[docIndex] = doc;
-					// } else {
-					documentations.push(doc);
-					// }
-				});
-			}
+			searchProtheusDocInFile(event.document.getText(), event.document.uri);
 		}
+
 	}, null, context.subscriptions);
 
+	//TODO: Implementar evento OnDidChangeWorkspace para limpar o controle de documentações e recarregar o novo.
+
+}
+
+/**
+ * Busca todas as ocorreências de ProtheusDoc de um texto (arquivo) 
+ * e adiciona na tabela de Documentações da extensão
+ * @param text Texto do documento a ser verificado os blocos ProtheusDoc
+ * @param uri URI do arquivo em questão
+ */
+export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
+	let expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
+	let match = text.match(expressionProtheusDoc);
+
+	// Remove todas as referências de documentação do arquivo aberto
+	documentations = documentations.filter(doc => doc.file !== uri);
+
+	if (match) {
+		// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
+		match.forEach(element => {
+			let doc = new ProtheusDocToDoc(element, uri).getDocumentation();
+			let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
+
+			// Caso a documentação já exista na lista altera
+			// if (docIndex >= 0) {
+			// documentations[docIndex] = doc;
+			// } else {
+			documentations.push(doc);
+			// }
+		});
+	}
 }
 
 /**
@@ -127,6 +126,19 @@ export function addDocBlock() {
 		} else {
 			vscode.window.showErrorMessage("A linguagem " + textEditor.document.languageId + " não é tratada pela Extensão.");
 		}
+
+	});
+
+	return disposable;
+}
+
+/**
+ * Registra o bloco de comando a ser executado quando este for chamado.
+ */
+export function updateTableDoc() {
+	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.updateTableDoc', (_textEditor, _edit) => {
+
+		searchProtheusDoc();
 
 	});
 
@@ -203,7 +215,36 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 }
 
 export function searchProtheusDoc() {
-	// vscode.workspace.findFiles()
+	var includePattern = "{**/*.prw}";
+	var excludePattern = "";
+	var limitationForSearch = 5120;
+
+	vscode.window.withProgress({
+		location: vscode.ProgressLocation.Window,
+		title: "Atualizando Documentações...",
+		cancellable: false
+	}, (progress, token) => {
+
+		token.onCancellationRequested(() => {
+			vscode.window.showWarningMessage("Atualização de documentações cancelada.");
+		});
+
+		return new Promise(resolve => {
+
+			vscode.workspace.findFiles(includePattern, excludePattern, limitationForSearch).then(files => {
+
+				files.forEach(file => {
+					vscode.workspace.openTextDocument(file).then(textFile => {
+						searchProtheusDocInFile(textFile.getText(), textFile.uri);
+					});
+				});
+				
+				resolve();
+			});
+
+		});
+	});
+
 }
 
 // this method is called when your extension is deactivated
