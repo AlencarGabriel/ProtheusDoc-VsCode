@@ -202,5 +202,9 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 	}
 }
 
+export function searchProtheusDoc() {
+	// vscode.workspace.findFiles()
+}
+
 // this method is called when your extension is deactivated
 export function deactivate() { }

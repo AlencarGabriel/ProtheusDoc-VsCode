@@ -19,6 +19,7 @@ export class Documentation {
     public type: string;
     public className: string;
     public params: IParam[];
+    public return: IParam;
     public file: vscode.Uri;
 
     constructor(documentation: ProtheusDocToDoc) {
@@ -27,6 +28,7 @@ export class Documentation {
         this.type = documentation.type;
         this.className = documentation.className;
         this.params = documentation.params;
+        this.return = documentation.return;
         this.file = documentation.file;
     }
 
@@ -55,8 +57,12 @@ export class Documentation {
 
         if (this.params.length > 0) {
             this.params.forEach(param => {
-                doc.appendMarkdown("\r\n *@param* `" + param.paramName + "` — " + param.paramDescription);
+                doc.appendMarkdown("\r\n *@param* `" + param.paramName.trim() + "` — " + param.paramDescription.trim() + "\r\n");
             });
+        }
+    
+        if (this.return.paramDescription.trim() !== "") {
+            doc.appendMarkdown("\r\n *@return* " + this.return.paramDescription.trim());
         }
 
         return doc;
@@ -71,11 +77,13 @@ export class ProtheusDocToDoc {
     private _expressionHeader: RegExp;
     private _expressionType: RegExp;
     private _expressionParams: RegExp;
+    private _expressionReturn: RegExp;
     public identifier: string;
     public description: string;
     public type: string;
     public className: string;
     public params: IParam[];
+    public return: IParam;
     public file: vscode.Uri;
 
     constructor(protheusDocBlock: string, file: vscode.Uri) {
@@ -83,11 +91,13 @@ export class ProtheusDocToDoc {
         this._expressionHeader = /(\{Protheus\.doc\}\s*)([^*\n]*)(\n[^:@]*)/mi;
         this._expressionType = /(@type\s*)(\w+)/i;
         this._expressionParams = /(@param\s*)(\w+\s*)(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
+        this._expressionReturn = /(@return\s*)(\w+\s*)(,\s*[^:@\n]*)?/im;
         this.identifier = "";
         this.description = "";
         this.type = "";
         this.className = "";
         this.params = [];
+        this.return = { paramName: "", paramType: "", paramDescription: "" };
         this.file = file;
 
         this.toBreak();
@@ -100,6 +110,7 @@ export class ProtheusDocToDoc {
         let headerDoc = this._protheusDocBlock.match(this._expressionHeader);
         let typeDoc = this._protheusDocBlock.match(this._expressionType);
         let paramsDoc = this._protheusDocBlock.match(this._expressionParams);
+        let returnDoc = this._protheusDocBlock.match(this._expressionReturn);
 
         // Caso tenha detectado o cabeçalho da documentação trata as informações
         if (headerDoc) {
@@ -119,17 +130,23 @@ export class ProtheusDocToDoc {
             if (headerDoc[3]) {
                 this.description = headerDoc[3];
             }
-            
+
             // Tratamento para buscar os parâmetros da funçao/método na documentação
             if (paramsDoc) {
                 let match;
                 while (match = this._expressionParams.exec(this._protheusDocBlock)) {
                     this.params.push({
                         paramName: match[2],
-                        paramType: match[3].replace(",", ""),
-                        paramDescription: match[4].replace(",", "")
+                        paramType: match[3] ? match[3].replace(",", "") : "",
+                        paramDescription: match[4] ? match[4].replace(",", "") : ""
                     });
                 }
+            }
+
+            // Tratamento para buscar o retorno da funçao na documentação
+            if (returnDoc) {
+                this.return.paramType = returnDoc[2] ? returnDoc[2] : "";
+                this.return.paramDescription = returnDoc[3] ? returnDoc[3].replace(",", "") : "";
             }
         }
 
