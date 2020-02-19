@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ETypesDoc } from '../interfaces/ISyntaxProtheusDoc';
+import * as path from 'path';
 
 /**
  * Interface para manipular os dados de um parâmetro.
@@ -60,10 +61,13 @@ export class Documentation {
                 doc.appendMarkdown("\r\n *@param* `" + param.paramName.trim() + "` — " + param.paramDescription.trim() + "\r\n");
             });
         }
-    
+
         if (this.return.paramDescription.trim() !== "") {
-            doc.appendMarkdown("\r\n *@return* " + this.return.paramDescription.trim());
+            doc.appendMarkdown("\r\n *@return* " + this.return.paramDescription.trim() + "\r\n");
         }
+
+        let dirs = this.file.fsPath.toString().split(path.sep);
+        doc.appendMarkdown("\r\n **Localização**: [" + dirs[dirs.length - 2] + path.sep + dirs[dirs.length - 1] + "](" + this.file.toString() + ") \r\n");
 
         return doc;
     }
