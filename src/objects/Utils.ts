@@ -79,4 +79,55 @@ export class Utils {
             return true;
         }
     }
+
+    /**
+     * Verifica se o usuário deseja utilizar a tabela de documentações da Workspace.
+     */
+    public getUseTableDoc(): boolean {
+        let useTableDoc = this.getConfig().get<boolean>("usa_tabela_documentacoes");
+
+        if (useTableDoc !== undefined) {
+            return useTableDoc;
+        } else {
+            return true;
+        }
+    }
+
+    //get the include/exclude config
+    private getPathes(config: any) {
+        return Array.isArray(config) ?
+            '{' + config.join(',') + '}'
+            : (typeof config === 'string' ? config : '');
+    }
+
+    /**
+     * Glob Patterns a serem considerados na busca das documentações para montagem da tabela de documentações.
+     */
+    public getInclude(): string {
+        let include = this.getConfig().get("include");
+
+        return this.getPathes(include);
+    }
+
+    /**
+     * Glob Patterns a serem desconsiderados na busca das documentações para montagem da tabela de documentações.
+     */
+    public getExclude(): string {
+        let exclude = this.getConfig().get("exclude");
+
+        return this.getPathes(exclude);
+    }
+
+    /**
+     * Busca a quantidade máxima de arquivos que serão varridos para montar a tabela de documentações.
+     */
+    public getMaxFiles(): number {
+        let maxFilesForSearch = this.getConfig().get<number>("maxFilesForSearch");
+
+        if (maxFilesForSearch !== undefined) {
+            return maxFilesForSearch;
+        } else {
+            return 5120;
+        }
+    }
 }

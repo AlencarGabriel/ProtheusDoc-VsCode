@@ -3,7 +3,7 @@ import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
 import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
-import { TransformAdvpl } from './objects/TransformAdvpl';
+import { Utils } from './objects/Utils';
 
 let documentations: Documentation[];
 
@@ -18,9 +18,6 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(addDocBlock());
 	context.subscriptions.push(updateTableDoc());
 
-	// DONE: Implementar Hover detectando a documentação das funções.
-	// DONE: Implementar progress na status bar, enquanto carrega as documentações ProtheusDoc.
-	// DONE: Implementar forma de apresentar todas as documentações caso o identificador seja repetido.
 	vscode.languages.registerHoverProvider('advpl', {
 		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
 			let symbol = document.getText(document.getWordRangeAtPosition(position));
@@ -81,8 +78,18 @@ export function activate(context: vscode.ExtensionContext) {
 
 	}, null, context.subscriptions);
 
-	//TODO: Implementar evento OnDidChangeWorkspace para limpar o controle de documentações e recarregar o novo.
+	vscode.workspace.onDidChangeWorkspaceFolders(event => {
 
+		// Limpa a tabela de documentações do Workspace
+		documentations.splice(0, documentations.length);
+
+		// Atualiza tabela de documentações do Workspace
+		searchProtheusDoc();
+
+	}, null, context.subscriptions);
+
+	// Atualiza tabela de documentações do Workspace
+	searchProtheusDoc();
 }
 
 /**
@@ -214,14 +221,24 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 	}
 }
 
+/**
+ * Busca as documentações ProtheusDoc em toda a Workspace.
+ */
 export function searchProtheusDoc() {
-	var includePattern = "{**/*.prw}";
-	var excludePattern = "";
-	var limitationForSearch = 5120;
+	let util = new Utils();
+	let includePattern = util.getInclude();
+	let excludePattern = util.getExclude();
+	let limitationForSearch = util.getMaxFiles();
+	let useTableDoc = util.getUseTableDoc();
+
+	// Verifica se o usuário deseja utilizar a tabela de documentações da Workspace
+	if (!useTableDoc) {
+		return;
+	}
 
 	vscode.window.withProgress({
 		location: vscode.ProgressLocation.Window,
-		title: "Atualizando Documentações...",
+		title: "Atualizando documentações...",
 		cancellable: false
 	}, (progress, token) => {
 
@@ -238,7 +255,7 @@ export function searchProtheusDoc() {
 						searchProtheusDocInFile(textFile.getText(), textFile.uri);
 					});
 				});
-				
+
 				resolve();
 			});
 
