@@ -5,10 +5,9 @@ All notable changes to the "protheusdoc" extension will be documented in this fi
 ---
 
 ## [0.4.1] - 2020-02-20
-
 ## Added
 
-## Fixed
+- Implementado *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC. [Veja mais em https://github.com/AlencarGabriel/ProtheusDoc-VsCode#hover-de-documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode#hover-de-documentações).
 
 ---
 

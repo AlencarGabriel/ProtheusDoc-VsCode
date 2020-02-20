@@ -229,10 +229,10 @@ export function searchProtheusDoc() {
 	let includePattern = util.getInclude();
 	let excludePattern = util.getExclude();
 	let limitationForSearch = util.getMaxFiles();
-	let useTableDoc = util.getUseTableDoc();
+	let useWorkspaceDoc = util.getWorkspaceDoc();
 
 	// Verifica se o usuário deseja utilizar a tabela de documentações da Workspace
-	if (!useTableDoc) {
+	if (!useWorkspaceDoc) {
 		return;
 	}
 

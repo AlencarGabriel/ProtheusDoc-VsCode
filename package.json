@@ -93,10 +93,10 @@
 						"default": true,
 						"description": "Define se a extensão irá decorar os atributos ProtheusDoc."
 					},
-					"protheusDoc.usa_tabela_documentacoes": {
+					"protheusDoc.usa_workspace_doc": {
 						"type": "boolean",
 						"default": true,
-						"description": "Define se a extensão irá criar uma tabela interna com todas as documentações ProtheusDoc presentes na Workspace. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
+						"description": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
 					},
 					"protheusDoc.include": {
 						"type": "array",

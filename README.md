@@ -29,11 +29,11 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 - [x] Implementar geração do cabeçalho lendo a declaração do Método;
 - [x] Implementar geração do cabeçalho lendo a declaração da Classe;
 - [x] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
-- [x] Implementar *Hover* no cabeçalho das funções para mostrar o ProtheusDOC;
-- [ ] Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;
-- [ ] Implementar função para criar comentários no cabeçalho de todas as funções;
-- [ ] Implementar sintaxe do 4gl;
-- [ ] Implementar Geração de HTML das documentações;
+- [x] Implementar *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC;
+- [ ] ~~Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;~~
+- [ ] Implementar função para criar comentários no cabeçalho de todas as funções do fonte;
+- [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade);
+- [ ] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
 
 ---
 
@@ -97,7 +97,7 @@ Caso este esteja omitido ou inválido, será apresentado apenas o nome do identi
 
 A tabela de documentações armazena uma lista de documentações ProtheusDoc detectadas na Workspace ou nos arquivos abertos.
 
-Sempre que um projeto (ou workspace) AdvPL é aberto, a extensão irá varrer os arquivos permitidos da Workspace (vide configuração `protheusDoc.include`) em busca de documentações ProtheusDoc.
+Sempre que um projeto (ou workspace) AdvPL é aberto, a extensão irá varrer os arquivos permitidos da Workspace (verificar a configuração `protheusDoc.include` no VsCode) em busca de documentações ProtheusDoc.
 
 > **Importante:**
 >
@@ -105,9 +105,11 @@ Sempre que um projeto (ou workspace) AdvPL é aberto, a extensão irá varrer os
 > 
 > Para minimizar os impactos negativos no ambiente de desenvolvimento, é extremamente importante que as configurações `protheusDoc.include`, `protheusDoc.exclude` e `protheusDoc.maxFilesForSearch` estejam definidas conforme o melhor cenário para o projeto.
 
-Caso o uso da tabela de documentações seja desativado (`"protheusDoc.usa_tabela_documentacoes": false`), somente os arquivos que tiveram interação serão adicionados na tabela conforme são abertos ou alterados.
+Caso o uso da tabela de documentações na Workspace seja desativado (`"protheusDoc.usa_workspace_doc": false`), somente os arquivos que tiveram interação no editor serão adicionados na tabela conforme são abertos ou alterados.
 
-> A tabela é sempre limpa quando a Workspace é alterada.
+É possível forçar a atualização da tabela de documentações a qualquer momento, utilizando o comando: `ProtheusDoc - Atualizar tabela de documentações`.
+
+> A tabela é sempre limpa quando as pastas da Workspace são alteradas.
 
 ---
 
@@ -121,8 +123,8 @@ Configuração | Descrição
 `"protheusDoc.autor_default": ""` | Nome do autor padrão das documentações ProtheusDoc. Caso esteja vazio o autor será o usuário conectado no SO.
 `"protheusDoc.versao_default": ""` | Versão padrão do identificador.
 `"protheusDoc.usa_decoracao": true` | Define se a extensão irá decorar os atributos ProtheusDoc.
-`"protheusDoc.usa_tabela_documentacoes": true` | Define se a extensão irá criar uma tabela interna com todas as documentações ProtheusDoc presentes na Workspace. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela.
+`"protheusDoc.usa_workspace_doc": true` | Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela.
 
 ---
 
-**Aproveite, me ajuda e com certeza irá te ajudar tambem!** :heart:
+**Aproveite, me ajuda e com certeza irá te ajudar também!** :heart:

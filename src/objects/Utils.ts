@@ -83,11 +83,11 @@ export class Utils {
     /**
      * Verifica se o usuário deseja utilizar a tabela de documentações da Workspace.
      */
-    public getUseTableDoc(): boolean {
-        let useTableDoc = this.getConfig().get<boolean>("usa_tabela_documentacoes");
+    public getWorkspaceDoc(): boolean {
+        let useWorkspaceDoc = this.getConfig().get<boolean>("usa_workspace_doc");
 
-        if (useTableDoc !== undefined) {
-            return useTableDoc;
+        if (useWorkspaceDoc !== undefined) {
+            return useWorkspaceDoc;
         } else {
             return true;
         }
