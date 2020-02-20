@@ -107,7 +107,7 @@ Sempre que um projeto (ou workspace) AdvPL é aberto, a extensão irá varrer os
 
 Caso o uso da tabela de documentações na Workspace seja desativado (`"protheusDoc.usa_workspace_doc": false`), somente os arquivos que tiveram interação no editor serão adicionados na tabela conforme são abertos ou alterados.
 
-É possível forçar a atualização da tabela de documentações a qualquer momento, utilizando o comando: `ProtheusDoc - Atualizar tabela de documentações`.
+É possível forçar a atualização da tabela de documentações a qualquer momento, utilizando o comando: `ProtheusDoc - Atualizar tabela de documentações` desde que a configuração `"protheusDoc.usa_workspace_doc": true`.
 
 > A tabela é sempre limpa quando as pastas da Workspace são alteradas.
 
