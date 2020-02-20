@@ -2,28 +2,50 @@ import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
 import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
+import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
+import { Utils } from './objects/Utils';
+
+let documentations: Documentation[];
 
 export function activate(context: vscode.ExtensionContext) {
 
 	let decorator = new ProtheusDocDecorator();
 
+	documentations = new Array<Documentation>();
+
 	decorator.triggerUpdateDecorations();
 
 	context.subscriptions.push(addDocBlock());
+	context.subscriptions.push(updateTableDoc());
 
-	// TODO: Implementar Hover detectando a documentação das funções.
-	// TODO: Implementar progress na status bar, enquanto carrega as documentações ProtheusDoc.
-	// vscode.languages.registerHoverProvider('advpl', {
-	// 	provideHover(document, position, token) {
-	// 		console.log("Hover!!");
-	// 		return new vscode.Hover('I am a hover!');
-	// 	}
-	// });
+	vscode.languages.registerHoverProvider('advpl', {
+		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
+			let symbol = document.getText(document.getWordRangeAtPosition(position));
+			let _docs = new Array<vscode.MarkedString>();
+
+			// Tratamento para User Functions
+			// tslint:disable-next-line: curly
+			if (symbol.toUpperCase().startsWith("U_"))
+				symbol = symbol.substr(2);
+
+			let documentation = documentations.filter(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
+
+			if (documentation) {
+
+				documentation.forEach(doc => {
+					_docs.push(doc.getHover());
+				}
+				);
+			}
+
+			return new vscode.Hover(_docs);
+		}
+	});
 
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
 		["advpl"],
 		{
-			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) => {
+			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
 				const line = document.lineAt(position.line).text;
 				const prefix = line.slice(0, position.character);
 
@@ -37,24 +59,73 @@ export function activate(context: vscode.ExtensionContext) {
 		}));
 
 	vscode.window.onDidChangeActiveTextEditor(editor => {
+
 		if (editor) {
 			decorator.triggerUpdateDecorations();
+
+			searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
 		}
+
 	}, null, context.subscriptions);
 
 	vscode.workspace.onDidChangeTextDocument(event => {
+
 		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
 			decorator.triggerUpdateDecorations();
+
+			searchProtheusDocInFile(event.document.getText(), event.document.uri);
 		}
+
 	}, null, context.subscriptions);
 
+	vscode.workspace.onDidChangeWorkspaceFolders(event => {
+
+		// Limpa a tabela de documentações do Workspace
+		documentations.splice(0, documentations.length);
+
+		// Atualiza tabela de documentações do Workspace
+		searchProtheusDoc();
+
+	}, null, context.subscriptions);
+
+	// Atualiza tabela de documentações do Workspace
+	searchProtheusDoc();
+}
+
+/**
+ * Busca todas as ocorreências de ProtheusDoc de um texto (arquivo) 
+ * e adiciona na tabela de Documentações da extensão
+ * @param text Texto do documento a ser verificado os blocos ProtheusDoc
+ * @param uri URI do arquivo em questão
+ */
+export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
+	let expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
+	let match = text.match(expressionProtheusDoc);
+
+	// Remove todas as referências de documentação do arquivo aberto
+	documentations = documentations.filter(doc => doc.file.fsPath !== uri.fsPath);
+
+	if (match) {
+		// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
+		match.forEach(element => {
+			let doc = new ProtheusDocToDoc(element, uri).getDocumentation();
+			let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
+
+			// Caso a documentação já exista na lista altera
+			// if (docIndex >= 0) {
+			// documentations[docIndex] = doc;
+			// } else {
+			documentations.push(doc);
+			// }
+		});
+	}
 }
 
 /**
  * Registra o bloco de comando a ser executado quando este for chamado.
  */
 export function addDocBlock() {
-	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, edit) => {
+	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, _edit) => {
 
 		// Trata a linguagem e chama a função que interpreta a sintaxe desta
 		if (textEditor.document.languageId === ELanguageSupport.advpl.toString()) {
@@ -62,6 +133,19 @@ export function addDocBlock() {
 		} else {
 			vscode.window.showErrorMessage("A linguagem " + textEditor.document.languageId + " não é tratada pela Extensão.");
 		}
+
+	});
+
+	return disposable;
+}
+
+/**
+ * Registra o bloco de comando a ser executado quando este for chamado.
+ */
+export function updateTableDoc() {
+	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.updateTableDoc', (_textEditor, _edit) => {
+
+		searchProtheusDoc();
 
 	});
 
@@ -135,6 +219,49 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 	} else {
 		return "";
 	}
+}
+
+/**
+ * Busca as documentações ProtheusDoc em toda a Workspace.
+ */
+export function searchProtheusDoc() {
+	let util = new Utils();
+	let includePattern = util.getInclude();
+	let excludePattern = util.getExclude();
+	let limitationForSearch = util.getMaxFiles();
+	let useTableDoc = util.getUseTableDoc();
+
+	// Verifica se o usuário deseja utilizar a tabela de documentações da Workspace
+	if (!useTableDoc) {
+		return;
+	}
+
+	vscode.window.withProgress({
+		location: vscode.ProgressLocation.Window,
+		title: "Atualizando documentações...",
+		cancellable: false
+	}, (progress, token) => {
+
+		token.onCancellationRequested(() => {
+			vscode.window.showWarningMessage("Atualização de documentações cancelada.");
+		});
+
+		return new Promise(resolve => {
+
+			vscode.workspace.findFiles(includePattern, excludePattern, limitationForSearch).then(files => {
+
+				files.forEach(file => {
+					vscode.workspace.openTextDocument(file).then(textFile => {
+						searchProtheusDocInFile(textFile.getText(), textFile.uri);
+					});
+				});
+
+				resolve();
+			});
+
+		});
+	});
+
 }
 
 // this method is called when your extension is deactivated

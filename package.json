@@ -32,6 +32,10 @@
 			{
 				"command": "protheusdoc.addDocBlock",
 				"title": "ProtheusDoc - Adicionar bloco de Documentação"
+			},
+			{
+				"command": "protheusdoc.updateTableDoc",
+				"title": "ProtheusDoc - Atualizar tabela de documentações"
 			}
 		],
 		"keybindings": [
@@ -78,7 +82,9 @@
 						"type": "string",
 						"default": "",
 						"examples": [
-							"12.1.25"
+							"12.1.23",
+							"12.1.25",
+							"12.1.27"
 						],
 						"description": "Versão padrão do identificador."
 					},
@@ -86,6 +92,62 @@
 						"type": "boolean",
 						"default": true,
 						"description": "Define se a extensão irá decorar os atributos ProtheusDoc."
+					},
+					"protheusDoc.usa_tabela_documentacoes": {
+						"type": "boolean",
+						"default": true,
+						"description": "Define se a extensão irá criar uma tabela interna com todas as documentações ProtheusDoc presentes na Workspace. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
+					},
+					"protheusDoc.include": {
+						"type": "array",
+						"default": [
+							"**/*.prw",
+							"**/*.prx",
+							"**/*.prg",
+							"**/*.aph",
+							"**/*.apl",
+							"**/*.tlpp",
+							"**/*.ahu",
+							"**/*.apw"
+						],
+						"description": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários.",
+						"items": {
+							"anyOf": [
+								{
+									"type": "string",
+									"description": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários"
+								}
+							]
+						}
+					},
+					"protheusDoc.exclude": {
+						"type": "array",
+						"default": [
+							"**/node_modules/**",
+							"**/bower_components/**",
+							"**/dist/**",
+							"**/build/**",
+							"**/.vscode/**",
+							"**/.github/**",
+							"**/_output/**",
+							"**/*.min.*",
+							"**/*.map",
+							"**/.next/**"
+						],
+						"description": "Padrões globais (Glob patterns) a serem desconsiderados pela tabela de documentações do ProtheusDoc.",
+						"items": {
+							"anyOf": [
+								{
+									"type": "string",
+									"description": "A Padrões globais (Glob patterns) a serem desconsiderados pela tabela de documentações do ProtheusDoc"
+								}
+							]
+						}
+					},
+					"protheusDoc.maxFilesForSearch": {
+						"type": "number",
+						"default": 5120,
+						"description": "Máximo de arquivos para pesquisa da tabela de documentações."
 					}
 				}
 			}
