@@ -4,6 +4,14 @@ All notable changes to the "protheusdoc" extension will be documented in this fi
 
 ---
 
+## [0.4.1] - 2020-02-20
+
+## Added
+
+## Fixed
+
+---
+
 ## [0.3.0] - 2020-01-30
 
 ## Added

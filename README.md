@@ -29,8 +29,8 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 - [x] Implementar geração do cabeçalho lendo a declaração do Método;
 - [x] Implementar geração do cabeçalho lendo a declaração da Classe;
 - [x] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
+- [x] Implementar *Hover* no cabeçalho das funções para mostrar o ProtheusDOC;
 - [ ] Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;
-- [ ] Implementar *Hover* no cabeçalho das funções para mostrar o ProtheusDOC;
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções;
 - [ ] Implementar sintaxe do 4gl;
 - [ ] Implementar Geração de HTML das documentações;
@@ -65,6 +65,52 @@ Foi implementado para o comando `ProtheusDoc - Adicionar bloco de Documentação
 
 ---
 
+## Hover de documentações
+
+A partir da versão 0.4.0 da extensão, foi disponibilizado um recurso para visualizar as documentações de uma função, método ou classe apenas passsando o mouse pelo identificador.
+
+![Hover de Documentação ProtheusDoc](https://user-images.githubusercontent.com/10109480/74953051-ebf90780-53df-11ea-9f6f-1a8cae64de4c.png)
+
+Ao passar o mouse por um identificador, a rotina irá consultar na [tabela de documentações](#Tabela-de-Documentações) se existe uma documentação ProtheusDoc para o identificador em questão.
+
+A feature reconhece e apresenta (caso disponível) o tipo do identificador, descrição, parâmetros, retorno e a localização da definição.
+
+**Obs.:** A extensão identifica a documentação mesmo se for uma chamada de `User Function`:
+
+![Hover de Documentação ProtheusDoc](https://user-images.githubusercontent.com/10109480/74953170-15199800-53e0-11ea-9428-58b3ecfc5d00.png)
+
+### Assinaturas Duplicadas
+
+É possivel que hajam identificadores (funções, métodos ou classes) com o mesmo nome na Workspace, ou ainda que arquivos duplicados causem essa situação. 
+
+Sendo assim, caso um mesmo identificador esteja duplicado na Workspace, será apresentado todas as ocorrências de documentação.
+
+![ProtheusDoc duplicado](https://user-images.githubusercontent.com/10109480/74956901-8c9df600-53e5-11ea-8d26-4d41b8d205b9.png)
+
+### Estilo da Visualização
+
+Para que no início da visualização da documentação seja apresentado a demonstração da estrutura de código, é necessário que a propriedade `@type` do ProtheusDoc esteja definida no bloco de documentação do identificador.
+
+Caso este esteja omitido ou inválido, será apresentado apenas o nome do identificador.
+
+### Tabela de Documentações
+
+A tabela de documentações armazena uma lista de documentações ProtheusDoc detectadas na Workspace ou nos arquivos abertos.
+
+Sempre que um projeto (ou workspace) AdvPL é aberto, a extensão irá varrer os arquivos permitidos da Workspace (vide configuração `protheusDoc.include`) em busca de documentações ProtheusDoc.
+
+> **Importante:**
+>
+>Caso a Workspace aberta possua uma quantidade considerável de arquivos com documentações ProtheusDoc, o uso de memória e CPU do VsCode poderá aumentar de forma considerável. Mas a tendência é que depois que a API varrer os arquivos a utilização diminua, pois esta é bem performatica.
+> 
+> Para minimizar os impactos negativos no ambiente de desenvolvimento, é extremamente importante que as configurações `protheusDoc.include`, `protheusDoc.exclude` e `protheusDoc.maxFilesForSearch` estejam definidas conforme o melhor cenário para o projeto.
+
+Caso o uso da tabela de documentações seja desativado (`"protheusDoc.usa_tabela_documentacoes": false`), somente os arquivos que tiveram interação serão adicionados na tabela conforme são abertos ou alterados.
+
+> A tabela é sempre limpa quando a Workspace é alterada.
+
+---
+
 ## Configurações da Extensão
 
 Esta extensão contribui com as seguintes configurações:
@@ -75,6 +121,7 @@ Configuração | Descrição
 `"protheusDoc.autor_default": ""` | Nome do autor padrão das documentações ProtheusDoc. Caso esteja vazio o autor será o usuário conectado no SO.
 `"protheusDoc.versao_default": ""` | Versão padrão do identificador.
 `"protheusDoc.usa_decoracao": true` | Define se a extensão irá decorar os atributos ProtheusDoc.
+`"protheusDoc.usa_tabela_documentacoes": true` | Define se a extensão irá criar uma tabela interna com todas as documentações ProtheusDoc presentes na Workspace. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela.
 
 ---
 
