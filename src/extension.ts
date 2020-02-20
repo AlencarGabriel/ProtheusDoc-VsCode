@@ -102,9 +102,8 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 	let expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
 	let match = text.match(expressionProtheusDoc);
 
-	// FIXME: Identificado que ao abrir os fontes após a atualização da tabela, está duplicando as documentações.
 	// Remove todas as referências de documentação do arquivo aberto
-	documentations = documentations.filter(doc => doc.file !== uri);
+	documentations = documentations.filter(doc => doc.file.fsPath !== uri.fsPath);
 
 	if (match) {
 		// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
