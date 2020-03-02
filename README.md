@@ -79,7 +79,7 @@ A feature reconhece e apresenta (caso disponível) o tipo do identificador, desc
 
 ![Hover de Documentação ProtheusDoc](https://user-images.githubusercontent.com/10109480/74953170-15199800-53e0-11ea-9428-58b3ecfc5d00.png)
 
-### Assinaturas Duplicadas
+### Assinaturas Duplicadas: 
 
 É possivel que hajam identificadores (funções, métodos ou classes) com o mesmo nome na Workspace, ou ainda que arquivos duplicados causem essa situação. 
 
@@ -87,13 +87,13 @@ Sendo assim, caso um mesmo identificador esteja duplicado na Workspace, será ap
 
 ![ProtheusDoc duplicado](https://user-images.githubusercontent.com/10109480/74956901-8c9df600-53e5-11ea-8d26-4d41b8d205b9.png)
 
-### Estilo da Visualização
+### Estilo da Visualização:
 
 Para que no início da visualização da documentação seja apresentado a demonstração da estrutura de código, é necessário que a propriedade `@type` do ProtheusDoc esteja definida no bloco de documentação do identificador.
 
 Caso este esteja omitido ou inválido, será apresentado apenas o nome do identificador.
 
-### Tabela de Documentações
+### Tabela de Documentações:
 
 A tabela de documentações armazena uma lista de documentações ProtheusDoc detectadas na Workspace ou nos arquivos abertos.
 
