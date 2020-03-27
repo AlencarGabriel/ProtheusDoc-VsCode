@@ -4,6 +4,8 @@ import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
 import { Utils } from './objects/Utils';
+import { WhatsNewDocContentProvider } from './vscode-whats-new/whatsNew';
+import { WhatsNewManager } from './vscode-whats-new/src/Manager';
 
 let documentations: Documentation[];
 
@@ -90,6 +92,16 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Atualiza tabela de documentações do Workspace
 	searchProtheusDoc();
+
+	// Provider What's new
+	const providerWhatsNew = new WhatsNewDocContentProvider();
+	const viewer = new WhatsNewManager(context).registerContentProvider("protheusdoc-vscode", providerWhatsNew);
+
+	// show the page (if necessary)
+	viewer.showPageInActivation();
+
+	// register the additional command (not really necessary, unless you want a command registered in your extension)
+	context.subscriptions.push(vscode.commands.registerCommand("protheusdoc.whatsNew", () => viewer.showPage()));
 }
 
 /**
