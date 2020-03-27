@@ -104,7 +104,7 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
             if (param.paramType === ETypesAdvpl.U) {
                 return "@return " + this.getTabStop("return_type,numeric,character,date,codeblock,logical,array,object,variadic", true) + ", " + this.getTabStop(param.paramDescription) + "\n";
             } else {
-                return "@return " + this.getTabStop(param.paramType.toString()) + ", " + this.getTabStop(param.paramDescription) + "\n";
+                return "@return " + param.paramType.toString() + ", " + this.getTabStop(param.paramDescription) + "\n";
             }
         } else {
             return "";

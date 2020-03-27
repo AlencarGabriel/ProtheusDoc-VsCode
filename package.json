@@ -11,8 +11,7 @@
 		"url": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode.git"
 	},
 	"bugs": {
-		"url": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues",
-		"email": "alencargabriel@outlook.com.br"
+		"url": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues"
 	},
 	"engines": {
 		"vscode": "^1.38.0"
