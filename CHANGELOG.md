@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to the "protheusdoc" extension will be documented in this file.
+All notable changes to the "protheusdoc-vscode" extension will be documented in this file.
 
 ---
 
