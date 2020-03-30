@@ -189,12 +189,13 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 	let limitSkipLines = 3;
 
 	// Enquanto não encontrar uma assinatura de função, método ou classe, busca na próxima linha
-	while (!found) {
+	// Valida tambem se a navegação chegou no fim do arquivo
+	while (!found && activeLine < document.lineCount) {
 		let line = document.lineAt(activeLine);
 
 		// Não considera linhas vazias ou que não iniciem com o tipo Function, Method ou Class
 		if (!line.isEmptyOrWhitespace &&
-			line.text.trim().match(/((User |Static )?Function \s*)([^:\/]+)*$|Method ([^:\/]+)*$|Class \s*[\w+\-\_]*$/i)) {
+			line.text.trim().match(/((User |Static )?Function \s*)([^:\/]+)*$|Method ([^:\/]+)*$|Class \s*[\w+\-\_]*(\s* From \s*[\w+\-\_]*)?$/i)) {
 
 			// Encontrou a assinatura
 			found = true;
