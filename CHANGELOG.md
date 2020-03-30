@@ -1,3 +1,5 @@
+<!-- NÃO ESQUECER DE AJUSTAR O ARQUIVO whatsNew.ts com as mudanças consideráveis de versão. -->
+
 # Change Log
 
 All notable changes to the "protheusdoc-vscode" extension will be documented in this file.
