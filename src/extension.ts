@@ -30,14 +30,23 @@ export function activate(context: vscode.ExtensionContext) {
 			if (symbol.toUpperCase().startsWith("U_"))
 				symbol = symbol.substr(2);
 
+			// Filtra a ocorrência do Hover na tabela de documentações
 			let documentation = documentations.filter(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
 
 			if (documentation) {
 
-				documentation.forEach(doc => {
-					_docs.push(doc.getHover());
+				// Verifica se existe documentação do identificador no arquivo atual (Static Function/Method)
+				let docInFile = documentation.find(doc => doc.file.fsPath === document.uri.fsPath);
+
+				// Se a documentação estiver definida no fonte posicionado, retorna somente do fonte atual
+				if (docInFile) {
+					_docs.push(docInFile.getHover());
+				} else {
+					// Se a documentação não estiver definida no fonte atual, lista todas as ocorrências caso exista
+					documentation.forEach(doc => {
+						_docs.push(doc.getHover());
+					});
 				}
-				);
 			}
 
 			return new vscode.Hover(_docs);
