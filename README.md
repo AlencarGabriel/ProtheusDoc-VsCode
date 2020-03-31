@@ -31,9 +31,9 @@ Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fiq
 - [x] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
 - [x] Implementar *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC;
 - [ ] ~~Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;~~
+- [ ] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções do fonte;
 - [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade);
-- [ ] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
 
 ---
 
@@ -83,7 +83,7 @@ A feature reconhece e apresenta (caso disponível) o tipo do identificador, desc
 
 É possivel que hajam identificadores (funções, métodos ou classes) com o mesmo nome na Workspace, ou ainda que arquivos duplicados causem essa situação. 
 
-Sendo assim, caso um mesmo identificador esteja duplicado na Workspace, será apresentado todas as ocorrências de documentação.
+Sendo assim, caso um mesmo identificador esteja duplicado na Workspace, será apresentado somente as ocorrências do mesmo arquivo, se não todas as ocorrências de documentação da Workspace.
 
 ![ProtheusDoc duplicado](https://user-images.githubusercontent.com/10109480/74956901-8c9df600-53e5-11ea-8d26-4d41b8d205b9.png)
 
@@ -103,7 +103,7 @@ Sempre que um projeto (ou workspace) AdvPL é aberto, a extensão irá varrer os
 >
 >Caso a Workspace aberta possua uma quantidade considerável de arquivos com documentações ProtheusDoc, o uso de memória e CPU do VsCode poderá aumentar de forma considerável. Mas a tendência é que depois que a API varrer os arquivos a utilização diminua, pois esta é bem performatica.
 > 
-> Para minimizar os impactos negativos no ambiente de desenvolvimento, é extremamente importante que as configurações `protheusDoc.include`, `protheusDoc.exclude` e `protheusDoc.maxFilesForSearch` estejam definidas conforme o melhor cenário para o projeto.
+> Para minimizar os impactos negativos no ambiente de desenvolvimento nesses casos, é importante que as configurações `protheusDoc.include`, `protheusDoc.exclude` e `protheusDoc.maxFilesForSearch` estejam definidas conforme o melhor cenário para o projeto.
 
 Caso o uso da tabela de documentações na Workspace seja desativado (`"protheusDoc.usa_workspace_doc": false`), somente os arquivos que tiveram interação no editor serão adicionados na tabela conforme são abertos ou alterados.
 
