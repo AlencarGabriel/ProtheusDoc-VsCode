@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 				let docInFile = documentation.filter(doc => doc.file.fsPath === document.uri.fsPath);
 
 				// Se a documentação estiver definida no fonte posicionado, retorna somente do fonte atual
-				if (docInFile) {
+				if (docInFile.length > 0) {
 					docInFile.forEach(doc => { _docs.push(doc.getHover()); });
 				} else {
 					// Se a documentação não estiver definida no fonte atual, lista todas as ocorrências caso exista
