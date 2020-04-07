@@ -30,6 +30,10 @@
 	"contributes": {
 		"commands": [
 			{
+				"command": "protheusdoc.generateHTML",
+				"title": "ProtheusDoc - Geração de HTML"
+			},
+			{
 				"command": "protheusdoc.addDocBlock",
 				"title": "ProtheusDoc - Adicionar bloco de Documentação"
 			},
@@ -170,5 +174,8 @@
 		"tslint": "^5.20.0",
 		"typescript": "^3.7.5",
 		"vscode-test": "^1.2.2"
+	},
+	"dependencies": {
+		"protheusdoc-html": "^1.0.1"
 	}
 }

@@ -10,5 +10,6 @@
     "typescript.tsc.autoDetect": "off",
     "advpl.projectActive": "ProtheusDoc-VsCode",
     "advpl.environments": [],
-    "advpl.selectedEnvironment": "Selecione o Ambiente"
+	"advpl.selectedEnvironment": "Selecione o Ambiente",
+	"editor.formatOnSave": false
 }
