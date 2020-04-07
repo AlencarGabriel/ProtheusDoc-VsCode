@@ -2,7 +2,7 @@
 	"name": "protheusdoc-vscode",
 	"displayName": "ProtheusDoc for VsCode (AdvPL)",
 	"description": "Suporte à documentação TOTVS ProtheusDoc para VsCode.",
-	"version": "0.4.1",
+	"version": "0.4.4",
 	"publisher": "AlencarGabriel",
 	"icon": "images/Icon.png",
 	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
@@ -11,8 +11,7 @@
 		"url": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode.git"
 	},
 	"bugs": {
-		"url": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues",
-		"email": "alencargabriel@outlook.com.br"
+		"url": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues"
 	},
 	"engines": {
 		"vscode": "^1.38.0"
@@ -36,6 +35,10 @@
 			{
 				"command": "protheusdoc.updateTableDoc",
 				"title": "ProtheusDoc - Atualizar tabela de documentações"
+			},
+			{
+				"command": "protheusdoc.whatsNew",
+				"title": "ProtheusDoc - What's New"
 			}
 		],
 		"keybindings": [
@@ -163,12 +166,16 @@
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^5.2.7",
-		"@types/node": "^12.12.25",
+		"@types/node": "^12.12.34",
+		"@types/semver": "^7.1.0",
 		"@types/vscode": "^1.38.0",
 		"glob": "^7.1.5",
-		"mocha": "^6.2.2",
+		"mocha": "^6.2.3",
 		"tslint": "^5.20.0",
-		"typescript": "^3.7.5",
+		"typescript": "^3.8.3",
 		"vscode-test": "^1.2.2"
+	},
+	"dependencies": {
+		"semver": "^7.1.3"
 	}
 }

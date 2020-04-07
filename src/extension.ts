@@ -4,6 +4,8 @@ import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
 import { Utils } from './objects/Utils';
+import { WhatsNewDocContentProvider } from './whatsNew';
+import { WhatsNewManager } from './vscode-whats-new/Manager';
 
 let documentations: Documentation[];
 
@@ -28,14 +30,21 @@ export function activate(context: vscode.ExtensionContext) {
 			if (symbol.toUpperCase().startsWith("U_"))
 				symbol = symbol.substr(2);
 
+			// Filtra a ocorrência do Hover na tabela de documentações
 			let documentation = documentations.filter(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
 
 			if (documentation) {
 
-				documentation.forEach(doc => {
-					_docs.push(doc.getHover());
+				// Verifica se existe documentação do identificador no arquivo atual (Static Function/Method)
+				let docInFile = documentation.filter(doc => doc.file.fsPath === document.uri.fsPath);
+
+				// Se a documentação estiver definida no fonte posicionado, retorna somente do fonte atual
+				if (docInFile.length > 0) {
+					docInFile.forEach(doc => { _docs.push(doc.getHover()); });
+				} else {
+					// Se a documentação não estiver definida no fonte atual, lista todas as ocorrências caso exista
+					documentation.forEach(doc => { _docs.push(doc.getHover()); });
 				}
-				);
 			}
 
 			return new vscode.Hover(_docs);
@@ -88,8 +97,19 @@ export function activate(context: vscode.ExtensionContext) {
 
 	}, null, context.subscriptions);
 
+	// Provider What's new
+	const providerWhatsNew = new WhatsNewDocContentProvider();
+	const viewer = new WhatsNewManager(context).registerContentProvider("protheusdoc-vscode", providerWhatsNew);
+
+	// show the page (if necessary)
+	viewer.showPageInActivation();
+
+	// register the additional command (not really necessary, unless you want a command registered in your extension)
+	context.subscriptions.push(vscode.commands.registerCommand("protheusdoc.whatsNew", () => viewer.showPage()));
+
 	// Atualiza tabela de documentações do Workspace
 	searchProtheusDoc();
+
 }
 
 /**
@@ -167,12 +187,13 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 	let limitSkipLines = 3;
 
 	// Enquanto não encontrar uma assinatura de função, método ou classe, busca na próxima linha
-	while (!found) {
+	// Valida tambem se a navegação chegou no fim do arquivo
+	while (!found && activeLine < document.lineCount) {
 		let line = document.lineAt(activeLine);
 
 		// Não considera linhas vazias ou que não iniciem com o tipo Function, Method ou Class
 		if (!line.isEmptyOrWhitespace &&
-			line.text.trim().match(/((User |Static )?Function \s*)([^:\/]+)*$|Method ([^:\/]+)*$|Class \s*[\w+\-\_]*$/i)) {
+			line.text.trim().match(/((User |Static )?Function \s*)([^:\/]+)*$|Method ([^:\/]+)*$|Class \s*[\w+\-\_]*(\s* From \s*[\w+\-\_]*)?$/i)) {
 
 			// Encontrou a assinatura
 			found = true;

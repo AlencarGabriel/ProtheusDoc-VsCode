@@ -33,7 +33,7 @@ export class TransformAdvpl implements ITransformProtheusDoc {
         // Definição da sintaxe das assinaturas AdvPL
         this._expressionFunction = /((User |Static )?Function \s*)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S*))(\s*As [^:\/]+)?/mi;
         this._expressionMethod = /(Method \s*)(([^:\/]*)(\([^:\/]*\)\s*)|([^:\/]*)\s*)( Class \s*[^:\/]\S+)(\s* As\s[^:\/]+)?/mi;
-        this._expressionClass = /Class \s*([\w+\-\_*]*)$/i;
+        this._expressionClass = /Class \s*([\w+\-\_*]*)(\s* From \s*[\w+\-\_*]*)?$/i;
         this._expressionParam = /(\w+)\s*As\s*(\w+)|As\s*(\w+)/i;
         this._expressionClassOfMethod = /\sClass\s*(\w+)/i;
 
