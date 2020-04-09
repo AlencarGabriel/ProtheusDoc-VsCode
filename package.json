@@ -23,6 +23,7 @@
 	],
 	"activationEvents": [
 		"onLanguage:advpl",
+		"onCommand:protheusdoc.generateHTML",
 		"onCommand:protheusdoc.addDocBlock"
 	],
 	"main": "./out/extension.js",

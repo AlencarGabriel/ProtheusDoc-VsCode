@@ -148,24 +148,19 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
  */
 export function generateHTML() {
 	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.generateHTML', 
-		(textEditor)=>{
-			// Trata a linguagem e chama a função que interpreta a sintaxe desta
-			if (textEditor.document.languageId === ELanguageSupport.advpl.toString()) {
-				let geradorHtml: ProtheusDocHTML =  new ProtheusDocHTML();
-				if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length){
-					let paths: string[] =[];
-					vscode.workspace.workspaceFolders.forEach((folder: vscode.WorkspaceFolder) =>{
-						paths.push(folder.uri.fsPath);
-					});
+		()=>{
+			let geradorHtml: ProtheusDocHTML =  new ProtheusDocHTML();
+			if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length){
+				let paths: string[] =[];
+				vscode.workspace.workspaceFolders.forEach((folder: vscode.WorkspaceFolder) =>{
+					paths.push(folder.uri.fsPath);
+				});
 
-					geradorHtml.ProjectInspect(paths, paths[0] + '/html-out/').then(
-						()=>(vscode.window.showInformationMessage("Arquivos gerados com sucesso."))
-					).catch(()=>{ vscode.window.showErrorMessage("Não foi possível gerar a documentação."); });
-				}else{
-					vscode.window.showErrorMessage("Para geração de HTML deve ser um workspace salva.");
-				}
-			} else {
-				vscode.window.showErrorMessage("A linguagem " + textEditor.document.languageId + " não é tratada pela Extensão.");
+				geradorHtml.ProjectInspect(paths, paths[0] + '/html-out/').then(
+					()=>(vscode.window.showInformationMessage("Arquivos gerados com sucesso."))
+				).catch(()=>{ vscode.window.showErrorMessage("Não foi possível gerar a documentação."); });
+			}else{
+				vscode.window.showErrorMessage("Para geração de HTML deve ser um workspace salva.");
 			}
 		}
 	);
