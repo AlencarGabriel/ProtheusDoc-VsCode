@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Utils } from './Utils';
+import { ELanguageSupport } from './ProtheusDoc';
 
 // Decorator para os atributos do ProtheusDoc
 const attrPdocDecorationType = vscode.window.createTextEditorDecorationType({
@@ -78,18 +79,25 @@ export class ProtheusDocDecorator {
      * Gatilho para acionar adicionar as decorações de atributs ProtheusDoc no arquivo.
      */
     public triggerUpdateDecorations() {
-        
-        // Verifica se o usuário deseja que os atributos sejam decorados.
-        if (this._util.getUseDecorator()) {
 
-            if (this._timeout) {
-                clearTimeout(this._timeout);
-                this._timeout = undefined;
+        // Aplica as decorações apenas em fontes suportados
+        if (vscode.window.activeTextEditor?.document.languageId === ELanguageSupport.advpl ||
+            vscode.window.activeTextEditor?.document.languageId === ELanguageSupport["4gl"]
+        ) {
+
+            // Verifica se o usuário deseja que os atributos sejam decorados.
+            if (this._util.getUseDecorator()) {
+
+                if (this._timeout) {
+                    clearTimeout(this._timeout);
+                    this._timeout = undefined;
+                }
+
+                this._timeout = setTimeout(this.updateDecorations, 0);
+
             }
-
-            this._timeout = setTimeout(this.updateDecorations, 0);
-
         }
+
     }
 
 }

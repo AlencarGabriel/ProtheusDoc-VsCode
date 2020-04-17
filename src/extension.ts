@@ -11,6 +11,8 @@ let documentations: Documentation[];
 
 export function activate(context: vscode.ExtensionContext) {
 
+	console.log("protheusdoc-vscode has activated.");
+
 	let decorator = new ProtheusDocDecorator();
 
 	documentations = new Array<Documentation>();
@@ -148,7 +150,7 @@ export function addDocBlock() {
 	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, _edit) => {
 
 		// Trata a linguagem e chama a função que interpreta a sintaxe desta
-		if (textEditor.document.languageId === ELanguageSupport.advpl.toString()) {
+		if (textEditor.document.languageId === ELanguageSupport.advpl) {
 			findAdvpl(textEditor, true);
 		} else {
 			vscode.window.showErrorMessage("A linguagem " + textEditor.document.languageId + " não é tratada pela Extensão.");

@@ -33,7 +33,7 @@ export class ProtheusDoc {
             this._syntaxSupport = new SyntaxAdvpl();
             this._transform = new TransformAdvpl(signature);
         } else {
-            throw new Error("The Type " + this._languageId.toString() + " is not supported.");
+            throw new Error("The Type " + this._languageId + " is not supported.");
         }
     }
 
