@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { ETypesDoc } from '../interfaces/ISyntaxProtheusDoc';
 import * as path from 'path';
+import { ELanguageSupport } from './ProtheusDoc';
 
 /**
  * Interface para manipular os dados de um parâmetro.
@@ -34,19 +35,20 @@ export class Documentation {
     }
 
     /**
-     * Retotorna a documentação a ser exibida no Hover.
+     * Retorna a documentação a ser exibida no Hover.
+     * @Obs Cada novo marcador que for adicionado no Hover, deverá ser tratado na config `protheusDoc.marcadores_hover`
      */
     public getHover(): vscode.MarkdownString {
         let doc = new vscode.MarkdownString;
 
         if (this.type.trim().toUpperCase() === ETypesDoc.function.toString().toUpperCase()) {
-            doc.appendCodeblock("Function " + this.identifier.trim() + "()", "advpl");
+            doc.appendCodeblock("Function " + this.identifier.trim() + "()", ELanguageSupport.advpl);
         }
         else if (this.type.trim().toUpperCase() === ETypesDoc.method.toString().toUpperCase()) {
-            doc.appendCodeblock("Method " + this.identifier.trim() + "() Class " + (this.className === "" ? "Class" : this.className), "advpl");
+            doc.appendCodeblock("Method " + this.identifier.trim() + "() Class " + (this.className === "" ? "Class" : this.className), ELanguageSupport.advpl);
         }
         else if (this.type.trim().toUpperCase() === ETypesDoc.class.toString().toUpperCase()) {
-            doc.appendCodeblock("Class " + this.identifier.trim(), "advpl");
+            doc.appendCodeblock("Class " + this.identifier.trim(), ELanguageSupport.advpl);
         }
         else {
             doc.appendMarkdown((this.type.trim() !== "" ? "(" + this.type.trim() + ") " : "") + "`" + this.identifier.trim() + "` \r\n");
