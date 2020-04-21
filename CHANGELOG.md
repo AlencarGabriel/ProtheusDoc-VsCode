@@ -6,6 +6,19 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.4.7] - 2020-04-21
+
+### Changed
+
+- Ajustado extensão para aplicar as decorações apenas em fontes suportados pela extensão [#18](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/18).
+
+### Fixed
+
+- Recriado estrutura dos arquivos da extensão, por conta de problemas em ambientes case sensitive (Linux) [#21](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/21).
+- Corrigido BUG que não validava se o array de documentações do fonte atual estava vazio, tentando buscar sempre as documentações do fonte aberto no editor [#19](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/19).
+
+---
+
 ## [0.4.4] - 2020-03-31
 
 ### Added
