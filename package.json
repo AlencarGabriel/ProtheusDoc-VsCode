@@ -101,7 +101,7 @@
 						"default": true,
 						"description": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
 					},
-					"protheusDoc.marcadores_hover": {
+					"protheusDoc.marcadores_ocultos_hover": {
 						"type": "array",
 						"default": [],
 						"description": "Marcadores da documentação que serão ocultos ao passar o mouse por uma Função, Classe ou Método.",
@@ -112,7 +112,7 @@
 							"enum": [
 								"Params",
 								"Return",
-								"Hover"
+								"History"
 							]
 						}
 					},

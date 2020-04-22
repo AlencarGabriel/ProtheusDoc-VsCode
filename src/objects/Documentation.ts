@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { ETypesDoc } from '../interfaces/ISyntaxProtheusDoc';
 import * as path from 'path';
 import { ELanguageSupport } from './ProtheusDoc';
+import { Utils } from './Utils';
 
 /**
  * Interface para manipular os dados de um parâmetro.
@@ -10,6 +11,15 @@ interface IParam {
     paramName: string;
     paramType: string;
     paramDescription: string;
+}
+
+/**
+ * Interface para manupular os dados dos históricos de um identificador.
+ */
+interface IHistory {
+    historyDate: string;
+    historyAuthor: string;
+    historyDescription: string;
 }
 
 /**
@@ -22,6 +32,7 @@ export class Documentation {
     public className: string;
     public params: IParam[];
     public return: IParam;
+    public histories: IHistory[];
     public file: vscode.Uri;
 
     constructor(documentation: ProtheusDocToDoc) {
@@ -31,15 +42,17 @@ export class Documentation {
         this.className = documentation.className;
         this.params = documentation.params;
         this.return = documentation.return;
+        this.histories = documentation.histories;
         this.file = documentation.file;
     }
 
     /**
      * Retorna a documentação a ser exibida no Hover.
-     * @Obs Cada novo marcador que for adicionado no Hover, deverá ser tratado na config `protheusDoc.marcadores_hover`
+     * @Obs Cada novo marcador que for adicionado no Hover, deverá ser tratado na config `protheusDoc.marcadores_ocultos_hover`
      */
     public getHover(): vscode.MarkdownString {
         let doc = new vscode.MarkdownString;
+        let marcadoresOcultosHover = new Utils().getHiddenMarkersHover();
 
         if (this.type.trim().toUpperCase() === ETypesDoc.function.toString().toUpperCase()) {
             doc.appendCodeblock("Function " + this.identifier.trim() + "()", ELanguageSupport.advpl);
@@ -58,14 +71,20 @@ export class Documentation {
             doc.appendText(this.description.trim() + "\r\n");
         }
 
-        if (this.params.length > 0) {
+        if (!marcadoresOcultosHover.includes("Params") && this.params.length > 0) {
             this.params.forEach(param => {
                 doc.appendMarkdown("\r\n *@param* `" + param.paramName.trim() + "` — " + param.paramDescription.trim() + "\r\n");
             });
         }
 
-        if (this.return.paramDescription.trim() !== "") {
+        if (!marcadoresOcultosHover.includes("Return") && this.return.paramDescription.trim() !== "") {
             doc.appendMarkdown("\r\n *@return* " + this.return.paramDescription.trim() + "\r\n");
+        }
+
+        if (!marcadoresOcultosHover.includes("History") && this.histories.length > 0) {
+            this.histories.forEach(history => {
+                doc.appendMarkdown("\r\n *@history* `" + history.historyDate.trim() + "` — " + history.historyAuthor.trim() + " — " + history.historyDescription.trim() + "\r\n");
+            });
         }
 
         let dirs = this.file.fsPath.toString().split(path.sep);
@@ -84,12 +103,14 @@ export class ProtheusDocToDoc {
     private _expressionType: RegExp;
     private _expressionParams: RegExp;
     private _expressionReturn: RegExp;
+    private _expressionHistories: RegExp;
     public identifier: string;
     public description: string;
     public type: string;
     public className: string;
     public params: IParam[];
     public return: IParam;
+    public histories: IHistory[];
     public file: vscode.Uri;
 
     constructor(protheusDocBlock: string, file: vscode.Uri) {
@@ -98,12 +119,14 @@ export class ProtheusDocToDoc {
         this._expressionType = /(@type\s*)(\w+)/i;
         this._expressionParams = /(@param\s*)(\w+\s*)(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
         this._expressionReturn = /(@return\s*)(\w+\s*)(,\s*[^:@\n]*)?/im;
+        this._expressionHistories = /(@history\s*)([^:@\n\,]*)(,\s*[^:@\n\,]*)?(,\s*[^:@\,]*)?/img;
         this.identifier = "";
         this.description = "";
         this.type = "";
         this.className = "";
         this.params = [];
         this.return = { paramName: "", paramType: "", paramDescription: "" };
+        this.histories = [];
         this.file = file;
 
         this.toBreak();
@@ -117,6 +140,7 @@ export class ProtheusDocToDoc {
         let typeDoc = this._protheusDocBlock.match(this._expressionType);
         let paramsDoc = this._protheusDocBlock.match(this._expressionParams);
         let returnDoc = this._protheusDocBlock.match(this._expressionReturn);
+        let historyDoc = this._protheusDocBlock.match(this._expressionHistories);
 
         // Caso tenha detectado o cabeçalho da documentação trata as informações
         if (headerDoc) {
@@ -153,6 +177,18 @@ export class ProtheusDocToDoc {
             if (returnDoc) {
                 this.return.paramType = returnDoc[2] ? returnDoc[2] : "";
                 this.return.paramDescription = returnDoc[3] ? returnDoc[3].replace(",", "") : "";
+            }
+            
+            // Tratamento para buscar os históricos de alteração na documentação
+            if (historyDoc) {
+                let match;
+                while (match = this._expressionHistories.exec(this._protheusDocBlock)) {
+                    this.histories.push({
+                        historyDate: match[2],
+                        historyAuthor: match[3] ? match[3].replace(",", "") : "",
+                        historyDescription: match[4] ? match[4].replace(",", "") : "",
+                    });
+                }
             }
         }
 
