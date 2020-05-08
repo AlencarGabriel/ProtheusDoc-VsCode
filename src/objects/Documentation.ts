@@ -89,6 +89,7 @@ export class ProtheusDocToDoc {
     public params: IParam[];
     public return: IParam;
     public file: vscode.Uri;
+    public lineNumber: number;
 
     constructor(protheusDocBlock: string, file: vscode.Uri) {
         this._protheusDocBlock = protheusDocBlock;
@@ -103,6 +104,7 @@ export class ProtheusDocToDoc {
         this.params = [];
         this.return = { paramName: "", paramType: "", paramDescription: "" };
         this.file = file;
+        this.lineNumber = 1;
 
         this.toBreak();
     }

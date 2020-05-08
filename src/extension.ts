@@ -123,6 +123,20 @@ export function activate(context: vscode.ExtensionContext) {
 export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 	let expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
 	let match = text.match(expressionProtheusDoc);
+	
+	function findLine(identificador: string): number {
+		let expressionProtheusDoc2 = new RegExp("/(\\{Protheus\\.doc\\}\\s*)(" + identificador.trim() + ")", "i");
+
+		for (let line = 0; line < text.length; line++) {
+			let match = text[line].match(expressionProtheusDoc2);
+
+			if (match !== null && match.index !== undefined) {
+				return line;
+			}
+		}
+
+		return 1;
+	}
 
 	// Remove todas as referências de documentação do arquivo aberto
 	documentations = documentations.filter(doc => doc.file.fsPath !== uri.fsPath);
