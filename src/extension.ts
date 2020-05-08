@@ -4,6 +4,7 @@ import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
 import { Utils } from './objects/Utils';
+import { ProtheusDocHTML } from 'protheusdoc-html/lib';
 import { WhatsNewDocContentProvider } from './whatsNew';
 import { WhatsNewManager } from './vscode-whats-new/Manager';
 
@@ -17,6 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	decorator.triggerUpdateDecorations();
 
+	context.subscriptions.push(generateHTML());
 	context.subscriptions.push(addDocBlock());
 	context.subscriptions.push(updateTableDoc());
 
@@ -140,6 +142,32 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 		});
 	}
 }
+
+/**
+ * Gera os arquivos HTML baseado no ProtheusDoc do Projeto
+ */
+export function generateHTML() {
+	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.generateHTML', 
+		()=>{
+			let geradorHtml: ProtheusDocHTML =  new ProtheusDocHTML();
+			if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length){
+				let paths: string[] =[];
+				vscode.workspace.workspaceFolders.forEach((folder: vscode.WorkspaceFolder) =>{
+					paths.push(folder.uri.fsPath);
+				});
+
+				geradorHtml.ProjectInspect(paths, paths[0] + '/html-out/').then(
+					()=>(vscode.window.showInformationMessage("Arquivos gerados com sucesso."))
+				).catch(()=>{ vscode.window.showErrorMessage("Não foi possível gerar a documentação."); });
+			}else{
+				vscode.window.showErrorMessage("Para geração de HTML deve ser um workspace salva.");
+			}
+		}
+	);
+
+	return disposable;
+}
+
 
 /**
  * Registra o bloco de comando a ser executado quando este for chamado.

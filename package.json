@@ -23,11 +23,16 @@
 	],
 	"activationEvents": [
 		"onLanguage:advpl",
+		"onCommand:protheusdoc.generateHTML",
 		"onCommand:protheusdoc.addDocBlock"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
+			{
+				"command": "protheusdoc.generateHTML",
+				"title": "ProtheusDoc - Geração de HTML"
+			},
 			{
 				"command": "protheusdoc.addDocBlock",
 				"title": "ProtheusDoc - Adicionar bloco de Documentação"
@@ -176,6 +181,7 @@
 		"vscode-test": "^1.2.2"
 	},
 	"dependencies": {
+		"protheusdoc-html": "^1.0.1",
 		"semver": "^7.1.3"
 	}
 }
