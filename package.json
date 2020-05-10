@@ -30,10 +30,6 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "protheusdoc.generateHTML",
-				"title": "ProtheusDoc - Geração de HTML"
-			},
-			{
 				"command": "protheusdoc.addDocBlock",
 				"title": "ProtheusDoc - Adicionar bloco de Documentação"
 			},
@@ -44,6 +40,14 @@
 			{
 				"command": "protheusdoc.whatsNew",
 				"title": "ProtheusDoc - What's New"
+			},
+			{
+				"command": "protheusdoc.generateHTML",
+				"title": "ProtheusDoc - Gerar documentação HTML"
+			},
+			{
+				"command": "protheusdoc.openHTML",
+				"title": "ProtheusDoc - Abrir documentação HTML"
 			}
 		],
 		"keybindings": [
@@ -105,6 +109,16 @@
 						"type": "boolean",
 						"default": true,
 						"description": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
+					},
+					"protheusDoc.diretorio_doc": {
+						"type": "string",
+						"default": "",
+						"description": "Diretório onde a pasta com os arquivos da documentação serão criados. \n Caso esteja vazio o diretório usado será o primeiro da Workspace."
+					},
+					"protheusDoc.pasta_doc": {
+						"type": "string",
+						"default": "html-out",
+						"description": "Nome da pasta que conterá os arquivos da documentação."
 					},
 					"protheusDoc.include": {
 						"type": "array",
@@ -182,6 +196,7 @@
 	},
 	"dependencies": {
 		"protheusdoc-html": "^1.0.1",
+		"opn": "^6.0.0",
 		"semver": "^7.1.3"
 	}
 }
