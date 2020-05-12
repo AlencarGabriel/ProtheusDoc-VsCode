@@ -2,7 +2,7 @@
 	"name": "protheusdoc-vscode",
 	"displayName": "ProtheusDoc for VsCode (AdvPL)",
 	"description": "Suporte à documentação TOTVS ProtheusDoc para VsCode.",
-	"version": "0.4.4",
+	"version": "0.4.7",
 	"publisher": "AlencarGabriel",
 	"icon": "images/Icon.png",
 	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
@@ -18,13 +18,15 @@
 	},
 	"categories": [
 		"Other",
-		"Snippets",
-		"Language Packs"
+		"Snippets"
 	],
 	"activationEvents": [
 		"onLanguage:advpl",
+		"onCommand:protheusdoc.addDocBlock",
+		"onCommand:protheusdoc.updateTableDoc",
+		"onCommand:protheusdoc.whatsNew",	
 		"onCommand:protheusdoc.generateHTML",
-		"onCommand:protheusdoc.addDocBlock"
+		"onCommand:protheusdoc.openHTML"
 	],
 	"main": "./out/extension.js",
 	"contributes": {

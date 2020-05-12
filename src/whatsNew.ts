@@ -17,27 +17,19 @@ export class WhatsNewDocContentProvider implements ContentProvider {
     public provideChangeLog(): ChangeLogItem[] {
         const changeLog: ChangeLogItem[] = [];
 
-        changeLog.push({ 
-            kind: ChangeLogKind.NEW, message: "Adicionado <b>What's New</b> para apresentar as novidades e correções da extensão" 
+        changeLog.push({
+            kind: ChangeLogKind.CHANGED, message: `Apresentar <b>decoração</b> apenas em fontes AdvPL - (<a title=\"Open Issue #18\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/18\">Issue #18</a>)`
         });
 
         changeLog.push({
-            kind: ChangeLogKind.CHANGED, message: `<b>Hover:</b> Documentação de Static Functions não devem ser apresentadas fora do próprio fonte - (<a title=\"Open Issue #15\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/15\">Issue #15</a>)`
+            kind: ChangeLogKind.FIXED, message: `Extensão não funciona em sistemas operacionais <b>case sensitive</b> - (<a title=\"Open Issue #21\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/21\">Issue #21</a>)`
         });
         
         changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Extensão não reconhece classes com herança - (<a title=\"Open Issue #11\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/11\">Issue #11</a>)`
-        });
-
-        changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Retirar TabStop do tipo do retorno quando tipado - (<a title=\"Open Issue #12\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/12\">Issue #12</a>)`
-        });
-
-        changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Corrigido BUG que ocorria quando a busca de linhas com documentação chegava no fim do arquivo`
+            kind: ChangeLogKind.FIXED, message: `<b>Documentation Hover</b> apresentando somente funções do próprio fonte - (<a title=\"Open Issue #19\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/19\">Issue #19</a>)`
         });
 
         return changeLog;
