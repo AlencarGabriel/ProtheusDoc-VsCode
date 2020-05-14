@@ -24,7 +24,7 @@
 		"onLanguage:advpl",
 		"onCommand:protheusdoc.addDocBlock",
 		"onCommand:protheusdoc.updateTableDoc",
-		"onCommand:protheusdoc.whatsNew",	
+		"onCommand:protheusdoc.whatsNew",
 		"onCommand:protheusdoc.generateHTML",
 		"onCommand:protheusdoc.openHTML"
 	],
@@ -197,8 +197,8 @@
 		"vscode-test": "^1.2.2"
 	},
 	"dependencies": {
-		"protheusdoc-html": "^1.0.1",
 		"opn": "^6.0.0",
+		"protheusdoc-html": "^1.0.9",
 		"semver": "^7.1.3"
 	}
 }
