@@ -106,7 +106,35 @@ export class Utils {
         }
     }
 
-    //get the include/exclude config
+    /**
+     * Diretório onde a pasta com os arquivos da documentação serão criados.
+     */
+    public getDirDoc(): string {
+        let dirDoc = this.getConfig().get<String>("diretorio_doc");
+
+        if (dirDoc && dirDoc !== "") {
+            return dirDoc.trim();
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * Nome da pasta que conterá os arquivos da documentação.
+     */
+    public getFolderDoc(): string {
+        let folderDoc = this.getConfig().get<String>("pasta_doc");
+
+        if (folderDoc && folderDoc !== "") {
+            return folderDoc.trim();
+        } else {
+            return "html-out";
+        }
+    }
+
+    /**
+     * get the include/exclude config.
+     */
     private getPathes(config: any) {
         return Array.isArray(config) ?
             '{' + config.join(',') + '}'

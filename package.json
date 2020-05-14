@@ -2,7 +2,7 @@
 	"name": "protheusdoc-vscode",
 	"displayName": "ProtheusDoc for VsCode (AdvPL)",
 	"description": "Suporte à documentação TOTVS ProtheusDoc para VsCode.",
-	"version": "0.4.4",
+	"version": "0.4.7",
 	"publisher": "AlencarGabriel",
 	"icon": "images/Icon.png",
 	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
@@ -18,12 +18,15 @@
 	},
 	"categories": [
 		"Other",
-		"Snippets",
-		"Language Packs"
+		"Snippets"
 	],
 	"activationEvents": [
 		"onLanguage:advpl",
-		"onCommand:protheusdoc.addDocBlock"
+		"onCommand:protheusdoc.addDocBlock",
+		"onCommand:protheusdoc.updateTableDoc",
+		"onCommand:protheusdoc.whatsNew",
+		"onCommand:protheusdoc.generateHTML",
+		"onCommand:protheusdoc.openHTML"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -39,6 +42,14 @@
 			{
 				"command": "protheusdoc.whatsNew",
 				"title": "ProtheusDoc - What's New"
+			},
+			{
+				"command": "protheusdoc.generateHTML",
+				"title": "ProtheusDoc - Gerar documentação HTML"
+			},
+			{
+				"command": "protheusdoc.openHTML",
+				"title": "ProtheusDoc - Abrir documentação HTML"
 			}
 		],
 		"keybindings": [
@@ -114,7 +125,17 @@
 								"Return",
 								"History"
 							]
-						}
+					  }
+          },
+					"protheusDoc.diretorio_doc": {
+						"type": "string",
+						"default": "",
+						"description": "Diretório onde a pasta com os arquivos da documentação serão criados. \n Caso esteja vazio o diretório usado será o primeiro da Workspace."
+					},
+					"protheusDoc.pasta_doc": {
+						"type": "string",
+						"default": "html-out",
+						"description": "Nome da pasta que conterá os arquivos da documentação."
 					},
 					"protheusDoc.include": {
 						"type": "array",
@@ -126,7 +147,15 @@
 							"**/*.apl",
 							"**/*.tlpp",
 							"**/*.ahu",
-							"**/*.apw"
+							"**/*.apw",
+							"**/*.PRW",
+							"**/*.PRX",
+							"**/*.PRG",
+							"**/*.APH",
+							"**/*.APL",
+							"**/*.TLPP",
+							"**/*.AHU",
+							"**/*.APW"
 						],
 						"description": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários.",
 						"items": {
@@ -191,6 +220,8 @@
 		"vscode-test": "^1.2.2"
 	},
 	"dependencies": {
+		"opn": "^6.0.0",
+		"protheusdoc-html": "^1.0.9",
 		"semver": "^7.1.3"
 	}
 }

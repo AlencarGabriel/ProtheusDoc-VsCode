@@ -34,6 +34,7 @@ export class Documentation {
     public return: IParam;
     public histories: IHistory[];
     public file: vscode.Uri;
+    public line: number;
 
     constructor(documentation: ProtheusDocToDoc) {
         this.identifier = documentation.identifier;
@@ -44,6 +45,7 @@ export class Documentation {
         this.return = documentation.return;
         this.histories = documentation.histories;
         this.file = documentation.file;
+        this.line = documentation.lineNumber;
     }
 
     /**
@@ -53,6 +55,9 @@ export class Documentation {
     public getHover(): vscode.MarkdownString {
         let doc = new vscode.MarkdownString;
         let marcadoresOcultosHover = new Utils().getHiddenMarkersHover();
+      
+        // To enable command URIs in Markdown content, you must set the `isTrusted` flag.
+        doc.isTrusted = true;
 
         if (this.type.trim().toUpperCase() === ETypesDoc.function.toString().toUpperCase()) {
             doc.appendCodeblock("Function " + this.identifier.trim() + "()", ELanguageSupport.advpl);
@@ -86,9 +91,12 @@ export class Documentation {
                 doc.appendMarkdown("\r\n *@history* `" + history.historyDate.trim() + "` — " + history.historyAuthor.trim() + " — " + history.historyDescription.trim() + "\r\n");
             });
         }
-
+      
+        // Aciona o documento com link para a documentação do arquivo
         let dirs = this.file.fsPath.toString().split(path.sep);
-        doc.appendMarkdown("\r\n **Localização**: [" + dirs[dirs.length - 2] + path.sep + dirs[dirs.length - 1] + "](" + this.file.toString() + ") \r\n");
+        const args = [{ file: this.file.toString(), line: this.line }]; 
+        const link = vscode.Uri.parse(`command:protheusdoc.openFile?${encodeURIComponent(JSON.stringify(args))}`);
+        doc.appendMarkdown("\r\n **Localização**: [" + dirs[dirs.length - 2] + path.sep + dirs[dirs.length - 1] + "](" + `${link}` + ") \r\n");
 
         return doc;
     }
@@ -112,6 +120,7 @@ export class ProtheusDocToDoc {
     public return: IParam;
     public histories: IHistory[];
     public file: vscode.Uri;
+    public lineNumber: number;
 
     constructor(protheusDocBlock: string, file: vscode.Uri) {
         this._protheusDocBlock = protheusDocBlock;
@@ -128,6 +137,7 @@ export class ProtheusDocToDoc {
         this.return = { paramName: "", paramType: "", paramDescription: "" };
         this.histories = [];
         this.file = file;
+        this.lineNumber = 0;
 
         this.toBreak();
     }
