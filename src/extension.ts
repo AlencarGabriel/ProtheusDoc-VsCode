@@ -4,8 +4,11 @@ import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
 import { Utils } from './objects/Utils';
+import { ProtheusDocHTML } from 'protheusdoc-html/lib';
 import { WhatsNewDocContentProvider } from './whatsNew';
 import { WhatsNewManager } from './vscode-whats-new/Manager';
+import * as fs from 'fs';
+import * as path from 'path';
 
 let documentations: Documentation[];
 
@@ -21,6 +24,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(addDocBlock());
 	context.subscriptions.push(updateTableDoc());
+	context.subscriptions.push(generateHTML());
+	context.subscriptions.push(addOpenHTML());
 
 	vscode.languages.registerHoverProvider('advpl', {
 		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
@@ -144,7 +149,115 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 }
 
 /**
- * Registra o bloco de comando a ser executado quando este for chamado.
+ * Gera os arquivos HTML baseado no ProtheusDoc do Projeto
+ */
+export function generateHTML() {
+	let disposable = vscode.commands.registerCommand('protheusdoc.generateHTML', () => {
+		let geradorHtml: ProtheusDocHTML = new ProtheusDocHTML();
+		let util = new Utils();
+		let dirDoc = util.getDirDoc();
+
+		if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+			let paths: string[] = [];
+
+			// Captura todas as pastas da Workspace
+			vscode.workspace.workspaceFolders.forEach((folder: vscode.WorkspaceFolder) => {
+				paths.push(folder.uri.fsPath);
+			});
+
+			// Verifica se o diretório de documentações informado pelo usuário existe
+			if (dirDoc === "" || !fs.existsSync(dirDoc)) {
+				dirDoc = paths[0];
+			}
+
+			vscode.window.withProgress({
+				location: vscode.ProgressLocation.Window,
+				title: "Gerando documentação HTML...",
+				cancellable: false
+			}, (progress, token) => {
+
+				token.onCancellationRequested(() => {
+					vscode.window.showWarningMessage("Geração de documentação HTML cancelada.");
+				});
+
+				return geradorHtml.ProjectInspect(paths, path.join(dirDoc, util.getFolderDoc()))
+					.then(() => {
+						vscode.window.showInformationMessage("Documentação gerada com sucesso em " + path.join(dirDoc, util.getFolderDoc()), "Abrir documentação")
+							.then(e => {
+								if (e === "Abrir documentação") {
+									vscode.commands.executeCommand("protheusdoc.openHTML");
+								}
+							});
+					})
+					.catch(() => { vscode.window.showErrorMessage("Não foi possível gerar a documentação na pasta " + path.join(dirDoc, util.getFolderDoc())); });
+			});
+
+		} else {
+			vscode.window.showErrorMessage("Para geração da documentação HTML deve haver uma Workspace salva.");
+		}
+	});
+
+	return disposable;
+}
+
+/**
+ * Registra o bloco de comando para abrir a documentação HTML
+ */
+export function addOpenHTML() {
+	let disposable = vscode.commands.registerCommand('protheusdoc.openHTML', () => {
+		let util = new Utils();
+		let dirDoc = util.getDirDoc();
+		let folderDoc = util.getFolderDoc();
+
+		// Verifica se o diretório de documentações informado pelo usuário existe
+		if (dirDoc === "" || !fs.existsSync(dirDoc)) {
+
+			// Verifica se existem pastas na workspace aberta
+			if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+				dirDoc = vscode.workspace.workspaceFolders[0].uri.fsPath;
+			} else {
+				vscode.window.showWarningMessage(`Não foi encontrado o diretório das documentações (${dirDoc})`, "Gerar Documentação").then(e => {
+					if (e === "Gerar Documentação") {
+						vscode.commands.executeCommand("protheusdoc.generateHTML");
+					}
+				});
+
+				return disposable;
+			}
+		}
+
+		// Verifica se os arquivos e pasta base existem
+		if (fs.existsSync(path.join(dirDoc, folderDoc))) {
+
+			if (fs.existsSync(path.join(dirDoc, folderDoc, "index.html"))) {
+
+				// Caso tenha encontrado o arquivo, abre a documentação
+				const opn = require('opn');
+				opn(path.join(dirDoc, folderDoc, "index.html"));
+
+			} else {
+				vscode.window.showWarningMessage(`Não foi encontrado o arquivo index.html no diretório das documentações (${path.join(dirDoc, folderDoc)})`, "Gerar Documentação").then(e => {
+					if (e === "Gerar Documentação") {
+						vscode.commands.executeCommand("protheusdoc.generateHTML");
+					}
+				});
+			}
+
+		} else {
+			vscode.window.showWarningMessage(`Não foi encontrado a pasta ${folderDoc} no diretório das documentações (${dirDoc}).`, "Gerar Documentação").then(e => {
+				if (e === "Gerar Documentação") {
+					vscode.commands.executeCommand("protheusdoc.generateHTML");
+				}
+			});
+		}
+
+	});
+
+	return disposable;
+}
+
+/**
+ * Registra o bloco de comando para criação do bloco de documentação.
  */
 export function addDocBlock() {
 	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.addDocBlock', (textEditor, _edit) => {
@@ -162,10 +275,10 @@ export function addDocBlock() {
 }
 
 /**
- * Registra o bloco de comando a ser executado quando este for chamado.
+ * Registra o bloco de comando para atualizar a tabela de documentações da workspace.
  */
 export function updateTableDoc() {
-	let disposable = vscode.commands.registerTextEditorCommand('protheusdoc.updateTableDoc', (_textEditor, _edit) => {
+	let disposable = vscode.commands.registerCommand('protheusdoc.updateTableDoc', () => {
 
 		searchProtheusDoc();
 
