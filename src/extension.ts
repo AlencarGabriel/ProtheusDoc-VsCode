@@ -113,6 +113,15 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// register the additional command (not really necessary, unless you want a command registered in your extension)
 	context.subscriptions.push(vscode.commands.registerCommand("protheusdoc.whatsNew", () => viewer.showPage()));
+	
+	// Registra o comando que abrirá o arquivo na linha da documentação
+	context.subscriptions.push(vscode.commands.registerCommand("protheusdoc.openFile", (args) => {
+		vscode.window.showTextDocument(vscode.Uri.parse(args.file)).then(textEditor => {
+			let range = textEditor.document.lineAt(args.line).range;
+			textEditor.selection = new vscode.Selection(range.start, range.start);
+			textEditor.revealRange(range);
+		});
+	}));
 
 	// Atualiza tabela de documentações do Workspace
 	searchProtheusDoc();
@@ -129,20 +138,51 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 	let expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
 	let match = text.match(expressionProtheusDoc);
 
+	/**
+	 * Limpa o texto antes de montar uma expressão regular.
+	 * @param string texto a ser limpo.
+	 */
+	function escapeRegExp(string:string) {
+		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+	}
+
+	/**
+	 * Busca o numero da linha que contém o identificador.
+	 * @param identificador identificador do ProtheusDoc.
+	 */
+	function findLine(identificador: string): number {
+		let expressionProtheusDoc2 = new RegExp("(\\{Protheus\\.doc\\}\\s*)(" + escapeRegExp(identificador.trim()) + ")", "i");
+		let texts = text.split("\n");
+
+		// Percorre o array das linhas para verificar onde está a declaração do identificador
+		for (let line = 0; line < texts.length; line++) {
+			let match = texts[line].match(expressionProtheusDoc2);
+
+			if (match !== null && match.index !== undefined) {
+				return line;
+			}
+		}
+
+		return 0;
+	}
+
 	// Remove todas as referências de documentação do arquivo aberto
 	documentations = documentations.filter(doc => doc.file.fsPath !== uri.fsPath);
 
 	if (match) {
 		// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
 		match.forEach(element => {
-			let doc = new ProtheusDocToDoc(element, uri).getDocumentation();
+			let doc = new ProtheusDocToDoc(element, uri);
 			let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
+			
+			// Adiciona a linha correspondente a documentação
+			doc.lineNumber = findLine(doc.identifier);
 
 			// Caso a documentação já exista na lista altera
 			// if (docIndex >= 0) {
 			// documentations[docIndex] = doc;
 			// } else {
-			documentations.push(doc);
+			documentations.push(doc.getDocumentation());
 			// }
 		});
 	}
