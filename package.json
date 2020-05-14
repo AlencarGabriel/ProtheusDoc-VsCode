@@ -112,7 +112,15 @@
 							"**/*.apl",
 							"**/*.tlpp",
 							"**/*.ahu",
-							"**/*.apw"
+							"**/*.apw",
+							"**/*.PRW",
+							"**/*.PRX",
+							"**/*.PRG",
+							"**/*.APH",
+							"**/*.APL",
+							"**/*.TLPP",
+							"**/*.AHU",
+							"**/*.APW"
 						],
 						"description": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários.",
 						"items": {
