@@ -66,6 +66,19 @@ export class Utils {
             return [];
         }
     }
+    
+    /**
+     * Busca os marcadores que serão ocultados no Hover de documentações.
+     */
+    public getHiddenMarkersHover(): String[] {
+        let hiddenMarkersHover = this.getConfig().get<Array<String>>("marcadores_ocultos_hover");
+
+        if (hiddenMarkersHover) {
+            return hiddenMarkersHover;
+        } else {
+            return [];
+        }
+    }
 
     /**
      * Verifica se o usuário deseja que as decorações de atributos ProtheusDoc sejam feitas.

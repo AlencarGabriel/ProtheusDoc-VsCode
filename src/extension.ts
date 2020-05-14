@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(generateHTML());
 	context.subscriptions.push(addOpenHTML());
 
-	vscode.languages.registerHoverProvider('advpl', {
+	vscode.languages.registerHoverProvider(ELanguageSupport.advpl, {
 		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
 			let symbol = document.getText(document.getWordRangeAtPosition(position));
 			let _docs = new Array<vscode.MarkedString>();
@@ -59,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-		["advpl"],
+		[ELanguageSupport.advpl],
 		{
 			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
 				const line = document.lineAt(position.line).text;
