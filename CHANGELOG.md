@@ -11,18 +11,18 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 ### Added
 
 - Implementado posicionamento na linha da documentação [#16](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/16) | [PR #26](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/26).
-- Adicionado configuração para escolher quais atributos serão apresentados no Hover [PR #27](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/27).
+- Adicionado configuração para escolher quais atributos serão apresentados no Documentation Hover [PR #27](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/27).
+- Adicionado suporte ao atributo `@link` [#23](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/23).
 - Implementado geração da **documentação HTML** dos fontes [#25](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/25).
     - Agradecimento especial ao [Robson Rogério](https://github.com/robsonrosilva) pelo desenvolvimento da extensão base para geração das documentações em HTML [protheusDoc-html](https://github.com/robsonrosilva/protheusDoc).
 
 ### Changed
 
-- Adicionado suporte ao atributo `@History` no Hover [#17](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/17) | [PR #27](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/27).
+- Adicionado suporte ao atributo `@history` no Hover [#17](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/17) | [PR #27](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/27).
 
 ### Fixed
 
 - Corrigido problema que cortava o nome dos parâmetros com a palavra **"as"** [#22](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/22).
-- Adicionado suporte ao atributo `@link` [#23](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/23).
 - Ajustado para que a tabela de documentações considere tambem arquivos com extensão maiúscula [#24](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/24).
 
 ---

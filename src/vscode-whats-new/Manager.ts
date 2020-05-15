@@ -63,7 +63,9 @@ export class WhatsNewManager {
             path.join(this.context.extensionPath, "images", "Icon.png"));
         const logoUri = logoPathOnDisk.with({ scheme: "vscode-resource" });  
         
-        panel.webview.html = this.getWebviewContentLocal(pageUri.fsPath, cssUri.toString(), logoUri.toString());
+        vscode.commands.executeCommand("workbench.action.closePanel").then( e => {
+            panel.webview.html = this.getWebviewContentLocal(pageUri.fsPath, cssUri.toString(), logoUri.toString());
+        });
     }
 
     public showPageIfVersionDiffers(currentVersion: string, previousVersion: string) {
