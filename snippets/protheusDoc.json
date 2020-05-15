@@ -4,7 +4,7 @@
         "body": [
             "@type ${1|function,class,method|}"
         ],
-        "description": "Adiciona uma especificação de parâmetro (de função ou método), identificando-o como parameter-name. "
+        "description": "Identifica o tipo do ProtheusDoc que está sendo documentado. "
     },
     "AUTHOR": {
         "prefix": "@author",
@@ -47,14 +47,14 @@
             "@example",
             "${1:(examples)}"
         ],
-        "description": "Cria uma entrada no tópico “Exemplos”."
+        "description": "Cria uma entrada no tópico 'Exemplos'."
     },
     "SEE": {
         "prefix": "@see",
         "body": [
             "@see ${1:(links_or_references)}"
         ],
-        "description": "Adiciona uma entrada “Veja também”."
+        "description": "Adiciona uma entrada 'Veja também'."
     },
     "HISTORY": {
         "prefix": "@history",
@@ -69,5 +69,12 @@
             "@obs ${1:obs-text}"
         ],
         "description": "Adiciona uma observação."
+    },
+    "LINK": {
+        "prefix": "@link",
+        "body": [
+            "@link ${1:link-text}"
+        ],
+        "description": "Cria uma ligação (link) para o target especificado. Esta marcação deve ser utilizada como complemento nas demais marcações."
     }
 }

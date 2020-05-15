@@ -55,7 +55,7 @@ export class ProtheusDocDecorator {
         }
 
         // Expressão com os tipos tratados no snippet
-        const regEx = /@(type|version|author|since|param|return|history|example|see|obs)/gi;
+        const regEx = /@(type|version|author|since|param|return|history|example|see|obs|link)/gi;
         const text = activeEditor.document.getText();
         const attrPdoc: vscode.DecorationOptions[] = [];
 

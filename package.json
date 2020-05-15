@@ -125,8 +125,8 @@
 								"Return",
 								"History"
 							]
-					  }
-          },
+						}
+					},
 					"protheusDoc.diretorio_doc": {
 						"type": "string",
 						"default": "",
