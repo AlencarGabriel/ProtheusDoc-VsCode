@@ -24,6 +24,7 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 - Corrigido problema que cortava o nome dos parâmetros com a palavra **"as"** [#22](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/22).
 - Ajustado para que a tabela de documentações considere tambem arquivos com extensão maiúscula [#24](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/24).
+- Adotado uso da API `asWebviewUri()` conforme notificação da Microsoft [#28](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/28).
 
 ---
 

@@ -54,6 +54,11 @@ export class WhatsNewDocContentProvider implements ContentProvider {
             kind: ChangeLogKind.FIXED, message: `<b>Tabela de documentações</b> ignorando extensão PRW maiúscula - (<a title=\"Open Issue #24\" 
                 href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/24\">Issue #24</a>)`
         });
+        
+        changeLog.push({
+            kind: ChangeLogKind.FIXED, message: `Adopt VS Code's <code>asWebviewUri</code> API  - (<a title=\"Open Issue #28\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/28\">Issue #28</a>)`
+        });
 
         return changeLog;
     }
