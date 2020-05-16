@@ -20,13 +20,13 @@ export class WhatsNewDocContentProvider implements ContentProvider {
         changeLog.push({
             kind: ChangeLogKind.NEW, message: `Link da localização posicionar na linha da documentação (Hover) - (<a title=\"Open Issue #16\" 
                 href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/16\">Issue #16</a> | <a title=\"Documentação da Feature\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações\">Documentação</a>)`
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações#link-da-localização\">Documentação</a>)`
         });
 
         changeLog.push({
-            kind: ChangeLogKind.NEW, message: `Adicionado configuração para escolher quais atributos serão apresentados no <b>Documentaion Hover</b> - (<a title=\"Open Pull Request #27\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/27\">PR #27</a> | <a title=\"Documentação da Feature\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações\">Documentação</a>)`
+            kind: ChangeLogKind.NEW, message: `Adicionado configuração para escolher quais atributos serão apresentados no <b>Documentation Hover</b> - (<a title=\"Open Pull Request #27\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/27\">PR #27</a> | <a title=\"Documentação da Configuração\"
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações\">Documentação</a>)`
         });
 
         changeLog.push({
@@ -41,7 +41,7 @@ export class WhatsNewDocContentProvider implements ContentProvider {
         });
 
         changeLog.push({
-            kind: ChangeLogKind.CHANGED, message: `Adicionado suporte ao atributo <code>@history</code> no <b>Hover</b> - (<a title=\"Open Issue #17\" 
+            kind: ChangeLogKind.CHANGED, message: `Apresentar o atributo <code>@history</code> no <b>Hover</b> - (<a title=\"Open Issue #17\" 
                 href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/17\">Issue #17</a>)`
         });
         

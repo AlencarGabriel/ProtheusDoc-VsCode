@@ -100,7 +100,7 @@
 							"12.1.25",
 							"12.1.27"
 						],
-						"description": "Versão padrão do identificador."
+						"description": "Versão padrão do identificador das documentações ProtheusDoc."
 					},
 					"protheusDoc.usa_decoracao": {
 						"type": "boolean",

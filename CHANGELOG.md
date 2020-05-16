@@ -67,7 +67,7 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ### Added
 
-- Implementado *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC. [Veja mais em https://github.com/AlencarGabriel/ProtheusDoc-VsCode#hover-de-documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode#hover-de-documentações).
+- Implementado *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC. [Veja mais em https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações).
 
 ---
 
@@ -75,7 +75,7 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ### Added
 
-- Implementado *Text Decoration* para os atributos do ProtheusDoc ficarem negritos (para desativar esta decoração [veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode#configurações-da-extensão)).
+- Implementado *Text Decoration* para os atributos do ProtheusDoc ficarem negritos (para desativar esta decoração [veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações)).
 
 ### Fixed
 
@@ -131,7 +131,7 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ### Changed
 
-- Alterado forma como o IntelliSense sugere o comando do ProtheusDoc. Para mais informações [veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode#snippets).
+- Alterado forma como o IntelliSense sugere o comando do ProtheusDoc. Para mais informações [veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Comandos#snippets).
 
 ### Fixed
 
