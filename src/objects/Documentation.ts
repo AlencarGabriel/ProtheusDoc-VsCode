@@ -96,7 +96,7 @@ export class Documentation {
         let dirs = this.file.fsPath.toString().split(path.sep);
         const args = [{ file: this.file.toString(), line: this.line }]; 
         const link = vscode.Uri.parse(`command:protheusdoc.openFile?${encodeURIComponent(JSON.stringify(args))}`);
-        doc.appendMarkdown("\r\n **Localização**: [" + dirs[dirs.length - 2] + path.sep + dirs[dirs.length - 1] + "](" + `${link}` + ") \r\n");
+        doc.appendMarkdown("\r\n **Localização**: [" + dirs[dirs.length - 2] + path.sep + dirs[dirs.length - 1] + ":" + this.line.toString() + "](" + `${link}` + ") \r\n");
 
         return doc;
     }
@@ -128,7 +128,7 @@ export class ProtheusDocToDoc {
         this._expressionType = /(@type\s*)(\w+)/i;
         this._expressionParams = /(@param\s*)(\w+\s*)(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
         this._expressionReturn = /(@return\s*)(\w+\s*)(,\s*[^:@\n]*)?/im;
-        this._expressionHistories = /(@history\s*)([^:@\n\,]*)(,\s*[^:@\n\,]*)?(,\s*[^:@\,]*)?/img;
+        this._expressionHistories = /(@history\s*)([^:@\n\,]*)(,\s*[^:@\n\,]*)?(,\s*[^:@\/]*)?/img;
         this.identifier = "";
         this.description = "";
         this.type = "";
