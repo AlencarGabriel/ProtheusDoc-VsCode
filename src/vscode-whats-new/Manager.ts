@@ -51,20 +51,19 @@ export class WhatsNewManager {
         // Get path to resource on disk
         const onDiskPath = vscode.Uri.file(
             path.join(this.context.extensionPath, "vscode-whats-new", "ui", "whats-new.html"));
-        const pageUri = onDiskPath.with({ scheme: "vscode-resource" });
 
         // Local path to main script run in the webview
         const cssPathOnDisk = vscode.Uri.file(
             path.join(this.context.extensionPath, "vscode-whats-new", "ui", "main.css"));
-        const cssUri = cssPathOnDisk.with({ scheme: "vscode-resource" });        
+        const cssUri = panel.webview.asWebviewUri(cssPathOnDisk);       
 
         // Local path to main script run in the webview
         const logoPathOnDisk = vscode.Uri.file(
             path.join(this.context.extensionPath, "images", "Icon.png"));
-        const logoUri = logoPathOnDisk.with({ scheme: "vscode-resource" });  
+        const logoUri = panel.webview.asWebviewUri(logoPathOnDisk);  
         
-        vscode.commands.executeCommand("workbench.action.closePanel").then( e => {
-            panel.webview.html = this.getWebviewContentLocal(pageUri.fsPath, cssUri.toString(), logoUri.toString());
+        vscode.commands.executeCommand("workbench.action.closePanel").then(() => {
+            panel.webview.html = this.getWebviewContentLocal(onDiskPath.fsPath, cssUri.toString(), logoUri.toString());
         });
     }
 
