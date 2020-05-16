@@ -69,7 +69,7 @@ Veja mais na Wiki [Tabela de documentações](https://github.com/AlencarGabriel/
 
 ---
 
-## Configurações da extensão
+## Configurações da extensão e valores default
 
 Veja na Wiki [Configurações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações).
 
