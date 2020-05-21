@@ -96,7 +96,7 @@ export class Documentation {
         let dirs = this.file.fsPath.toString().split(path.sep);
         const args = [{ file: this.file.toString(), line: this.line }]; 
         const link = vscode.Uri.parse(`command:protheusdoc.openFile?${encodeURIComponent(JSON.stringify(args))}`);
-        doc.appendMarkdown("\r\n **Localização**: [" + dirs[dirs.length - 2] + path.sep + dirs[dirs.length - 1] + ":" + this.line.toString() + "](" + `${link}` + ") \r\n");
+        doc.appendMarkdown("\r\n **Localização**: [" + dirs[dirs.length - 2] + path.sep + dirs[dirs.length - 1] + ":" + (this.line + 1).toString() + "](" + `${link}` + ") \r\n");
 
         return doc;
     }
