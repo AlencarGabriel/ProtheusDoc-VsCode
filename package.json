@@ -221,7 +221,7 @@
 	},
 	"dependencies": {
 		"opn": "^6.0.0",
-		"protheusdoc-html": "^1.0.9",
+		"protheusdoc-html": "^1.1.1",
 		"semver": "^7.1.3"
 	}
 }
