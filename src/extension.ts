@@ -26,6 +26,9 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(updateTableDoc());
 	context.subscriptions.push(generateHTML());
 	context.subscriptions.push(addOpenHTML());
+	context.subscriptions.push(addGenerateHTMLFolder());
+	context.subscriptions.push(addGenerateHTMLFilesOpened());
+	context.subscriptions.push(addGenerateHTMLFile());
 
 	vscode.languages.registerHoverProvider('advpl', {
 		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
@@ -251,6 +254,228 @@ export function addOpenHTML() {
 			});
 		}
 
+	});
+
+	return disposable;
+}
+
+/**
+ * Registra o bloco de comando para gerar documentação HTML da pasta
+ */
+export function addGenerateHTMLFolder() {
+	let disposable = vscode.commands.registerCommand('protheusdoc.generateHTMLFolder', function (context) {
+		let geradorHtml: ProtheusDocHTML = new ProtheusDocHTML();
+		let util = new Utils();
+		let dirDoc = util.getDirDoc();
+
+		if (context) {
+
+			let cResource = context.fsPath;
+
+			if (fs.lstatSync(cResource).isDirectory()) {
+
+				if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+					let paths: string[] = [];
+
+					// Captura todas as pastas da Workspace
+					vscode.workspace.workspaceFolders.forEach((folder: vscode.WorkspaceFolder) => {
+						paths.push(folder.uri.fsPath);
+					});
+
+					// Verifica se o diretório de documentações informado pelo usuário existe
+					if (dirDoc === "" || !fs.existsSync(dirDoc)) {
+						dirDoc = paths[0];
+					}
+
+					vscode.window.withProgress({
+						location: vscode.ProgressLocation.Window,
+						title: "Gerando documentação HTML...",
+						cancellable: false
+					}, (progress, token) => {
+
+						token.onCancellationRequested(() => {
+							vscode.window.showWarningMessage("Geração de documentação HTML cancelada.");
+						});
+
+						return geradorHtml.ProjectInspect([cResource], path.join(dirDoc, util.getFolderDoc()))
+							.then(() => {
+								vscode.window.showInformationMessage("Documentação gerada com sucesso em " + path.join(dirDoc, util.getFolderDoc()), "Abrir documentação")
+									.then(e => {
+										if (e === "Abrir documentação") {
+											vscode.commands.executeCommand("protheusdoc.openHTML");
+										}
+									});
+							})
+							.catch(() => { vscode.window.showErrorMessage("Não foi possível gerar a documentação na pasta " + path.join(dirDoc, util.getFolderDoc())); });
+					});
+
+				} else {
+					vscode.window.showErrorMessage("Para geração da documentação HTML deve haver uma Workspace salva.");
+				}
+			}
+			else {
+				vscode.window.showInformationMessage("Necessário selecionar uma pasta.");
+			}
+		}
+		else {
+			vscode.window.showInformationMessage("Necessário selecionar uma pasta.");
+		}
+	});
+
+	return disposable;
+}
+
+/**
+ * Registra o bloco de comando para gerar documentação HTML de fontes abertos
+ */
+export function addGenerateHTMLFilesOpened() {
+	let disposable = vscode.commands.registerCommand('protheusdoc.generateHTMLOpenedFiles', async function () {
+		let geradorHtml: ProtheusDocHTML = new ProtheusDocHTML();
+		let util = new Utils();
+		let dirDoc = util.getDirDoc();
+		let firstDocument: vscode.TextEditor;
+		let finish: boolean = false;
+
+		if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+			let pathesWorkspace: string[] = [];
+			let pathesDoc: string[] = [];
+
+			// Captura todas as pastas da Workspace
+			vscode.workspace.workspaceFolders.forEach((folder: vscode.WorkspaceFolder) => {
+				pathesWorkspace.push(folder.uri.fsPath);
+			});
+
+			// Verifica se o diretório de documentações informado pelo usuário existe
+			if (dirDoc === "" || !fs.existsSync(dirDoc)) {
+				dirDoc = pathesWorkspace[0];
+			}
+
+			// Percorre todos os arquivos abertos do editor
+			do {
+
+				// Posiciona no próximo arquivo
+				await vscode.commands.executeCommand("workbench.action.nextEditor").then(e => {
+
+					if (vscode.window.activeTextEditor) {
+						// Caso o primeiro documento não tenha sido definido, adiciona no array e define este como o primeiro.
+						if (!firstDocument) {
+							firstDocument = vscode.window.activeTextEditor;
+							pathesDoc.push(firstDocument.document.uri.fsPath);
+						} else {
+							// Caso o documento posicionado seja o mesmo do primeiro, termina o loop
+							if (firstDocument.document.fileName === vscode.window.activeTextEditor.document.fileName) {
+								finish = true;
+							} else {
+								// Se não adiciona no array
+								pathesDoc.push(vscode.window.activeTextEditor.document.uri.fsPath);
+							}
+						}
+					}
+
+				});
+
+				// Caso tenha finalizado o Loop, volta para o primeiro arquivo do posicionamento, pois o Loop já começa mudando de arquivo
+				if (finish) {
+					await vscode.commands.executeCommand("workbench.action.previousEditor");
+				}
+
+			} while (!finish);
+
+			if (pathesDoc.length > 0) {
+
+				vscode.window.withProgress({
+					location: vscode.ProgressLocation.Window,
+					title: "Gerando documentação HTML...",
+					cancellable: false
+				}, (progress, token) => {
+
+					token.onCancellationRequested(() => {
+						vscode.window.showWarningMessage("Geração de documentação HTML cancelada.");
+					});
+
+					return geradorHtml.FilesInspect(pathesDoc, path.join(dirDoc, util.getFolderDoc()))
+						.then(() => {
+							vscode.window.showInformationMessage("Documentação gerada com sucesso em " + path.join(dirDoc, util.getFolderDoc()), "Abrir documentação")
+								.then(e => {
+									if (e === "Abrir documentação") {
+										vscode.commands.executeCommand("protheusdoc.openHTML");
+									}
+								});
+						})
+						.catch(() => { vscode.window.showErrorMessage("Não foi possível gerar a documentação na pasta " + path.join(dirDoc, util.getFolderDoc())); });
+				});
+			}
+
+		} else {
+			vscode.window.showErrorMessage("Para geração da documentação HTML deve haver uma Workspace salva.");
+		}
+
+	});
+
+	return disposable;
+}
+
+/**
+ * Registra o bloco de comando para gerar documentação HTML de arquivo
+ */
+export function addGenerateHTMLFile() {
+	let disposable = vscode.commands.registerCommand('protheusdoc.generateHTMLFile', function (context) {
+		let geradorHtml: ProtheusDocHTML = new ProtheusDocHTML();
+		let util = new Utils();
+		let dirDoc = util.getDirDoc();
+
+		if (context) {
+
+			let cResource = context.fsPath;
+
+			if (fs.lstatSync(cResource).isFile()) {
+
+				if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+					let paths: string[] = [];
+
+					// Captura todas as pastas da Workspace
+					vscode.workspace.workspaceFolders.forEach((folder: vscode.WorkspaceFolder) => {
+						paths.push(folder.uri.fsPath);
+					});
+
+					// Verifica se o diretório de documentações informado pelo usuário existe
+					if (dirDoc === "" || !fs.existsSync(dirDoc)) {
+						dirDoc = paths[0];
+					}
+
+					vscode.window.withProgress({
+						location: vscode.ProgressLocation.Window,
+						title: "Gerando documentação HTML...",
+						cancellable: false
+					}, (progress, token) => {
+
+						token.onCancellationRequested(() => {
+							vscode.window.showWarningMessage("Geração de documentação HTML cancelada.");
+						});
+
+						return geradorHtml.FilesInspect([cResource], path.join(dirDoc, util.getFolderDoc()))
+							.then(() => {
+								vscode.window.showInformationMessage("Documentação gerada com sucesso em " + path.join(dirDoc, util.getFolderDoc()), "Abrir documentação")
+									.then(e => {
+										if (e === "Abrir documentação") {
+											vscode.commands.executeCommand("protheusdoc.openHTML");
+										}
+									});
+							})
+							.catch(() => { vscode.window.showErrorMessage("Não foi possível gerar a documentação na pasta " + path.join(dirDoc, util.getFolderDoc())); });
+					});
+
+				} else {
+					vscode.window.showErrorMessage("Para geração da documentação HTML deve haver uma Workspace salva.");
+				}
+			}
+			else {
+				vscode.window.showInformationMessage("Necessário selecionar um arquivo.");
+			}
+		}
+		else {
+			vscode.window.showInformationMessage("Necessário selecionar um arquivo.");
+		}
 	});
 
 	return disposable;
