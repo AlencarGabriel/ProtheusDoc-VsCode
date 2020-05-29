@@ -2,7 +2,7 @@
 	"name": "protheusdoc-vscode",
 	"displayName": "ProtheusDoc for VsCode (AdvPL)",
 	"description": "Suporte à documentação TOTVS ProtheusDoc para VsCode.",
-	"version": "0.4.7",
+	"version": "0.5.0",
 	"publisher": "AlencarGabriel",
 	"icon": "images/Icon.png",
 	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
@@ -155,7 +155,7 @@
 							"12.1.25",
 							"12.1.27"
 						],
-						"description": "Versão padrão do identificador."
+						"description": "Versão padrão do identificador das documentações ProtheusDoc."
 					},
 					"protheusDoc.usa_decoracao": {
 						"type": "boolean",
@@ -166,6 +166,21 @@
 						"type": "boolean",
 						"default": true,
 						"description": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
+					},
+					"protheusDoc.marcadores_ocultos_hover": {
+						"type": "array",
+						"default": [],
+						"description": "Marcadores da documentação que serão ocultos ao passar o mouse por uma Função, Classe ou Método.",
+						"uniqueItems": true,
+						"items": {
+							"type": "string",
+							"title": "Marcadores disponíveis para ocultar no hover",
+							"enum": [
+								"Params",
+								"Return",
+								"History"
+							]
+						}
 					},
 					"protheusDoc.diretorio_doc": {
 						"type": "string",
@@ -187,7 +202,15 @@
 							"**/*.apl",
 							"**/*.tlpp",
 							"**/*.ahu",
-							"**/*.apw"
+							"**/*.apw",
+							"**/*.PRW",
+							"**/*.PRX",
+							"**/*.PRG",
+							"**/*.APH",
+							"**/*.APL",
+							"**/*.TLPP",
+							"**/*.AHU",
+							"**/*.APW"
 						],
 						"description": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários.",
 						"items": {
@@ -253,7 +276,7 @@
 	},
 	"dependencies": {
 		"opn": "^6.0.0",
-		"protheusdoc-html": "^1.0.9",
+		"protheusdoc-html": "^1.1.1",
 		"semver": "^7.1.3"
 	}
 }

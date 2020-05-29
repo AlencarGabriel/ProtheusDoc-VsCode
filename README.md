@@ -34,8 +34,7 @@ Acesse a Wiki para conhecer os recursos, comandos e atalhos da extensão. Lá vo
 - [x] Implementar geração do cabeçalho lendo a declaração da Classe;
 - [x] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
 - [x] Implementar *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC;
-- [ ] ~~Implementar configuração para definir a estrutura dos marcadores para Função, Método e Classe;~~
-- [ ] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
+- [x] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções do fonte;
 - [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade);
 
@@ -69,7 +68,7 @@ Veja mais na Wiki [Tabela de documentações](https://github.com/AlencarGabriel/
 
 ---
 
-## Configurações da extensão
+## Configurações da extensão e valores default
 
 Veja na Wiki [Configurações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações).
 
