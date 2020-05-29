@@ -26,7 +26,10 @@
 		"onCommand:protheusdoc.updateTableDoc",
 		"onCommand:protheusdoc.whatsNew",
 		"onCommand:protheusdoc.generateHTML",
-		"onCommand:protheusdoc.openHTML"
+		"onCommand:protheusdoc.openHTML",
+		"onCommand:protheusdoc.generateHTMLOpenedFiles",
+		"onCommand:protheusdoc.generateHTMLFolder",
+		"onCommand:protheusdoc.generateHTMLFile"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -45,13 +48,65 @@
 			},
 			{
 				"command": "protheusdoc.generateHTML",
-				"title": "ProtheusDoc - Gerar documentação HTML"
+				"title": "ProtheusDoc - Gerar documentação HTML - Workspace"
 			},
 			{
 				"command": "protheusdoc.openHTML",
 				"title": "ProtheusDoc - Abrir documentação HTML"
+			},
+			{
+				"command": "protheusdoc.generateHTMLOpenedFiles",
+				"title": "ProtheusDoc - Gerar documentação HTML - Arquivos abertos"
+			},
+			{
+				"command": "protheusdoc.generateHTMLFolder",
+				"title": "ProtheusDoc - Gerar documentação HTML - Pasta"
+			},
+			{
+				"command": "protheusdoc.generateHTMLFile",
+				"title": "ProtheusDoc - Gerar documentação HTML - Arquivo"
 			}
 		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "protheusdoc.generateHTMLFolder",
+					"when": "explorerResourceIsFolder",
+					"group": "ProtheusDoc"
+				},
+				{
+					"command": "protheusdoc.generateHTMLFile",
+					"when": "resourceLangId == advpl",
+					"group": "ProtheusDoc"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "protheusdoc.generateHTMLOpenedFiles",
+					"group": "ProtheusDoc",
+					"when": "resourceLangId == advpl"
+				}
+			],
+			"editor/title/context": [
+				{
+					"command": "protheusdoc.generateHTMLOpenedFiles",
+					"group": "ProtheusDoc",
+					"when": "resourceLangId == advpl"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "protheusdoc.generateHTMLOpenedFiles",
+					"group": "ProtheusDoc",
+					"when": "resourceLangId == advpl"
+				},
+				{
+					"command": "protheusdoc.generateHTMLFile",
+					"group": "ProtheusDoc",
+					"when": "resourceLangId == advpl"
+				}
+			]
+		},
 		"keybindings": [
 			{
 				"command": "protheusdoc.addDocBlock",
