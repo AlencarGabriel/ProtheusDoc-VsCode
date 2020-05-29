@@ -6,6 +6,18 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.6.0] - 2020-05-29
+
+### Added
+
+- Implementado geração de documentação HTML de arquivos e pastas [#29](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/29) | [PR #31](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/31).
+
+### Fixed
+
+- Numeração incorreta no link da documentação [#30](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/30).
+
+---
+
 ## [0.5.0] - 2020-05-16
 
 ### Added

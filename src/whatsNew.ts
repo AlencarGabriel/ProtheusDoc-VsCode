@@ -18,46 +18,14 @@ export class WhatsNewDocContentProvider implements ContentProvider {
         const changeLog: ChangeLogItem[] = [];
 
         changeLog.push({
-            kind: ChangeLogKind.NEW, message: `Link da localização posicionar na linha da documentação (Hover) - (<a title=\"Open Issue #16\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/16\">Issue #16</a> | <a title=\"Documentação da Feature\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações#link-da-localização\">Documentação</a>)`
-        });
-
-        changeLog.push({
-            kind: ChangeLogKind.NEW, message: `Adicionado configuração para escolher quais atributos serão apresentados no <b>Documentation Hover</b> - (<a title=\"Open Pull Request #27\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/27\">PR #27</a> | <a title=\"Documentação da Configuração\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações\">Documentação</a>)`
-        });
-
-        changeLog.push({
-            kind: ChangeLogKind.NEW, message: `Implementado geração da <b>Documentação HTML</b> dos fontes - (<a title=\"Open Pull Request #25\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/25\">PR #25</a> | <a title=\"Documentação da Feature\"
+            kind: ChangeLogKind.NEW, message: `Implementado geração da documentação HTML de <b>arquivos e pastas</b> específicos - (<a title=\"Open Pull Request #31\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/31\">PR #31</a> | <a title=\"Documentação da Feature\"
                 href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Documentação-HTML\">Documentação</a>)`
         });
-
-        changeLog.push({
-            kind: ChangeLogKind.NEW, message: `Adicionar suporte ao atributo <code>@link</code> - (<a title=\"Open Issue #23\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/23\">Issue #23</a>)`
-        });
-
-        changeLog.push({
-            kind: ChangeLogKind.CHANGED, message: `Apresentar o atributo <code>@history</code> no <b>Hover</b> - (<a title=\"Open Issue #17\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/17\">Issue #17</a>)`
-        });
         
         changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Erro na detecção de parâmetros - (<a title=\"Open Issue #22\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/22\">Issue #22</a>)`
-        });
-        
-        changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `<b>Tabela de documentações</b> ignorando extensão PRW maiúscula - (<a title=\"Open Issue #24\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/24\">Issue #24</a>)`
-        });
-        
-        changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Adopt VS Code's <code>asWebviewUri</code> API  - (<a title=\"Open Issue #28\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/28\">Issue #28</a>)`
+            kind: ChangeLogKind.FIXED, message: `Numeração incorreta no link da documentação - (<a title=\"Open Issue #30\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/30\">Issue #30</a>)`
         });
 
         return changeLog;
