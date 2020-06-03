@@ -9,6 +9,7 @@ import { WhatsNewDocContentProvider } from './whatsNew';
 import { WhatsNewManager } from './vscode-whats-new/Manager';
 import * as fs from 'fs';
 import * as path from 'path';
+import { ProtheusDocDiagnostics } from './objects/ProtheusDocDiagnostics';
 
 let documentations: Documentation[];
 
@@ -17,8 +18,9 @@ export function activate(context: vscode.ExtensionContext) {
 	console.log("protheusdoc-vscode has activated.");
 
 	let decorator = new ProtheusDocDecorator();
-
+	let diagnostics = new ProtheusDocDiagnostics();
 	documentations = new Array<Documentation>();
+	const collection = vscode.languages.createDiagnosticCollection('ProtheusDoc');
 
 	decorator.triggerUpdateDecorations();
 
@@ -83,16 +85,20 @@ export function activate(context: vscode.ExtensionContext) {
 			decorator.triggerUpdateDecorations();
 
 			searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
+			
+			diagnostics.updateDiagnostics(editor.document, collection);
 		}
-
+		
 	}, null, context.subscriptions);
-
+	
 	vscode.workspace.onDidChangeTextDocument(event => {
-
+		
 		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
 			decorator.triggerUpdateDecorations();
-
+			
 			searchProtheusDocInFile(event.document.getText(), event.document.uri);
+
+			diagnostics.updateDiagnostics(event.document, collection);
 		}
 
 	}, null, context.subscriptions);
