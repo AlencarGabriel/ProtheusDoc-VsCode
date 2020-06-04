@@ -85,11 +85,19 @@ export function activate(context: vscode.ExtensionContext) {
 			decorator.triggerUpdateDecorations();
 
 			searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
-			
-			diagnostics.updateDiagnostics(editor.document, collection);
+
+			diagnostics.triggerUpdateDiagnostics(editor.document, collection);
 		}
 		
 	}, null, context.subscriptions);
+
+	vscode.workspace.onDidSaveTextDocument(document => {
+
+		if (vscode.window.activeTextEditor && document === vscode.window.activeTextEditor.document) {
+			diagnostics.triggerUpdateDiagnostics(document, collection);
+		}
+
+	});
 	
 	vscode.workspace.onDidChangeTextDocument(event => {
 		
@@ -98,7 +106,7 @@ export function activate(context: vscode.ExtensionContext) {
 			
 			searchProtheusDocInFile(event.document.getText(), event.document.uri);
 
-			diagnostics.updateDiagnostics(event.document, collection);
+			// diagnostics.triggerUpdateDiagnostics(event.document, collection);
 		}
 
 	}, null, context.subscriptions);
