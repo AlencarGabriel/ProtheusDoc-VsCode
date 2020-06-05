@@ -94,6 +94,19 @@ export class Utils {
     }
 
     /**
+     * Verifica se o usuário deseja que seja validado os atributos ProtheusDoc.
+     */
+    public getValidAttr(): boolean {
+        let validAttr = this.getConfig().get<boolean>("valida_atributos");
+
+        if (validAttr !== undefined) {
+            return validAttr;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Verifica se o usuário deseja utilizar a tabela de documentações da Workspace.
      */
     public getWorkspaceDoc(): boolean {

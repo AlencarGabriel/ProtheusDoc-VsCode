@@ -14,15 +14,21 @@ export class ProtheusDocDiagnostics {
     private _expressionParams: RegExp;
     private _expressionReturn: RegExp;
     private _expressionHistories: RegExp;
-    private _timeout: NodeJS.Timer | undefined = undefined;
+    private _expressionSince: RegExp;
+    private _expressionProtheusDoc: RegExp;
+    private _timeout: NodeJS.Timer | undefined = undefined; private _util: Utils;
 
     constructor() {
+        this._util = new Utils();
+
         this._expressionHeader = /(\{Protheus\.doc\}\s*)([^*\n]*)(\n[^:@]*)/gmi;
         this._expressionType = /(@type\s*)(\w+)?/gi;
         this._expressionAuthor = /(@author\s*)(\w+)?/gi;
         this._expressionParams = /(@param\s*)(\w+\s*)?(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
         this._expressionReturn = /(@return\s*)(\w+\s*)?(,\s*[^:@\n]*)?/gim;
         this._expressionHistories = /(@history\s*)([^:@\n\,]*)?(,\s*[^:@\n\,]*)?(,\s*[^:@\/]*)?/img;
+        this._expressionSince = /(@since\s*)([^:@\n\,]*)?/gi;
+        this._expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
     }
 
     /**
@@ -148,7 +154,7 @@ export class ProtheusDocDiagnostics {
         let text = document.getText();
         let diagnostics = new Array<vscode.Diagnostic>();
 
-        // Percorre via expressão regular todas as ocorrencias de atributos Author do ProtheusDoc no arquivo.
+        // Percorre via expressão regular todas as ocorrencias de atributos Param do ProtheusDoc no arquivo.
         while (match = this._expressionParams.exec(text)) {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
@@ -197,7 +203,7 @@ export class ProtheusDocDiagnostics {
         let text = document.getText();
         let diagnostics = new Array<vscode.Diagnostic>();
 
-        // Percorre via expressão regular todas as ocorrencias de atributos Author do ProtheusDoc no arquivo.
+        // Percorre via expressão regular todas as ocorrencias de atributos Return do ProtheusDoc no arquivo.
         while (match = this._expressionReturn.exec(text)) {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
@@ -239,7 +245,7 @@ export class ProtheusDocDiagnostics {
         let text = document.getText();
         let diagnostics = new Array<vscode.Diagnostic>();
 
-        // Percorre via expressão regular todas as ocorrencias de atributos Author do ProtheusDoc no arquivo.
+        // Percorre via expressão regular todas as ocorrencias de atributos History do ProtheusDoc no arquivo.
         while (match = this._expressionHistories.exec(text)) {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
@@ -280,6 +286,83 @@ export class ProtheusDocDiagnostics {
     }
 
     /**
+     * Valida as datas de criação das documentações.
+     * @param document Documento a ser validado.
+     */
+    private validSince(document: vscode.TextDocument): vscode.Diagnostic[] {
+        let match;
+        let text = document.getText();
+        let diagnostics = new Array<vscode.Diagnostic>();
+
+        // Percorre via expressão regular todas as ocorrencias de atributos Since do ProtheusDoc no arquivo.
+        while (match = this._expressionSince.exec(text)) {
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+
+            if (!this.validAttr(match[2]) || !match[2]?.trim().match(/\//i)) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Data da documentação não foi informada ou é inválida.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: ''
+                });
+            }
+
+        }
+
+        return diagnostics;
+
+    }
+
+    /**
+     * Valida os atributos necessários faltantes das documentações.
+     * @param document Documento a ser validado.
+     */
+    private validMissing(document: vscode.TextDocument): vscode.Diagnostic[] {
+        let match;
+        let text = document.getText();
+        let diagnostics = new Array<vscode.Diagnostic>();
+
+        // Percorre via expressão regular todas as ocorrencias de documentação ProtheusDoc no arquivo.
+        while (match = this._expressionProtheusDoc.exec(text)) {
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+
+            if (!match[2].trim().match(/@type/i)) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Não foi definido o tipo da documentação.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: '',
+                    relatedInformation: [
+                        new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Utilize o Snippet `@type` para definir o tipo da documentação.')
+                    ]
+                });
+            }
+            
+            // Só valida o autor caso nas configurações de marcadores ocultos não esteja definido este atributo
+            if (!match[2].trim().match(/@author/i) && !this._util.getHiddenMarkers().includes("Author")) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Não foi definido o autor desse identificador.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: '',
+                    relatedInformation: [
+                        new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Utilize o Snippet `@author` para definir o autor da documentação.')
+                    ]
+                });
+            }
+
+        }
+
+        return diagnostics;
+
+    }
+
+    /**
      * Chama as validações de cada atributo e monta uma coleção de diagnósticos.
      * @param document Documento a ser validado.
      * @param collection Coleção de diagnosticos.
@@ -296,7 +379,9 @@ export class ProtheusDocDiagnostics {
             instance.validAuthor(document),
             instance.validParam(document),
             instance.validReturn(document),
-            instance.validHistory(document)
+            instance.validHistory(document),
+            instance.validSince(document),
+            instance.validMissing(document)
         );
 
         collection.set(document.uri, diagnostics);
@@ -312,17 +397,17 @@ export class ProtheusDocDiagnostics {
             vscode.window.activeTextEditor?.document.languageId === ELanguageSupport["4gl"]
         ) {
 
-            // Verifica se o usuário deseja que os atributos sejam decorados.
-            // if (this._util.getUseDecorator()) {
+            // Verifica se o usuário deseja validar os atributos obrigatórios.
+            if (this._util.getValidAttr()) {
 
-            if (this._timeout) {
-                clearTimeout(this._timeout);
-                this._timeout = undefined;
+                if (this._timeout) {
+                    clearTimeout(this._timeout);
+                    this._timeout = undefined;
+                }
+
+                this._timeout = setTimeout(this.updateDiagnostics, 0, document, collection, this);
+
             }
-
-            this._timeout = setTimeout(this.updateDiagnostics, 0, document, collection, this);
-
-            // }
         }
 
     }
