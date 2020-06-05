@@ -63,7 +63,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!this.validAttr(match[3])) {
+            if (!this.validAttr(match[3]) || match[3].trim().match(/description/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Descrição ou identificador da documentação não informado.',
@@ -159,7 +159,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!this.validAttr(match[2]) || match[2]?.trim() === "param_name") {
+            if (!this.validAttr(match[2]) || match[2].trim() === "param_name") {
                 diagnostics.push({
                     code: '',
                     message: 'Nome do parâmetro não foi informado.',
@@ -179,7 +179,7 @@ export class ProtheusDocDiagnostics {
                 });
             }
 
-            if (!this.validAttr(match[4]) || match[4]?.trim().match(/param_description/i)) {
+            if (!this.validAttr(match[4]) || match[4].trim().match(/param_description/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Descrição do parâmetro não foi informada.',
@@ -221,7 +221,7 @@ export class ProtheusDocDiagnostics {
                 });
             }
 
-            if (!this.validAttr(match[3]) || match[3]?.trim().match(/return_description/i)) {
+            if (!this.validAttr(match[3]) || match[3].trim().match(/return_description/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Descrição do retorno não foi informada.',
@@ -250,7 +250,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!this.validAttr(match[2]) || !match[2]?.trim().match(/\//i)) {
+            if (!this.validAttr(match[2]) || !match[2].trim().match(/\//i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Data do histórico não foi informada ou é inválida.',
@@ -260,7 +260,7 @@ export class ProtheusDocDiagnostics {
                 });
             }
 
-            if (!this.validAttr(match[3].replace(",", "")) || match[3]?.trim().match(/username/i)) {
+            if (!this.validAttr(match[3].replace(",", "")) || match[3].trim().match(/username/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Autor do histórico não foi informado.',
@@ -270,7 +270,7 @@ export class ProtheusDocDiagnostics {
                 });
             }
 
-            if (!this.validAttr(match[4].replace(",", "")) || match[4]?.trim().match(/description/i)) {
+            if (!this.validAttr(match[4].replace(",", "")) || match[4].trim().match(/description/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Descrição do histórico não foi informada.',
@@ -299,7 +299,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!this.validAttr(match[2]) || !match[2]?.trim().match(/\//i)) {
+            if (!this.validAttr(match[2]) || !match[2].trim().match(/\//i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Data da documentação não foi informada ou é inválida.',
