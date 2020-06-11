@@ -35,6 +35,7 @@ Acesse a Wiki para conhecer os recursos, comandos e atalhos da extensão. Lá vo
 - [x] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
 - [x] Implementar *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC;
 - [x] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
+- [ ] Implementar validação da sintaxe e de valores preenchidos dos principais atributos ProtheusDoc;
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções do fonte;
 - [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade);
 
