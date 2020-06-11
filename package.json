@@ -172,6 +172,21 @@
 						"default": true,
 						"description": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
 					},
+					"protheusDoc.marcadores_nao_validar": {
+						"type": "array",
+						"default": [],
+						"description": "Não validar os seguintes atributos opcionais do ProtheusDoc.",
+						"uniqueItems": true,
+						"items": {
+							"type": "string",
+							"title": "Atributos disponíveis para não validar",
+							"enum": [
+								"Params",
+								"Return",
+								"History"
+							]
+						}
+					},
 					"protheusDoc.marcadores_ocultos_hover": {
 						"type": "array",
 						"default": [],

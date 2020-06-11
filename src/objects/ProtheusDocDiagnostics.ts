@@ -15,6 +15,7 @@ export class ProtheusDocDiagnostics {
     private _expressionReturn: RegExp;
     private _expressionHistories: RegExp;
     private _expressionSince: RegExp;
+    private _expressionVersion: RegExp;
     private _expressionProtheusDoc: RegExp;
     private _timeout: NodeJS.Timer | undefined = undefined; private _util: Utils;
 
@@ -26,8 +27,10 @@ export class ProtheusDocDiagnostics {
         this._expressionAuthor = /(@author\s*)(\w+)?/gi;
         this._expressionParams = /(@param\s*)(\w+\s*)?(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
         this._expressionReturn = /(@return\s*)(\w+\s*)?(,\s*[^:@\n]*)?/gim;
+        // FIXME: Melhorar essa expressão, pois tem itens com: "*=", ":" e "@" não estão sendo conderados.
         this._expressionHistories = /(@history\s*)([^:@\n\,]*)?(,\s*[^:@\n\,]*)?(,\s*[^:@\/]*)?/img;
         this._expressionSince = /(@since\s*)([^:@\n\,]*)?/gi;
+        this._expressionVersion = /(@version\s*)([^:@\n\,]*)?/gi;
         this._expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
     }
 
@@ -154,6 +157,10 @@ export class ProtheusDocDiagnostics {
         let text = document.getText();
         let diagnostics = new Array<vscode.Diagnostic>();
 
+        if (this._util.getMarkersDontValid().includes("Params")){
+            return diagnostics;
+        }
+
         // Percorre via expressão regular todas as ocorrencias de atributos Param do ProtheusDoc no arquivo.
         while (match = this._expressionParams.exec(text)) {
             const startPos = document.positionAt(match.index);
@@ -203,6 +210,10 @@ export class ProtheusDocDiagnostics {
         let text = document.getText();
         let diagnostics = new Array<vscode.Diagnostic>();
 
+        if (this._util.getMarkersDontValid().includes("Return")) {
+            return diagnostics;
+        }
+
         // Percorre via expressão regular todas as ocorrencias de atributos Return do ProtheusDoc no arquivo.
         while (match = this._expressionReturn.exec(text)) {
             const startPos = document.positionAt(match.index);
@@ -244,6 +255,10 @@ export class ProtheusDocDiagnostics {
         let match;
         let text = document.getText();
         let diagnostics = new Array<vscode.Diagnostic>();
+
+        if (this._util.getMarkersDontValid().includes("History")) {
+            return diagnostics;
+        }
 
         // Percorre via expressão regular todas as ocorrencias de atributos History do ProtheusDoc no arquivo.
         while (match = this._expressionHistories.exec(text)) {
@@ -316,6 +331,39 @@ export class ProtheusDocDiagnostics {
     }
 
     /**
+     * Valida as versões das documentações.
+     * @param document Documento a ser validado.
+     */
+    private validVersion(document: vscode.TextDocument): vscode.Diagnostic[] {
+        let match;
+        let text = document.getText();
+        let diagnostics = new Array<vscode.Diagnostic>();
+
+        // Percorre via expressão regular todas as ocorrencias de atributos Version do ProtheusDoc no arquivo.
+        while (match = this._expressionVersion.exec(text)) {
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+
+            if (!this.validAttr(match[2]) || match[2].trim().match(/version/i)) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Versão da documentação não foi informada ou é inválida.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: '',
+                    relatedInformation: [
+                        new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Caso não queira utilizar este atributo, considere-o na configuração `protheusDoc.marcadores_ocultos`.')
+                    ]
+                });
+            }
+
+        }
+
+        return diagnostics;
+
+    }
+
+    /**
      * Valida os atributos necessários faltantes das documentações.
      * @param document Documento a ser validado.
      */
@@ -351,7 +399,23 @@ export class ProtheusDocDiagnostics {
                     severity: vscode.DiagnosticSeverity.Warning,
                     source: '',
                     relatedInformation: [
-                        new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Utilize o Snippet `@author` para definir o autor da documentação.')
+                        new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Utilize o Snippet `@author` para definir o autor da documentação.'),
+                        new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Caso não queira utilizar este atributo, considere-o na configuração `protheusDoc.marcadores_ocultos`.')
+                    ]
+                });
+            }
+
+            // Só valida o since caso nas configurações de marcadores ocultos não esteja definido este atributo
+            if (!match[2].trim().match(/@since/i) && !this._util.getHiddenMarkers().includes("Since")) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Não foi definido a data de criação deste identificador.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: '',
+                    relatedInformation: [
+                        new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Utilize o Snippet `@since` para definir a data de criação da documentação.'),
+                        new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Caso não queira utilizar este atributo, considere-o na configuração `protheusDoc.marcadores_ocultos`.')
                     ]
                 });
             }
@@ -381,6 +445,7 @@ export class ProtheusDocDiagnostics {
             instance.validReturn(document),
             instance.validHistory(document),
             instance.validSince(document),
+            instance.validVersion(document),
             instance.validMissing(document)
         );
 

@@ -66,6 +66,19 @@ export class Utils {
             return [];
         }
     }
+
+    /**
+     * Busca os marcadores opcionais que o usuário não deseja validar.
+     */
+    public getMarkersDontValid(): String[] {
+        let markersDontValid = this.getConfig().get<Array<String>>("marcadores_nao_validar");
+
+        if (markersDontValid) {
+            return markersDontValid;
+        } else {
+            return [];
+        }
+    }
     
     /**
      * Busca os marcadores que serão ocultados no Hover de documentações.
