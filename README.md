@@ -41,7 +41,7 @@ Acesse a Wiki para conhecer os recursos, comandos e atalhos da extensão. Lá vo
 
 ---
 
-## Comandos da Extensão
+## Comandos & Atalhos da Extensão
 
 Veja mais na Wiki [Comandos](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Comandos).
 
@@ -72,6 +72,12 @@ Veja mais na Wiki [Tabela de documentações](https://github.com/AlencarGabriel/
 ## Configurações da extensão e valores default
 
 Veja na Wiki [Configurações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações).
+
+---
+
+## Diagnóstico das documentações ProtheusDoc
+
+Veja na Wiki [Diagnóstico das documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações).
 
 ---
 
