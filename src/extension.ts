@@ -70,7 +70,7 @@ export function activate(context: vscode.ExtensionContext) {
 				const line = document.lineAt(position.line).text;
 				const prefix = line.slice(0, position.character);
 
-				if (prefix.match(/^\s*pdoc|prot|add|p|a\w*$/i)) {
+				if (prefix.match(/^\s*pdoc|prot|add\w*$/i)) {
 					return [new ProtheusDocCompletionItem(document, position)];
 				} else {
 					return;
