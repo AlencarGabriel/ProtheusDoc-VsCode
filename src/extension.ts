@@ -70,7 +70,7 @@ export function activate(context: vscode.ExtensionContext) {
 				const line = document.lineAt(position.line).text;
 				const prefix = line.slice(0, position.character);
 
-				if (prefix.match(/^\s*pdoc|prot|add\w*$/i)) {
+				if (prefix.match(/^\s*pdoc|prot|add|p|a\w*$/i)) {
 					return [new ProtheusDocCompletionItem(document, position)];
 				} else {
 					return;
@@ -88,8 +88,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 			diagnostics.triggerUpdateDiagnostics(editor.document, collection);
 		}
-		
+
 	}, null, context.subscriptions);
+
+	vscode.workspace.onDidCloseTextDocument(document => {
+		collection.clear();
+	});
 
 	vscode.workspace.onDidSaveTextDocument(document => {
 
@@ -98,12 +102,12 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 
 	});
-	
+
 	vscode.workspace.onDidChangeTextDocument(event => {
-		
+
 		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
 			decorator.triggerUpdateDecorations();
-			
+
 			searchProtheusDocInFile(event.document.getText(), event.document.uri);
 
 			// diagnostics.triggerUpdateDiagnostics(event.document, collection);
@@ -130,7 +134,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// register the additional command (not really necessary, unless you want a command registered in your extension)
 	context.subscriptions.push(vscode.commands.registerCommand("protheusdoc.whatsNew", () => viewer.showPage()));
-	
+
 	// Registra o comando que abrirá o arquivo na linha da documentação
 	context.subscriptions.push(vscode.commands.registerCommand("protheusdoc.openFile", (args) => {
 		vscode.window.showTextDocument(vscode.Uri.parse(args.file)).then(textEditor => {
@@ -159,7 +163,7 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 	 * Limpa o texto antes de montar uma expressão regular.
 	 * @param string texto a ser limpo.
 	 */
-	function escapeRegExp(string:string) {
+	function escapeRegExp(string: string) {
 		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 	}
 
@@ -191,7 +195,7 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 		match.forEach(element => {
 			let doc = new ProtheusDocToDoc(element, uri);
 			let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
-			
+
 			// Adiciona a linha correspondente a documentação
 			doc.lineNumber = findLine(doc.identifier);
 

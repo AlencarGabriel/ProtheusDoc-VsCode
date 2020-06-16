@@ -175,7 +175,7 @@
 					"protheusDoc.marcadores_nao_validar": {
 						"type": "array",
 						"default": [],
-						"description": "Não validar os seguintes atributos opcionais do ProtheusDoc.",
+						"description": "Atributos opcionais do ProtheusDoc que não serão validados em sua sintaxe e valor inserido.",
 						"uniqueItems": true,
 						"items": {
 							"type": "string",
@@ -183,7 +183,11 @@
 							"enum": [
 								"Params",
 								"Return",
-								"History"
+								"History",
+								"Example",
+								"See",
+								"Obs",
+								"Link"
 							]
 						}
 					},

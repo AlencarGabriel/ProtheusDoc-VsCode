@@ -16,6 +16,10 @@ export class ProtheusDocDiagnostics {
     private _expressionHistories: RegExp;
     private _expressionSince: RegExp;
     private _expressionVersion: RegExp;
+    private _expressionExample: RegExp;
+    private _expressionSee: RegExp;
+    private _expressionObs: RegExp;
+    private _expressionLink: RegExp;
     private _expressionProtheusDoc: RegExp;
     private _timeout: NodeJS.Timer | undefined = undefined; private _util: Utils;
 
@@ -31,6 +35,10 @@ export class ProtheusDocDiagnostics {
         this._expressionHistories = /(@history\s*)([^:@\n\,]*)?(,\s*[^:@\n\,]*)?(,\s*[^:@\/]*)?/img;
         this._expressionSince = /(@since\s*)([^:@\n\,]*)?/gi;
         this._expressionVersion = /(@version\s*)([^:@\n\,]*)?/gi;
+        this._expressionExample = /(@example\s*)(\s*[^:@\/]*)/img;
+        this._expressionSee = /(@see\s*)([^:@\n\,]*)/gi;
+        this._expressionObs = /(@obs\s*)([^\º\/@]*)/img;
+        this._expressionLink = /(@link\s*)([^:@\n\,]*)/gi;
         this._expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
     }
 
@@ -133,7 +141,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!this.validAttr(match[2])) {
+            if (!this.validAttr(match[2]) || match[2].trim().match(/author/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Autor não foi informado.',
@@ -265,7 +273,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!this.validAttr(match[2]) || !match[2].trim().match(/\//i)) {
+            if (!this.validAttr(match[2]) || !(match[2].trim().match(/\//i) || match[2].trim().match(/\-/i))) {
                 diagnostics.push({
                     code: '',
                     message: 'Data do histórico não foi informada ou é inválida.',
@@ -314,7 +322,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!this.validAttr(match[2]) || !match[2].trim().match(/\//i)) {
+            if (!this.validAttr(match[2]) || !(match[2].trim().match(/\//i) || match[2].trim().match(/\-/i))) {
                 diagnostics.push({
                     code: '',
                     message: 'Data da documentação não foi informada ou é inválida.',
@@ -354,6 +362,141 @@ export class ProtheusDocDiagnostics {
                     relatedInformation: [
                         new vscode.DiagnosticRelatedInformation(new vscode.Location(document.uri, new vscode.Range(startPos, endPos)), 'Caso não queira utilizar este atributo, considere-o na configuração `protheusDoc.marcadores_ocultos`.')
                     ]
+                });
+            }
+
+        }
+
+        return diagnostics;
+
+    }
+
+    /**
+    * Valida o exemplo das documentações.
+    * @param document Documento a ser validado.
+    */
+    private validExample(document: vscode.TextDocument): vscode.Diagnostic[] {
+        let match;
+        let text = document.getText();
+        let diagnostics = new Array<vscode.Diagnostic>();
+
+        if (this._util.getMarkersDontValid().includes("Example")) {
+            return diagnostics;
+        }
+
+        // Percorre via expressão regular todas as ocorrencias de atributos Example do ProtheusDoc no arquivo.
+        while (match = this._expressionExample.exec(text)) {
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+
+            if (!this.validAttr(match[2]) || match[2].trim().match(/examples/i)) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Atributo `@example` informado mas não utilizado.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: ''
+                });
+            }
+        }
+
+        return diagnostics;
+
+    }
+
+    /**
+     * Valida os "Veja Mais" das documentações.
+     * @param document Documento a ser validado.
+     */
+    private validSee(document: vscode.TextDocument): vscode.Diagnostic[] {
+        let match;
+        let text = document.getText();
+        let diagnostics = new Array<vscode.Diagnostic>();
+
+        if (this._util.getMarkersDontValid().includes("See")) {
+            return diagnostics;
+        }
+
+        // Percorre via expressão regular todas as ocorrencias de atributos See do ProtheusDoc no arquivo.
+        while (match = this._expressionSee.exec(text)) {
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+
+            if (!this.validAttr(match[2]) || match[2].trim().match(/links_or_references/i)) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Atributo `@see` informado mas não utilizado.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: ''
+                });
+            }
+
+        }
+
+        return diagnostics;
+
+    }
+
+    /**
+     * Valida as Observações das documentações.
+     * @param document Documento a ser validado.
+     */
+    private validObs(document: vscode.TextDocument): vscode.Diagnostic[] {
+        let match;
+        let text = document.getText();
+        let diagnostics = new Array<vscode.Diagnostic>();
+
+        if (this._util.getMarkersDontValid().includes("Obs")) {
+            return diagnostics;
+        }
+
+        // Percorre via expressão regular todas as ocorrencias de atributos Obs do ProtheusDoc no arquivo.
+        while (match = this._expressionObs.exec(text)) {
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+
+            if (!this.validAttr(match[2]) || match[2].trim().match(/obs-text/i)) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Atributo `@obs` informado mas não utilizado.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: ''
+                });
+            }
+
+        }
+
+        return diagnostics;
+
+    }
+
+    /**
+     * Valida os Links das documentações.
+     * @param document Documento a ser validado.
+     */
+    private validLink(document: vscode.TextDocument): vscode.Diagnostic[] {
+        let match;
+        let text = document.getText();
+        let diagnostics = new Array<vscode.Diagnostic>();
+
+        if (this._util.getMarkersDontValid().includes("Link")) {
+            return diagnostics;
+        }
+
+        // Percorre via expressão regular todas as ocorrencias de atributos Link do ProtheusDoc no arquivo.
+        while (match = this._expressionLink.exec(text)) {
+            const startPos = document.positionAt(match.index);
+            const endPos = document.positionAt(match.index + match[0].length);
+
+            if (!this.validAttr(match[2]) || match[2].trim().match(/link-text/i)) {
+                diagnostics.push({
+                    code: '',
+                    message: 'Atributo `@link` informado mas não utilizado.',
+                    range: new vscode.Range(startPos, endPos),
+                    severity: vscode.DiagnosticSeverity.Warning,
+                    source: ''
                 });
             }
 
@@ -446,6 +589,10 @@ export class ProtheusDocDiagnostics {
             instance.validHistory(document),
             instance.validSince(document),
             instance.validVersion(document),
+            instance.validExample(document),
+            instance.validSee(document),
+            instance.validObs(document),
+            instance.validLink(document),
             instance.validMissing(document)
         );
 
