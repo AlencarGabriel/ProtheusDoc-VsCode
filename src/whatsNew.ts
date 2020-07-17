@@ -16,16 +16,10 @@ export class WhatsNewDocContentProvider implements ContentProvider {
 
     public provideChangeLog(): ChangeLogItem[] {
         const changeLog: ChangeLogItem[] = [];
-
-        changeLog.push({
-            kind: ChangeLogKind.NEW, message: `Implementado geração da documentação HTML de <b>arquivos e pastas</b> específicos - (<a title=\"Open Pull Request #31\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/31\">PR #31</a> | <a title=\"Documentação da Feature\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Documentação-HTML\">Documentação</a>)`
-        });
         
         changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Numeração incorreta no link da documentação - (<a title=\"Open Issue #30\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/30\">Issue #30</a>)`
+            kind: ChangeLogKind.FIXED, message: `Parte do texto nas descrições não é documentado - (<a title=\"Open Issue #35\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/35\">Issue #35</a>)`
         });
 
         return changeLog;
