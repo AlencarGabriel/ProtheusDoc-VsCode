@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
-import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
 import { Utils } from './objects/Utils';
@@ -61,21 +60,25 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-		[ELanguageSupport.advpl],
-		{
-			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
-				const line = document.lineAt(position.line).text;
-				const prefix = line.slice(0, position.character);
+	// Removido completion provider por conta dos problemas que este estava causando no IntelliSense, 
+	// onde não era mais apresentado o assistente para preenchimento baseado em palavras. 
+	// A situação somente será resolvida quando alguma extensão de suporte AdvPL prover os completions
+	// ou a Microsoft corrigir a situação reportada na issue: https://github.com/microsoft/vscode/issues/21611 
+	// context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
+	// 	[ELanguageSupport.advpl],
+	// 	{
+	// 		provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
+	// 			const line = document.lineAt(position.line).text;
+	// 			const prefix = line.slice(0, position.character);
 
-				if (prefix.match(/^\s*pdoc|prot|add\w*$/i)) {
-					return [new ProtheusDocCompletionItem(document, position)];
-				} else {
-					return;
-				}
+	// 			if (prefix.match(/^\s*pdoc|prot|add\w*$/i)) {
+	// 				return [new ProtheusDocCompletionItem(document, position)];
+	// 			} else {
+	// 				return null;
+	// 			}
 
-			}
-		}));
+	// 		}
+	// 	}));
 
 	vscode.window.onDidChangeActiveTextEditor(editor => {
 
