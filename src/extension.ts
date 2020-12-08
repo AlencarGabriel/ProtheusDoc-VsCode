@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
+import { CompletionAddBlock } from './objects/CompletionAddBlock';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
 import { Utils } from './objects/Utils';
@@ -10,6 +11,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 let documentations: Documentation[];
+let _wordsDocument: Array<string> = [];
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -60,25 +62,30 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	// Removido completion provider por conta dos problemas que este estava causando no IntelliSense, 
-	// onde não era mais apresentado o assistente para preenchimento baseado em palavras. 
-	// A situação somente será resolvida quando alguma extensão de suporte AdvPL prover os completions
-	// ou a Microsoft corrigir a situação reportada na issue: https://github.com/microsoft/vscode/issues/21611 
-	// context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-	// 	[ELanguageSupport.advpl],
-	// 	{
-	// 		provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
-	// 			const line = document.lineAt(position.line).text;
-	// 			const prefix = line.slice(0, position.character);
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
+		[ELanguageSupport.advpl],
+		{
+			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
+				const line = document.lineAt(position.line).text;
+				const prefix = line.slice(0, position.character);
+				const util = new Utils;
+				let list = new vscode.CompletionList;
 
-	// 			if (prefix.match(/^\s*pdoc|prot|add\w*$/i)) {
-	// 				return [new ProtheusDocCompletionItem(document, position)];
-	// 			} else {
-	// 				return null;
-	// 			}
+				// Adiciona o Completion "Add ProtheusDoc Block"
+				list.items.push(new CompletionAddBlock(document, position));
 
-	// 		}
-	// 	}));
+				// Adiciona o Completion de todas as palavras encontradas no Documento
+				// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
+				if (util.getUseSuggestCustom()) {
+					// Obs.: Necessário fazer assim pois o uso de Completion Provider faz 
+					//  com que o VsCode pare de mostrar os itens de texto no IntelliSense.
+					_wordsDocument.map(word => list.items.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text)));
+				}
+
+				return list;
+			}
+		})
+	);
 
 	vscode.window.onDidChangeActiveTextEditor(editor => {
 
@@ -86,9 +93,20 @@ export function activate(context: vscode.ExtensionContext) {
 			decorator.triggerUpdateDecorations();
 
 			searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
+
+			searchWordsDocument(editor.document);
 		}
 
 	}, null, context.subscriptions);
+
+	vscode.workspace.onDidSaveTextDocument(document => {
+
+		if (vscode.window.activeTextEditor && document === vscode.window.activeTextEditor.document) {
+
+			searchWordsDocument(document);
+		}
+
+	});
 
 	vscode.workspace.onDidChangeTextDocument(event => {
 
@@ -119,7 +137,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// register the additional command (not really necessary, unless you want a command registered in your extension)
 	context.subscriptions.push(vscode.commands.registerCommand("protheusdoc.whatsNew", () => viewer.showPage()));
-	
+
 	// Registra o comando que abrirá o arquivo na linha da documentação
 	context.subscriptions.push(vscode.commands.registerCommand("protheusdoc.openFile", (args) => {
 		vscode.window.showTextDocument(vscode.Uri.parse(args.file)).then(textEditor => {
@@ -148,7 +166,7 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 	 * Limpa o texto antes de montar uma expressão regular.
 	 * @param string texto a ser limpo.
 	 */
-	function escapeRegExp(string:string) {
+	function escapeRegExp(string: string) {
 		return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 	}
 
@@ -180,7 +198,7 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 		match.forEach(element => {
 			let doc = new ProtheusDocToDoc(element, uri);
 			let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
-			
+
 			// Adiciona a linha correspondente a documentação
 			doc.lineNumber = findLine(doc.identifier);
 
@@ -192,6 +210,38 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 			// }
 		});
 	}
+}
+
+/**
+ * Busca e armazena as palavras encontradas em um Documento.
+ * @param document Documento a ser consultado as palavras.
+ */
+export function searchWordsDocument(document: vscode.TextDocument) {
+
+	const util = new Utils;
+
+	// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
+	if (util.getUseSuggestCustom()) {
+
+		const words = /\w+/g;
+		const text = document.getText();
+		let match;
+
+		// Remove as palavras existentes no array de palavras do documento
+		_wordsDocument.splice(0, _wordsDocument.length);
+
+		// Enquanto existir palavras no documento guarda-as
+		while (match = words.exec(text)) {
+			let word = match[0];
+
+			// Verifica se a palavra já foi encontrada anteriormente (independente do case)
+			if (!_wordsDocument.find(item => item === word)) {
+				_wordsDocument.push(word);
+			}
+		}
+
+	}
+
 }
 
 /**
