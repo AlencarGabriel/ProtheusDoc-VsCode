@@ -21,7 +21,8 @@ export class ProtheusDocDiagnostics {
     private _expressionObs: RegExp;
     private _expressionLink: RegExp;
     private _expressionProtheusDoc: RegExp;
-    private _timeout: NodeJS.Timer | undefined = undefined; private _util: Utils;
+    private _timeout: NodeJS.Timer | undefined = undefined;
+    private _util: Utils;
 
     constructor() {
         this._util = new Utils();
@@ -164,7 +165,7 @@ export class ProtheusDocDiagnostics {
         let text = document.getText();
         let diagnostics = new Array<vscode.Diagnostic>();
 
-        if (this._util.getMarkersDontValid().includes("Params")){
+        if (this._util.getMarkersDontValid().includes("Params")) {
             return diagnostics;
         }
 
@@ -183,7 +184,7 @@ export class ProtheusDocDiagnostics {
                 });
             }
 
-            if (!match[3].match(/numeric|character|date|codeblock|logical|array|object|variadic/i)) {
+            if (!this.validAttr(match[3]) || !match[3].match(/numeric|character|date|codeblock|logical|array|object|variadic/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Tipo do parâmetro não informado ou inválido.',
@@ -226,7 +227,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!match[2].match(/numeric|character|date|codeblock|logical|array|object|variadic/i)) {
+            if (!this.validAttr(match[2]) || !match[2].match(/numeric|character|date|codeblock|logical|array|object|variadic/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Tipo do retorno não informado ou inválido.',
@@ -282,7 +283,7 @@ export class ProtheusDocDiagnostics {
                 });
             }
 
-            if (!this.validAttr(match[3].replace(",", "")) || match[3].trim().match(/username/i)) {
+            if (!this.validAttr(match[3]) || !this.validAttr(match[3].replace(",", "")) || match[3].trim().match(/username/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Autor do histórico não foi informado.',
@@ -292,7 +293,7 @@ export class ProtheusDocDiagnostics {
                 });
             }
 
-            if (!this.validAttr(match[4].replace(",", "")) || match[4].trim().match(/description/i)) {
+            if (!this.validAttr(match[4]) || !this.validAttr(match[4].replace(",", "")) || match[4].trim().match(/description/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Descrição do histórico não foi informada.',
@@ -531,7 +532,7 @@ export class ProtheusDocDiagnostics {
                     ]
                 });
             }
-            
+
             // Só valida o autor caso nas configurações de marcadores ocultos não esteja definido este atributo
             if (!match[2].trim().match(/@author/i) && !this._util.getHiddenMarkers().includes("Author")) {
                 diagnostics.push({
@@ -611,13 +612,29 @@ export class ProtheusDocDiagnostics {
             // Verifica se o usuário deseja validar os atributos obrigatórios.
             if (this._util.getValidAttr()) {
 
-                if (this._timeout) {
-                    clearTimeout(this._timeout);
-                    this._timeout = undefined;
-                }
+                vscode.window.withProgress({
+                    location: vscode.ProgressLocation.Window,
+                    title: "Diagnosticando ProtheusDoc...",
+                    cancellable: false
+                }, (progress, token) => {
 
-                this._timeout = setTimeout(this.updateDiagnostics, 0, document, collection, this);
+                    token.onCancellationRequested(() => {
+                        vscode.window.showWarningMessage("Validação ProtheusDoc cancelada.");
+                    });
 
+                    return new Promise(resolve => {
+
+                        if (this._timeout) {
+                            clearTimeout(this._timeout);
+                            this._timeout = undefined;
+                        }
+
+                        this._timeout = setTimeout(this.updateDiagnostics, 0, document, collection, this);
+
+                        resolve();
+                    });
+
+                });
             }
         }
 
