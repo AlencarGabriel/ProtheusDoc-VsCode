@@ -1,4 +1,4 @@
-![Version](https://vsmarketplacebadge.apphb.com/version/AlencarGabriel.protheusdoc-vscode.svg) ![Installs](https://vsmarketplacebadge.apphb.com/installs/AlencarGabriel.protheusdoc-vscode.svg) ![Downloads](https://vsmarketplacebadge.apphb.com/downloads/AlencarGabriel.protheusdoc-vscode.svg) ![Rating](https://vsmarketplacebadge.apphb.com/rating-star/AlencarGabriel.protheusdoc-vscode.svg)
+![Version](https://vsmarketplacebadge.apphb.com/version/AlencarGabriel.protheusdoc-vscode.svg) ![Installs](https://vsmarketplacebadge.apphb.com/installs/AlencarGabriel.protheusdoc-vscode.svg) ![Downloads](https://vsmarketplacebadge.apphb.com/downloads/AlencarGabriel.protheusdoc-vscode.svg) ![Rating](https://vsmarketplacebadge.apphb.com/rating-star/AlencarGabriel.protheusdoc-vscode.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/AlencarGabriel/protheusdoc-vscode) ![Visual Studio Marketplace Last Updated](https://img.shields.io/visual-studio-marketplace/last-updated/AlencarGabriel.protheusdoc-vscode) ![GitHub Repo stars](https://img.shields.io/github/stars/AlencarGabriel/protheusdoc-vscode)
 
 # ProtheusDoc for VsCode (AdvPL)
 
@@ -35,12 +35,13 @@ Acesse a Wiki para conhecer os recursos, comandos e atalhos da extensão. Lá vo
 - [x] Implementar *Text Decoration* para os atributos do ProtheusDoc ficarem negritos;
 - [x] Implementar *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC;
 - [x] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
+- [ ] Implementar validação da sintaxe e de valores preenchidos dos principais atributos ProtheusDoc;
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções do fonte;
 - [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade);
 
 ---
 
-## Comandos da Extensão
+## Comandos & Atalhos da Extensão
 
 Veja mais na Wiki [Comandos](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Comandos).
 
@@ -71,6 +72,12 @@ Veja mais na Wiki [Tabela de documentações](https://github.com/AlencarGabriel/
 ## Configurações da extensão e valores default
 
 Veja na Wiki [Configurações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações).
+
+---
+
+## Diagnóstico das documentações ProtheusDoc
+
+Veja na Wiki [Diagnóstico das documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações).
 
 ---
 

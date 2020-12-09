@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
-import { ProtheusDocCompletionItem } from './objects/ProtheusDocCompletionItem';
+import { CompletionAddBlock } from './objects/CompletionAddBlock';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
 import { Utils } from './objects/Utils';
@@ -12,6 +12,7 @@ import * as path from 'path';
 import { ProtheusDocDiagnostics } from './objects/ProtheusDocDiagnostics';
 
 let documentations: Documentation[];
+let _wordsDocument: Array<string> = [];
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -69,15 +70,24 @@ export function activate(context: vscode.ExtensionContext) {
 			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
 				const line = document.lineAt(position.line).text;
 				const prefix = line.slice(0, position.character);
+				const util = new Utils;
+				let list = new vscode.CompletionList;
 
-				if (prefix.match(/^\s*pdoc|prot|add\w*$/i)) {
-					return [new ProtheusDocCompletionItem(document, position)];
-				} else {
-					return;
+				// Adiciona o Completion "Add ProtheusDoc Block"
+				list.items.push(new CompletionAddBlock(document, position));
+
+				// Adiciona o Completion de todas as palavras encontradas no Documento
+				// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
+				if (util.getUseSuggestCustom()) {
+					// Obs.: Necessário fazer assim pois o uso de Completion Provider faz 
+					//  com que o VsCode pare de mostrar os itens de texto no IntelliSense.
+					_wordsDocument.map(word => list.items.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text)));
 				}
 
+				return list;
 			}
-		}));
+		})
+	);
 
 	vscode.window.onDidChangeActiveTextEditor(editor => {
 
@@ -87,6 +97,8 @@ export function activate(context: vscode.ExtensionContext) {
 			searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
 
 			diagnostics.triggerUpdateDiagnostics(editor.document, collection);
+
+			searchWordsDocument(editor.document);
 		}
 
 	}, null, context.subscriptions);
@@ -99,6 +111,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 		if (vscode.window.activeTextEditor && document === vscode.window.activeTextEditor.document) {
 			diagnostics.triggerUpdateDiagnostics(document, collection);
+
+			searchWordsDocument(document);
 		}
 
 	});
@@ -207,6 +221,38 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 			// }
 		});
 	}
+}
+
+/**
+ * Busca e armazena as palavras encontradas em um Documento.
+ * @param document Documento a ser consultado as palavras.
+ */
+export function searchWordsDocument(document: vscode.TextDocument) {
+
+	const util = new Utils;
+
+	// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
+	if (util.getUseSuggestCustom()) {
+
+		const words = /\w+/g;
+		const text = document.getText();
+		let match;
+
+		// Remove as palavras existentes no array de palavras do documento
+		_wordsDocument.splice(0, _wordsDocument.length);
+
+		// Enquanto existir palavras no documento guarda-as
+		while (match = words.exec(text)) {
+			let word = match[0];
+
+			// Verifica se a palavra já foi encontrada anteriormente (independente do case)
+			if (!_wordsDocument.find(item => item === word)) {
+				_wordsDocument.push(word);
+			}
+		}
+
+	}
+
 }
 
 /**

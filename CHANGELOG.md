@@ -6,6 +6,14 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.6.1] - 2020-07-17
+
+### Fixed
+
+- Parte do texto nas descrições não é documentado [#35](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/35).
+
+---
+
 ## [0.6.0] - 2020-05-29
 
 ### Added

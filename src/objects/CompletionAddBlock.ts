@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { findAdvpl } from '../extension';
 
-export class ProtheusDocCompletionItem extends vscode.CompletionItem {
+export class CompletionAddBlock extends vscode.CompletionItem {
     constructor(document: vscode.TextDocument, position: vscode.Position) {
         super("Add ProtheusDoc Block", vscode.CompletionItemKind.Snippet);
 
