@@ -609,7 +609,7 @@ export class ProtheusDocDiagnostics {
             vscode.window.activeTextEditor?.document.languageId === ELanguageSupport["4gl"]
         ) {
 
-            // Verifica se o usuário deseja validar os atributos obrigatórios.
+            // Verifica se o usuário deseja validar os atributos obrigatórios ou faltantes.
             if (this._util.getValidAttr()) {
 
                 vscode.window.withProgress({

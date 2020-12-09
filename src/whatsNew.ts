@@ -9,17 +9,28 @@ export class WhatsNewDocContentProvider implements ContentProvider {
             logo: <Image>{ src: logoUrl, height: 50, width: 50 },
             message: `<b>ProtheusDoc for VsCode</b> é uma extensão de suporte aos recursos e snippets de documentação TOTVS ProtheusDoc para VsCode.
                       Ela detecta a sintaxe da função, método ou classe e gera uma documentação dinâmica no formato ProtheusDoc. 
-                      Saiba mais em <a href="https://gabrielalencar.dev/2020/01/29/ProtheusDoc-for-VsCode/">meu blog</a>.`,
-            notice: `Agora a <b>Documentação em HTML</b> para o VsCode é oficial! Graças ao apoio da comunidade. 
-                     <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Documentação-HTML">Veja aqui</a>.`};
+                      Saiba mais <a href="https://gabrielalencar.dev/2020/01/29/ProtheusDoc-for-VsCode/">neste post</a>.`,
+            notice: `Agora as documentações ProtheusDoc serão diagnosticadas! Caso estejam em desacordo com a convenção, Warnings serão apresentados.
+                     <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações">Saiba mais</a>.`};
     }
 
     public provideChangeLog(): ChangeLogItem[] {
         const changeLog: ChangeLogItem[] = [];
         
         changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Parte do texto nas descrições não é documentado - (<a title=\"Open Issue #35\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/35\">Issue #35</a>)`
+            kind: ChangeLogKind.NEW, message: `Implementado <b>Diagnóstico</b> das documentações ProtheusDoc - (<a title=\"Open Pull Request #43\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/43\">PR #43</a> | <a title=\"Documentação da Feature\"
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações\">Documentação</a>)`
+        });
+
+        changeLog.push({
+            kind: ChangeLogKind.CHANGED, message: `Extensão não deixa VsCode apresentar as palavras do editor - (<a title=\"Open Issue #36\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/36\">Issue #36</a>)`
+        });
+
+        changeLog.push({
+            kind: ChangeLogKind.FIXED, message: `Atributo History quebrando texto com "*" ou ":" no Hover - (<a title=\"Open Issue #32\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/32\">Issue #32</a>)`
         });
 
         return changeLog;

@@ -6,6 +6,27 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.7.0] - 2020-12-09
+
+### Added
+
+- Implementado **Diagnóstico** das documentações ProtheusDoc [#13](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/13) | [PR #43](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/43).
+
+### Changed
+
+- Extensão não deixa VsCode apresentar as palavras do editor [#36](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/36).
+    - Agora a extensão também irá prover no auto complete as palavras do documento aberto. Saiba mais na Wiki [Comandos](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Comandos).
+
+### Fixed
+
+- Atributo History quebrando texto com "*" ou ":" no Hover [#32](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/32).
+
+### Agradecimentos
+
+- [@izacsc](https://github.com/izacsc) pela ótima sugestão de melhoria para implementar o diagnóstico das documentações na extensão.
+
+---
+
 ## [0.6.1] - 2020-07-17
 
 ### Fixed

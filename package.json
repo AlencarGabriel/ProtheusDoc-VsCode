@@ -2,7 +2,7 @@
 	"name": "protheusdoc-vscode",
 	"displayName": "ProtheusDoc for VsCode (AdvPL)",
 	"description": "Suporte à documentação TOTVS ProtheusDoc para VsCode.",
-	"version": "0.6.1",
+	"version": "0.7.0",
 	"publisher": "AlencarGabriel",
 	"icon": "images/Icon.png",
 	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
@@ -160,27 +160,29 @@
 					"protheusDoc.usa_decoracao": {
 						"type": "boolean",
 						"default": true,
-						"description": "Define se a extensão irá decorar os atributos ProtheusDoc."
+						"description": "Define se a extensão irá destacar os atributos ProtheusDoc."
 					},
 					"protheusDoc.valida_atributos": {
 						"type": "boolean",
 						"default": true,
-						"description": "Define se a extensão irá validar a sintaxe dos atributos ProtheusDoc obrigatórios."
+						"description": "Define se a extensão irá realizar o diagnóstico dos atributos inválidos ou faltantes."
 					},
 					"protheusDoc.usa_workspace_doc": {
 						"type": "boolean",
 						"default": true,
+						"description": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela.",
 						"markdownDescription": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
 					},
 					"protheusDoc.usa_sugestao_customizada": {
 						"type": "boolean",
 						"default": true,
+						"description": "Define se será utilizado a sugestão de texto customizada da extensão no IntelliSense. Obs.: A configuração padrão `editor.suggest.showWords` suprime esta.",
 						"markdownDescription": "Define se será utilizado a sugestão de texto customizada da extensão no IntelliSense. Obs.: A configuração padrão `editor.suggest.showWords` suprime esta."
 					},
 					"protheusDoc.marcadores_nao_validar": {
 						"type": "array",
 						"default": [],
-						"description": "Atributos opcionais do ProtheusDoc que não serão validados em sua sintaxe e valor inserido.",
+						"description": "Atributos opcionais do ProtheusDoc que não serão diagnosticados em sua sintaxe e valor inserido.",
 						"uniqueItems": true,
 						"items": {
 							"type": "string",
@@ -241,11 +243,13 @@
 							"**/*.AHU",
 							"**/*.APW"
 						],
+						"description": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários.",
 						"markdownDescription": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários.",
 						"items": {
 							"anyOf": [
 								{
 									"type": "string",
+									"description": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários",
 									"markdownDescription": "Padrões globais (Glob patterns) a serem considerados pela tabela de documentações do ProtheusDoc. Inclua apenas arquivos que você precisa, NÃO USE `{**/*.*}` tanto para performace quanto para evitar arquivos binários"
 								}
 							]
@@ -265,11 +269,13 @@
 							"**/*.map",
 							"**/.next/**"
 						],
+						"description": "Padrões globais (Glob patterns) a serem desconsiderados pela tabela de documentações do ProtheusDoc.",
 						"markdownDescription": "Padrões globais (Glob patterns) a serem desconsiderados pela tabela de documentações do ProtheusDoc.",
 						"items": {
 							"anyOf": [
 								{
 									"type": "string",
+									"description": "A Padrões globais (Glob patterns) a serem desconsiderados pela tabela de documentações do ProtheusDoc",
 									"markdownDescription": "A Padrões globais (Glob patterns) a serem desconsiderados pela tabela de documentações do ProtheusDoc"
 								}
 							]
