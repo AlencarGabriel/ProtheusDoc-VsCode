@@ -156,7 +156,7 @@ export function activate(context: vscode.ExtensionContext) {
  * @param uri URI do arquivo em questão
  */
 export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
-	let expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
+	let expressionProtheusDoc = /\{Protheus\.Doc\}[^¬]*?\/\*\//mig;
 	let match = text.match(expressionProtheusDoc);
 
 	/**

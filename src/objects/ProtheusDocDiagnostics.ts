@@ -31,8 +31,7 @@ export class ProtheusDocDiagnostics {
         this._expressionAuthor = /(@author\s*)(\w+)?/gi;
         this._expressionParams = /(@param\s*)(\w+\s*)?(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
         this._expressionReturn = /(@return\s*)(\w+\s*)?(,\s*[^:@\n]*)?/gim;
-        // FIXME: Melhorar essa expressão, pois tem itens com: "*=", ":" e "@" não estão sendo conderados.
-        this._expressionHistories = /(@history\s*)([^:@\n\,]*)?(,\s*[^:@\n\,]*)?(,\s*[^:@\/]*)?/img;
+        this._expressionHistories = /(@history\s*)([^@\n\,]*)?(,\s*[^¬\n\,]*)?(,\s*[^@]*\n)?/img;
         this._expressionSince = /(@since\s*)([^:@\n\,]*)?/gi;
         this._expressionVersion = /(@version\s*)([^:@\n\,]*)?/gi;
         this._expressionExample = /(@example\s*)(\s*[^:@\/]*)/img;
