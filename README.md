@@ -4,7 +4,9 @@
 
 Suporte aos recursos e snippets de documentação TOTVS ProtheusDoc para VsCode.
 
-![ProtheusDoc for VsCode](images/Example2.gif)
+![ProtheusDoc for VsCode](images/Example3.gif)
+
+*Theme: [Atom One Dark](https://marketplace.visualstudio.com/items/akamud.vscode-theme-onedark)*
 
 **Estou muito feliz pelo seu Download e espero que goste!**
 
@@ -50,6 +52,8 @@ Veja mais na Wiki [Comandos](https://github.com/AlencarGabriel/ProtheusDoc-VsCod
 ## Hover de documentações
 
 ![Hover de Documentação ProtheusDoc](https://user-images.githubusercontent.com/10109480/74953051-ebf90780-53df-11ea-9f6f-1a8cae64de4c.png)
+
+*Theme: [Atom One Dark](https://marketplace.visualstudio.com/items/akamud.vscode-theme-onedark)*
 
 Veja mais na Wiki [Hover de documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações).
 
