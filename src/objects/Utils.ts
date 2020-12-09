@@ -66,7 +66,20 @@ export class Utils {
 			return [];
 		}
 	}
-	
+
+	/**
+	 * Busca os marcadores opcionais que o usuário não deseja validar.
+	 */
+	public getMarkersDontValid(): String[] {
+		let markersDontValid = this.getConfig().get<Array<String>>("marcadores_nao_validar");
+
+		if (markersDontValid) {
+			return markersDontValid;
+		} else {
+			return [];
+		}
+	}
+
 	/**
 	 * Busca os marcadores que serão ocultados no Hover de documentações.
 	 */
@@ -94,6 +107,19 @@ export class Utils {
 	}
 
 	/**
+	 * Verifica se o usuário deseja que seja validado os atributos ProtheusDoc.
+	 */
+	public getValidAttr(): boolean {
+		let validAttr = this.getConfig().get<boolean>("valida_atributos");
+
+		if (validAttr !== undefined) {
+			return validAttr;
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * Verifica se o usuário deseja utilizar a tabela de documentações da Workspace.
 	 */
 	public getWorkspaceDoc(): boolean {
@@ -105,7 +131,7 @@ export class Utils {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
 	 */

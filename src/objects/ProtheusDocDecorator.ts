@@ -76,7 +76,7 @@ export class ProtheusDocDecorator {
     }
 
     /**
-     * Gatilho para acionar adicionar as decorações de atributs ProtheusDoc no arquivo.
+     * Gatilho para adicionar as decorações de atributs ProtheusDoc no arquivo.
      */
     public triggerUpdateDecorations() {
 

@@ -128,7 +128,7 @@ export class ProtheusDocToDoc {
         this._expressionType = /(@type\s*)(\w+)/i;
         this._expressionParams = /(@param\s*)(\w+\s*)(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
         this._expressionReturn = /(@return\s*)(\w+\s*)(,\s*[^:@\n]*)?/im;
-        this._expressionHistories = /(@history\s*)([^:@\n\,]*)(,\s*[^:@\n\,]*)?(,\s*[^:@\/]*)?/img;
+        this._expressionHistories = /(@history\s*)([^@\n\,]*)?(,\s*[^¬\n\,]*)?(,\s*[^@]*\n)?/img;
         this.identifier = "";
         this.description = "";
         this.type = "";

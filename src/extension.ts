@@ -9,6 +9,7 @@ import { WhatsNewDocContentProvider } from './whatsNew';
 import { WhatsNewManager } from './vscode-whats-new/Manager';
 import * as fs from 'fs';
 import * as path from 'path';
+import { ProtheusDocDiagnostics } from './objects/ProtheusDocDiagnostics';
 
 let documentations: Documentation[];
 let _wordsDocument: Array<string> = [];
@@ -18,8 +19,9 @@ export function activate(context: vscode.ExtensionContext) {
 	console.log("protheusdoc-vscode has activated.");
 
 	let decorator = new ProtheusDocDecorator();
-
+	let diagnostics = new ProtheusDocDiagnostics();
 	documentations = new Array<Documentation>();
+	const collection = vscode.languages.createDiagnosticCollection('ProtheusDoc');
 
 	decorator.triggerUpdateDecorations();
 
@@ -94,14 +96,21 @@ export function activate(context: vscode.ExtensionContext) {
 
 			searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
 
+			diagnostics.triggerUpdateDiagnostics(editor.document, collection);
+
 			searchWordsDocument(editor.document);
 		}
 
 	}, null, context.subscriptions);
 
+	vscode.workspace.onDidCloseTextDocument(document => {
+		collection.clear();
+	});
+
 	vscode.workspace.onDidSaveTextDocument(document => {
 
 		if (vscode.window.activeTextEditor && document === vscode.window.activeTextEditor.document) {
+			diagnostics.triggerUpdateDiagnostics(document, collection);
 
 			searchWordsDocument(document);
 		}
@@ -114,6 +123,8 @@ export function activate(context: vscode.ExtensionContext) {
 			decorator.triggerUpdateDecorations();
 
 			searchProtheusDocInFile(event.document.getText(), event.document.uri);
+
+			// diagnostics.triggerUpdateDiagnostics(event.document, collection);
 		}
 
 	}, null, context.subscriptions);
@@ -159,7 +170,7 @@ export function activate(context: vscode.ExtensionContext) {
  * @param uri URI do arquivo em questão
  */
 export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
-	let expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
+	let expressionProtheusDoc = /\{Protheus\.Doc\}[^¬]*?\/\*\//mig;
 	let match = text.match(expressionProtheusDoc);
 
 	/**
