@@ -1,6 +1,28 @@
 import * as vscode from 'vscode';
 import { ISyntaxProtheusDoc, ETypesDoc, ETypesAdvpl } from '../interfaces/ISyntaxProtheusDoc';
 import { IParamsProtheusDoc } from '../interfaces/IParamsProtheusDoc';
+import * as fs from 'fs';
+import * as path from 'path';
+
+/**
+ * Busca no Package JSON os exemplos de versões definidos para sugerir no atributo @version.
+ */
+function getVersionValues(): string[] {
+
+    let text: Buffer;
+    let object: any;
+    let extensionPath = vscode.extensions.getExtension("alencargabriel.protheusdoc-vscode")?.extensionPath;
+
+    text = fs.readFileSync(extensionPath + path.sep + 'package.json');
+    object = JSON.parse(text.toString());
+    object = object["contributes"]["configuration"][0]["properties"]["protheusDoc.versao_default"];
+
+    if (object) {
+        return object.examples;
+    }
+
+    return [];
+}
 
 /**
  * Implementa a interface para converter a estrutura da assinatura AdvPL para o formato ProtheusDoc AdvPL.
@@ -15,6 +37,7 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
     /**
      * Transforma uma string em estrutura de Tabulação no formato Snippet do VsCode.
      * @param str String a ser tabulada
+     * @param choice Define se a string tabulada possui opções para seleção (Pois a tabulação para choices é diferente)
      */
     private getTabStop(str: String, choice: boolean = false): String {
 
@@ -73,7 +96,7 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
      * @param version Versão do identificador
      */
     public getVersion(version: String): String {
-        return "@version " + this.getTabStop(version) + "\n";
+        return "@version " + (version.trim() === "" ? this.getTabStop(" ," + getVersionValues().toString(), true) : this.getTabStop(version)) + "\n";
     }
 
     /**
