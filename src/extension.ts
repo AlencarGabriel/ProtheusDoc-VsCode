@@ -208,7 +208,7 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 		// Percorre via expressão regular todas as ocorrencias de ProtheusDoc no arquivo.
 		match.forEach(element => {
 			let doc = new ProtheusDocToDoc(element, uri);
-			let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
+			// let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
 
 			// Adiciona a linha correspondente a documentação
 			doc.lineNumber = findLine(doc.identifier);
@@ -711,7 +711,7 @@ export function searchProtheusDoc() {
 			vscode.window.showWarningMessage("Atualização de documentações cancelada.");
 		});
 
-		return new Promise(resolve => {
+		return new Promise<void>(resolve => {
 
 			vscode.workspace.findFiles(includePattern, excludePattern, limitationForSearch).then(files => {
 
