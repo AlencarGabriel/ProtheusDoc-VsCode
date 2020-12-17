@@ -27,7 +27,7 @@ export class ProtheusDocDiagnostics {
     constructor() {
         this._util = new Utils();
 
-        this._expressionHeader = /(\{Protheus\.doc\}\s*)([^*\n]*)(\n[^:@]*)/gmi;
+        this._expressionHeader = /(\{Protheus\.doc\}\s*)([^¬\n]*)(\n[^:@]*)/gmi;
         this._expressionType = /(@type\s*)(\w+)?/gi;
         this._expressionAuthor = /(@author\s*)(\w+)?/gi;
         this._expressionParams = /(@param\s*)(\w+\s*)?(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
@@ -39,7 +39,7 @@ export class ProtheusDocDiagnostics {
         this._expressionSee = /(@see\s*)([^:@\n\,]*)/gi;
         this._expressionObs = /(@obs\s*)([^\º\/@]*)/img;
         this._expressionLink = /(@link\s*)([^:@\n\,]*)/gi;
-        this._expressionProtheusDoc = /(\{Protheus\.doc\}\s*)([^*]*)(\n[^:\n]*)/mig;
+        this._expressionProtheusDoc = /(\{Protheus\.Doc\})([^¬]*?)(\/\*\/)/mig;
     }
 
     /**
@@ -622,7 +622,7 @@ export class ProtheusDocDiagnostics {
                         vscode.window.showWarningMessage("Validação ProtheusDoc cancelada.");
                     });
 
-                    return new Promise(resolve => {
+                    return new Promise<void>(resolve => {
 
                         if (this._timeout) {
                             clearTimeout(this._timeout);
