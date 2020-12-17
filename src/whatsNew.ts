@@ -11,7 +11,10 @@ export class WhatsNewDocContentProvider implements ContentProvider {
                       Ela detecta a sintaxe da função, método ou classe e gera uma documentação dinâmica no formato ProtheusDoc. 
                       Saiba mais <a href="https://gabrielalencar.dev/2020/01/29/ProtheusDoc-for-VsCode/">neste post</a>.`,
             notice: `Agora as documentações ProtheusDoc serão diagnosticadas! Caso estejam em desacordo com a convenção, Warnings serão apresentados.
-                     <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações">Saiba mais</a>.`};
+                     <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações">Saiba mais</a>.<br><br>
+                     Já conhece a nossa <b>comunidade de discussões</b>? <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/discussions">Acesse-a</a> 
+                     e veja os artigos e discussões sobre esta extensão. Faça parte você também! <br><br>
+                     <b>Alcançamos a marca de 3k users! Obrigado a você que faz parte dessa comunidade.</b>`};
     }
 
     public provideChangeLog(): ChangeLogItem[] {
@@ -24,13 +27,18 @@ export class WhatsNewDocContentProvider implements ContentProvider {
         });
 
         changeLog.push({
-            kind: ChangeLogKind.CHANGED, message: `Extensão não deixa VsCode apresentar as palavras do editor - (<a title=\"Open Issue #36\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/36\">Issue #36</a>)`
+            kind: ChangeLogKind.CHANGED, message: `Adicionar sugestão de versão no <b>@version</b> gerado automaticamente - (<a title=\"Open Issue #44\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/44\">Issue #44</a>)`
         });
 
         changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Atributo History quebrando texto com "*" ou ":" no Hover - (<a title=\"Open Issue #32\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/32\">Issue #32</a>)`
+            kind: ChangeLogKind.FIXED, message: `Extension causes high cpu load - (<a title=\"Open Issue #45\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/45\">Issue #45</a>)`
+        });
+
+        changeLog.push({
+            kind: ChangeLogKind.FIXED, message: `Diagnóstico inválido quando descrição contém "*" - (<a title=\"Open Issue #46\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/46\">Issue #46</a>)`
         });
 
         return changeLog;

@@ -12,11 +12,13 @@ Suporte aos recursos e snippets de documentação TOTVS ProtheusDoc para VsCode.
 
 ---
 
-## Necessidade
+## Descrição
 
-Detectar a sintaxe da função, método ou classe e gerar uma documentação dinâmica no formato [ProtheusDoc.](https://tdn.totvs.com/display/tec/ProtheusDOC)
+Esta extensão irá detectar a sintaxe de uma função, método ou classe e gerar uma documentação dinâmica no formato [ProtheusDoc.](https://tdn.totvs.com/display/tec/ProtheusDOC)
 
 Conheça mais sobre o ProtheusDoc em meu blog: https://gabrielalencar.dev/2020/01/29/ProtheusDoc-for-VsCode/
+
+Confira este post especial em comemoração a marca de 3k users: https://github.com/AlencarGabriel/ProtheusDoc-VsCode/discussions/48
 
 ## [Issues](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues)
 
@@ -86,3 +88,7 @@ Veja na Wiki [Diagnóstico das documentações](https://github.com/AlencarGabrie
 ---
 
 **Aproveite, me ajuda e com certeza irá te ajudar também!** :heart:
+
+---
+
+> Esta extensão **foi criada e é mantida pela comunidade**. Não tem nenhum vínculo direto ou indireto com a TOTVS®, qualquer uma de suas franquias ou qualquer um de seus representantes. **ProtheusDoc** é uma convenção criada e mantida pela TOTVS®. Esta extensão tem como objetivo apenas prover recursos que facilitem o uso desta convenção.

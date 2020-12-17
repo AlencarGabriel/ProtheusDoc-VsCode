@@ -6,6 +6,25 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.7.3] - 2020-12-17
+
+*Alcançamos a marca de 3k users! Obrigado a você que faz parte dessa comunidade.*
+
+### News
+
+- Faça parte da nossa comunidade nas discussões do GitHub. [Acesse aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/discussions) e veja os artigos já disponíveis! Fique a vontade para iniciar uma discussão.
+
+### Changed
+
+- Adicionar sugestão de versão no `@version` gerado automaticamente [#44](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/44).
+
+### Fixed
+
+- Extension causes high cpu load [#45](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/45).
+- Diagnóstico inválido quando descrição contém "*" [#46](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/46).
+
+---
+
 ## [0.7.0] - 2020-12-09
 
 ### Added
