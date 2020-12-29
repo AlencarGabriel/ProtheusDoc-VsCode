@@ -68,8 +68,8 @@ export function activate(context: vscode.ExtensionContext) {
 		[ELanguageSupport.advpl],
 		{
 			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
-				const line = document.lineAt(position.line).text;
-				const prefix = line.slice(0, position.character);
+				// const line = document.lineAt(position.line).text;
+				// const prefix = line.slice(0, position.character);
 				const util = new Utils;
 				let list = new vscode.CompletionList;
 
@@ -92,13 +92,19 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeActiveTextEditor(editor => {
 
 		if (editor) {
-			decorator.triggerUpdateDecorations();
+			
+			// Aplica as funções abaixo apenas para extensões de arquivos suportadas
+			if (editor.document.languageId === ELanguageSupport.advpl ||
+				editor.document.languageId === ELanguageSupport["4gl"]) {
 
-			searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
+				decorator.triggerUpdateDecorations();
 
-			diagnostics.triggerUpdateDiagnostics(editor.document, collection);
+				searchProtheusDocInFile(editor.document.getText(), editor.document.uri);
 
-			searchWordsDocument(editor.document);
+				diagnostics.triggerUpdateDiagnostics(editor.document, collection);
+
+				searchWordsDocument(editor.document);
+			}
 		}
 
 	}, null, context.subscriptions);
@@ -110,9 +116,15 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.workspace.onDidSaveTextDocument(document => {
 
 		if (vscode.window.activeTextEditor && document === vscode.window.activeTextEditor.document) {
-			diagnostics.triggerUpdateDiagnostics(document, collection);
+			
+			// Aplica as funções abaixo apenas para extensões de arquivos suportadas
+			if (document.languageId === ELanguageSupport.advpl ||
+				document.languageId === ELanguageSupport["4gl"]) {
 
-			searchWordsDocument(document);
+				diagnostics.triggerUpdateDiagnostics(document, collection);
+
+				searchWordsDocument(document);
+			}
 		}
 
 	});
@@ -120,11 +132,17 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.workspace.onDidChangeTextDocument(event => {
 
 		if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
-			decorator.triggerUpdateDecorations();
 
-			searchProtheusDocInFile(event.document.getText(), event.document.uri);
+			// Aplica as funções abaixo apenas para extensões de arquivos suportadas
+			if (event.document.languageId === ELanguageSupport.advpl ||
+				event.document.languageId === ELanguageSupport["4gl"]) {
 
-			// diagnostics.triggerUpdateDiagnostics(event.document, collection);
+				decorator.triggerUpdateDecorations();
+
+				searchProtheusDocInFile(event.document.getText(), event.document.uri);
+
+				// diagnostics.triggerUpdateDiagnostics(event.document, collection);
+			}
 		}
 
 	}, null, context.subscriptions);
