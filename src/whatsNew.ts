@@ -20,25 +20,20 @@ export class WhatsNewDocContentProvider implements ContentProvider {
     public provideChangeLog(): ChangeLogItem[] {
         const changeLog: ChangeLogItem[] = [];
         
-        changeLog.push({
-            kind: ChangeLogKind.NEW, message: `Implementado <b>Diagnóstico</b> das documentações ProtheusDoc - (<a title=\"Open Pull Request #43\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/43\">PR #43</a> | <a title=\"Documentação da Feature\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações\">Documentação</a>)`
-        });
+        // changeLog.push({
+        //     kind: ChangeLogKind.NEW, message: `Implementado <b>Diagnóstico</b> das documentações ProtheusDoc - (<a title=\"Open Pull Request #43\" 
+        //         href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/43\">PR #43</a> | <a title=\"Documentação da Feature\"
+        //         href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações\">Documentação</a>)`
+        // });
+
+        // changeLog.push({
+        //     kind: ChangeLogKind.CHANGED, message: `Adicionar sugestão de versão no <b>@version</b> gerado automaticamente - (<a title=\"Open Issue #44\" 
+        //         href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/44\">Issue #44</a>)`
+        // });
 
         changeLog.push({
-            kind: ChangeLogKind.CHANGED, message: `Adicionar sugestão de versão no <b>@version</b> gerado automaticamente - (<a title=\"Open Issue #44\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/44\">Issue #44</a>)`
-        });
-
-        changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Extension causes high cpu load - (<a title=\"Open Issue #45\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/45\">Issue #45</a>)`
-        });
-
-        changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Diagnóstico inválido quando descrição contém "*" - (<a title=\"Open Issue #46\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/46\">Issue #46</a>)`
+            kind: ChangeLogKind.FIXED, message: `onDidChangeActiveTextEditor causes high CPU - (<a title=\"Open Issue #49\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/49\">Issue #49</a>)`
         });
 
         return changeLog;

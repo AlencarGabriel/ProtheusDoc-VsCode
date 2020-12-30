@@ -6,6 +6,14 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.7.4] - 2020-12-30
+
+### Fixed
+
+- `onDidChangeActiveTextEditor` causes high CPU [#49](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/49).
+
+---
+
 ## [0.7.3] - 2020-12-17
 
 *Alcançamos a marca de 3k users! Obrigado a você que faz parte dessa comunidade.*
