@@ -2,7 +2,7 @@
 	"name": "protheusdoc-vscode",
 	"displayName": "ProtheusDoc for VsCode (AdvPL)",
 	"description": "Suporte à documentação TOTVS ProtheusDoc para VsCode.",
-	"version": "0.7.4",
+	"version": "0.7.6",
 	"publisher": "AlencarGabriel",
 	"icon": "images/Icon.png",
 	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
@@ -176,8 +176,8 @@
 					"protheusDoc.usa_sugestao_customizada": {
 						"type": "boolean",
 						"default": true,
-						"description": "Define se será utilizado a sugestão de texto customizada da extensão no IntelliSense. Obs.: A configuração padrão `editor.suggest.showWords` suprime esta.",
-						"markdownDescription": "Define se será utilizado a sugestão de texto customizada da extensão no IntelliSense. Obs.: A configuração padrão `editor.suggest.showWords` suprime esta."
+						"description": "Define se será utilizado a sugestão de palavras customizada da extensão no IntelliSense. Obs.: A configuração padrão `editor.suggest.showWords` suprime esta.",
+						"markdownDescription": "Define se será utilizado a sugestão de palavras customizada da extensão no IntelliSense. Obs.: A configuração padrão `editor.suggest.showWords` suprime esta."
 					},
 					"protheusDoc.marcadores_nao_validar": {
 						"type": "array",

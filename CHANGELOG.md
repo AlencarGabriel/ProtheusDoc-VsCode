@@ -6,6 +6,19 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.7.6] - 2021-01-22
+
+### Changed
+
+- Elevado versão mínima do VsCode para **1.52.0** e atualizado dependencias npm.
+
+### Fixed
+
+- Snippets precedidas por espaço não reconhecidas [#40](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/40).
+- Snippets não são reconhecidas em bloco ProtheusDoc precedido por espaço [#54](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/54).
+
+---
+
 ## [0.7.4] - 2020-12-30
 
 ### Fixed

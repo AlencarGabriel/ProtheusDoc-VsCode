@@ -14,15 +14,15 @@ Suporte aos recursos e snippets de documentação TOTVS ProtheusDoc para VsCode.
 
 ## Descrição
 
-Esta extensão irá detectar a sintaxe de uma função, método ou classe e gerar uma documentação dinâmica no formato [ProtheusDoc.](https://tdn.totvs.com/display/tec/ProtheusDOC)
+Esta extensão irá detectar a sintaxe de uma **função**, **método** ou **classe** e gerar uma documentação dinâmica no formato [ProtheusDoc.](https://tdn.totvs.com/display/tec/ProtheusDOC)
 
-Conheça mais sobre o ProtheusDoc em meu blog: https://gabrielalencar.dev/2020/01/29/ProtheusDoc-for-VsCode/
+Conheça mais sobre o ProtheusDoc neste post: https://gabrielalencar.dev/2020/01/29/ProtheusDoc-for-VsCode/
 
-Confira este post especial em comemoração a marca de 3k users: https://github.com/AlencarGabriel/ProtheusDoc-VsCode/discussions/48
+Confira este post especial em comemoração a marca de **3k users**: https://github.com/AlencarGabriel/ProtheusDoc-VsCode/discussions/48
 
 ## [Issues](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues)
 
-Caso encontre algum problema, tenha alguma dúvida ou sugestão de melhoria, fique a vontade para abrir uma Issue ou enviar um Pull Request.
+Caso encontre algum **problema**, tenha alguma **dúvida** ou sugestão de **melhoria**, fique a vontade para abrir uma Issue ou enviar um Pull Request com sua implementação.
 
 ## [Wiki](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki)
 
@@ -41,49 +41,52 @@ Acesse a Wiki para conhecer os recursos, comandos e atalhos da extensão. Lá vo
 - [x] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
 - [x] Implementar *Diagnóstico* da sintaxe e de valores preenchidos dos principais atributos ProtheusDoc;
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções do fonte;
-- [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade);
+- Outras solicitações de melhorias pendentes: [Veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues?q=is:issue+is:open+label:enhancement)
+<!-- - [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade); -->
 
 ---
 
 ## Comandos & Atalhos da Extensão
+#### A extensão disponibiliza vários comandos, itens de contexto e alguns atalhos para utilização dos recursos implementados.
 
-Veja mais na Wiki [Comandos](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Comandos).
+- Saiba mais na Wiki: [Comandos](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Comandos).
 
 ---
 
 ## Hover de documentações
-
+#### Ao passar o mouse sobre uma **função**, **método** ou **classe**, um hover apresentará os dados das documentações ProtheusDoc presentes na [tabela de documentações](#tabela-de-documentações):
 ![Hover de Documentação ProtheusDoc](https://user-images.githubusercontent.com/10109480/74953051-ebf90780-53df-11ea-9f6f-1a8cae64de4c.png)
 
 *Theme: [Atom One Dark](https://marketplace.visualstudio.com/items/akamud.vscode-theme-onedark)*
 
-Veja mais na Wiki [Hover de documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações).
+- Saiba mais na Wiki: [Hover de documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documentações).
 
 ---
 
 ## Documentação HTML
-
-Veja mais na Wiki [Documentação HTML](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Documentação-HTML)
+#### Com essa extensão é possível exportar as documentações ProtheusDoc para HTML.
+- Saiba mais na Wiki: [Documentação HTML](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Documentação-HTML)
 
 ---
 
 ## Tabela de documentações
+#### A tabela de documentações armazena uma lista de documentações ProtheusDoc detectadas na Workspace ou nos arquivos abertos.
 
-A tabela de documentações armazena uma lista de documentações ProtheusDoc detectadas na Workspace ou nos arquivos abertos.
-
-Veja mais na Wiki [Tabela de documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Tabela-de-documentações).
+- Saiba mais na Wiki: [Tabela de documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Tabela-de-documentações).
 
 ---
 
 ## Configurações da extensão e valores default
+#### A extensão disponibiliza uma série de configurações especiais, inclusive permite alterar os valores default de alguns atributos do ProtheusDoc.
 
-Veja na Wiki [Configurações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações).
+- Saiba mais na Wiki: [Configurações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Configurações).
 
 ---
 
 ## Diagnóstico das documentações ProtheusDoc
+#### As documentações ProtheusDoc devem seguir uma convenção padrão da TOTVS, por isso é disponibilizado um "validador" para diagnisticar as documentações.
 
-Veja na Wiki [Diagnóstico das documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações).
+- Saiba mais na Wiki: [Diagnóstico das documentações](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações).
 
 ---
 

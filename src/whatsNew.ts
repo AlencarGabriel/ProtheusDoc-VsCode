@@ -13,13 +13,12 @@ export class WhatsNewDocContentProvider implements ContentProvider {
             notice: `Agora as documentações ProtheusDoc serão diagnosticadas! Caso estejam em desacordo com a convenção, Warnings serão apresentados.
                      <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações">Saiba mais</a>.<br><br>
                      Já conhece a nossa <b>comunidade de discussões</b>? <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/discussions">Acesse-a</a> 
-                     e veja os artigos e discussões sobre esta extensão. Faça parte você também! <br><br>
-                     <b>Alcançamos a marca de 3k users! Obrigado a você que faz parte dessa comunidade.</b>`};
+                     e veja os artigos e discussões sobre esta extensão. Faça parte você também!`};
     }
 
     public provideChangeLog(): ChangeLogItem[] {
         const changeLog: ChangeLogItem[] = [];
-        
+
         // changeLog.push({
         //     kind: ChangeLogKind.NEW, message: `Implementado <b>Diagnóstico</b> das documentações ProtheusDoc - (<a title=\"Open Pull Request #43\" 
         //         href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/43\">PR #43</a> | <a title=\"Documentação da Feature\"
@@ -32,8 +31,17 @@ export class WhatsNewDocContentProvider implements ContentProvider {
         // });
 
         changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `onDidChangeActiveTextEditor causes high CPU - (<a title=\"Open Issue #49\" 
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/49\">Issue #49</a>)`
+            kind: ChangeLogKind.CHANGED, message: `Elevado versão mínima do VsCode para <b>1.52.0</b> e atualizado dependencias npm.`
+        });
+
+        changeLog.push({
+            kind: ChangeLogKind.FIXED, message: `Snippets precedidas por espaço não reconhecidas - (<a title=\"Open Issue #40\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/40\">Issue #40</a>)`
+        });
+
+        changeLog.push({
+            kind: ChangeLogKind.FIXED, message: `Snippets não são reconhecidas em bloco ProtheusDoc precedido por espaço - (<a title=\"Open Issue #54\" 
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/54\">Issue #54</a>)`
         });
 
         return changeLog;
