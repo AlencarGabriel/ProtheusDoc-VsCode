@@ -311,7 +311,7 @@
 	},
 	"dependencies": {
 		"opn": "^6.0.0",
-		"protheusdoc-html": "^1.1.3",
+		"protheusdoc-html": "^1.1.4",
 		"semver": "^7.3.4"
 	}
 }
