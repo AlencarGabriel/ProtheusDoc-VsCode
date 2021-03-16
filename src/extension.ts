@@ -79,7 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
 				// Adiciona o Completion de todas as palavras encontradas no Documento
 				// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
 				if (util.getUseSuggestCustom()) {
-					// Obs.: Necessário fazer assim pois o uso de Completion Provider faz 
+					// Obs.: Necessário fazer assim pois o uso de Completion Provider faz
 					//  com que o VsCode pare de mostrar os itens de texto no IntelliSense.
 					_wordsDocument.map(word => list.items.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text)));
 				}
@@ -92,7 +92,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeActiveTextEditor(editor => {
 
 		if (editor) {
-			
+
 			// Aplica as funções abaixo apenas para extensões de arquivos suportadas
 			if (editor.document.languageId === ELanguageSupport.advpl ||
 				editor.document.languageId === ELanguageSupport["4gl"]) {
@@ -116,7 +116,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.workspace.onDidSaveTextDocument(document => {
 
 		if (vscode.window.activeTextEditor && document === vscode.window.activeTextEditor.document) {
-			
+
 			// Aplica as funções abaixo apenas para extensões de arquivos suportadas
 			if (document.languageId === ELanguageSupport.advpl ||
 				document.languageId === ELanguageSupport["4gl"]) {
@@ -182,7 +182,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 /**
- * Busca todas as ocorreências de ProtheusDoc de um texto (arquivo) 
+ * Busca todas as ocorreências de ProtheusDoc de um texto (arquivo)
  * e adiciona na tabela de Documentações da extensão
  * @param text Texto do documento a ser verificado os blocos ProtheusDoc
  * @param uri URI do arquivo em questão
@@ -611,7 +611,7 @@ export function addDocBlock() {
 
 		// Trata a linguagem e chama a função que interpreta a sintaxe desta
 		if (textEditor.document.languageId === ELanguageSupport.advpl) {
-			findAdvpl(textEditor, true);
+			findAdvpl(textEditor);
 		} else {
 			vscode.window.showErrorMessage("A linguagem " + textEditor.document.languageId + " não é tratada pela Extensão.");
 		}
@@ -637,9 +637,8 @@ export function updateTableDoc() {
 /**
  * Busca a assinatura na sintaxe AdvPL e trata para as classes que geram o ProtheusDoc
  * @param textEditor Editor ativo do VsCode.
- * @param hasCommand Identifica a origem da chamada do comando (caso seja via Snippet, o tratamento é com retorno, se não com comando).
  */
-export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = false): string | vscode.SnippetString | undefined {
+export function findAdvpl(textEditor: vscode.TextEditor): void {
 	let document = textEditor.document;
 	let activeLine = textEditor.selection.active.line;
 	let found = false;
@@ -654,8 +653,10 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 		let line = document.lineAt(activeLine);
 
 		// Não considera linhas vazias ou que não iniciem com o tipo Function, Method ou Class
-		if (!line.isEmptyOrWhitespace &&
-			line.text.trim().match(/((User |Static )?Function \s*)([^:\/]+)*$|Method ([^:\/]+)*$|Class \s*[\w+\-\_]*(\s* From \s*[\w+\-\_]*)?$/i)) {
+		if (!line.isEmptyOrWhitespace && (
+			line.text.trim().match(/((User |Static )?Function \s*)(([^:\/]+)(\([^:\/]*\))|([^:\/]\S*))(\s*As [^:\/]+)?/mi) ||
+			line.text.trim().match(/(Method \s*)(([^:\/]*)(\([^:\/]*\)\s*)|([^:\/]*)\s*)( Class \s*[^:\/]\S+)(\s* As\s[^:\/]+)?/mi) ||
+			line.text.trim().match(/Class \s*([\w+\-\_*]*)(\s* From \s*[\w+\-\_*]*)?$/i))) {
 
 			// Encontrou a assinatura
 			found = true;
@@ -691,17 +692,10 @@ export function findAdvpl(textEditor: vscode.TextEditor, hasCommand: boolean = f
 		// Instancia a classe que irá gerar o bloco de acordo com a linguagem
 		let protheusDoc = new ProtheusDoc(ELanguageSupport.advpl, signature);
 
-		// Se a chamada for por comando, insere o Snippet via comando do Editor de Texto
-		if (hasCommand) {
-			// Insere o Snippet na posição anterior a assinatura (trata quando a assinatura é a primeira linha "activeLine === 0")
-			textEditor.insertSnippet(new vscode.SnippetString(protheusDoc.getProtheusDoc() + (activeLine === 0 ? "\n" : "")), newPosition);
-		} else { // Se não devolve como retorno para que a classe completion resolva.
-			return new vscode.SnippetString(protheusDoc.getProtheusDoc() + (activeLine === 0 ? "\n" : ""));
-		}
-
-	} else {
-		return "";
+		// Insere o Snippet na posição anterior a assinatura (trata quando a assinatura é a primeira linha "activeLine === 0")
+		textEditor.insertSnippet(new vscode.SnippetString(protheusDoc.getProtheusDoc() + (activeLine === 0 ? "\n" : "")), newPosition);
 	}
+
 }
 
 /**
