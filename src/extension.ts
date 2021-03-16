@@ -36,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.languages.registerHoverProvider(ELanguageSupport.advpl, {
 		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
 			let symbol = document.getText(document.getWordRangeAtPosition(position));
-			let _docs = new Array<vscode.MarkedString>();
+			let _docs = new Array<vscode.MarkdownString>();
 
 			// Tratamento para User Functions
 			// tslint:disable-next-line: curly

@@ -11,6 +11,7 @@ interface IParam {
     paramName: string;
     paramType: string;
     paramDescription: string;
+    optional: boolean;
 }
 
 /**
@@ -55,7 +56,7 @@ export class Documentation {
     public getHover(): vscode.MarkdownString {
         let doc = new vscode.MarkdownString;
         let marcadoresOcultosHover = new Utils().getHiddenMarkersHover();
-      
+
         // To enable command URIs in Markdown content, you must set the `isTrusted` flag.
         doc.isTrusted = true;
 
@@ -78,7 +79,7 @@ export class Documentation {
 
         if (!marcadoresOcultosHover.includes("Params") && this.params.length > 0) {
             this.params.forEach(param => {
-                doc.appendMarkdown("\r\n *@param* `" + param.paramName.trim() + "` — " + param.paramDescription.trim() + "\r\n");
+                doc.appendMarkdown("\r\n *@param* `" + param.paramName.trim() + "` " + (param.optional ? "*(optional)*" : "") +  " — " + param.paramDescription.trim() + "\r\n");
             });
         }
 
@@ -91,10 +92,10 @@ export class Documentation {
                 doc.appendMarkdown("\r\n *@history* `" + history.historyDate.trim() + "` — " + history.historyAuthor.trim() + " — " + history.historyDescription.trim() + "\r\n");
             });
         }
-      
+
         // Aciona o documento com link para a documentação do arquivo
         let dirs = this.file.fsPath.toString().split(path.sep);
-        const args = [{ file: this.file.toString(), line: this.line }]; 
+        const args = [{ file: this.file.toString(), line: this.line }];
         const link = vscode.Uri.parse(`command:protheusdoc.openFile?${encodeURIComponent(JSON.stringify(args))}`);
         doc.appendMarkdown("\r\n **Localização**: [" + dirs[dirs.length - 2] + path.sep + dirs[dirs.length - 1] + ":" + (this.line + 1).toString() + "](" + `${link}` + ") \r\n");
 
@@ -126,7 +127,7 @@ export class ProtheusDocToDoc {
         this._protheusDocBlock = protheusDocBlock;
         this._expressionHeader = /(\{Protheus\.doc\}\s*)([^*\n]*)(\n[^:@]*)/mi;
         this._expressionType = /(@type\s*)(\w+)/i;
-        this._expressionParams = /(@param\s*)(\w+\s*)(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
+        this._expressionParams = /(@param\s*)(\w+\s*|\[\s*\w+\s*\]\s*)(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
         this._expressionReturn = /(@return\s*)(\w+\s*)(,\s*[^:@\n]*)?/im;
         this._expressionHistories = /(@history\s*)([^@\n\,]*)?(,\s*[^¬\n\,]*)?(,\s*[^@]*\n)?/img;
         this.identifier = "";
@@ -134,7 +135,7 @@ export class ProtheusDocToDoc {
         this.type = "";
         this.className = "";
         this.params = [];
-        this.return = { paramName: "", paramType: "", paramDescription: "" };
+        this.return = { paramName: "", paramType: "", paramDescription: "", optional: false };
         this.histories = [];
         this.file = file;
         this.lineNumber = 0;
@@ -176,9 +177,10 @@ export class ProtheusDocToDoc {
                 let match;
                 while (match = this._expressionParams.exec(this._protheusDocBlock)) {
                     this.params.push({
-                        paramName: match[2],
+                        paramName: match[2].replace(/\[|\]/g, ""),
                         paramType: match[3] ? match[3].replace(",", "") : "",
-                        paramDescription: match[4] ? match[4].replace(",", "") : ""
+                        paramDescription: match[4] ? match[4].replace(",", "") : "",
+                        optional: match[2].includes("[") ? true : false
                     });
                 }
             }
@@ -188,7 +190,7 @@ export class ProtheusDocToDoc {
                 this.return.paramType = returnDoc[2] ? returnDoc[2] : "";
                 this.return.paramDescription = returnDoc[3] ? returnDoc[3].replace(",", "") : "";
             }
-            
+
             // Tratamento para buscar os históricos de alteração na documentação
             if (historyDoc) {
                 let match;

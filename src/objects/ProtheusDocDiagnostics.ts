@@ -30,7 +30,7 @@ export class ProtheusDocDiagnostics {
         this._expressionHeader = /(\{Protheus\.doc\}\s*)([^¬\n]*)(\n[^:@]*)/gmi;
         this._expressionType = /(@type\s*)(\w+)?/gi;
         this._expressionAuthor = /(@author\s*)(\w+)?/gi;
-        this._expressionParams = /(@param\s*)(\w+\s*)?(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
+        this._expressionParams = /(@param\s*)(\w+\s*|\[\s*\w+\s*\]\s*)?(,\s*\w+\s*)?(,\s*[^:@\n]*)?/img;
         this._expressionReturn = /(@return\s*)(\w+\s*)?(,\s*[^:@\n]*)?/gim;
         this._expressionHistories = /(@history\s*)([^@\n\,]*)?(,\s*[^¬\n\,]*)?(,\s*[^@]*\n)?/img;
         this._expressionSince = /(@since\s*)([^:@\n\,]*)?/gi;
@@ -43,7 +43,7 @@ export class ProtheusDocDiagnostics {
     }
 
     /**
-     * Verifica se o atributo está definido e preenchido. 
+     * Verifica se o atributo está definido e preenchido.
      * @param text texto a ser validado.
      */
     private validAttr(text: string | undefined): boolean {
@@ -573,7 +573,7 @@ export class ProtheusDocDiagnostics {
      * Chama as validações de cada atributo e monta uma coleção de diagnósticos.
      * @param document Documento a ser validado.
      * @param collection Coleção de diagnosticos.
-     * @param instance Inscancia da classe. (Necessário pois como é chamada via setTimeout perde a instancia do this). 
+     * @param instance Inscancia da classe. (Necessário pois como é chamada via setTimeout perde a instancia do this).
      */
     private updateDiagnostics(document: vscode.TextDocument, collection: vscode.DiagnosticCollection, instance: ProtheusDocDiagnostics) {
         collection.clear();
