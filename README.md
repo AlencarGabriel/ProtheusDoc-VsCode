@@ -40,6 +40,7 @@ Acesse a Wiki para conhecer os recursos, comandos e atalhos da extensão. Lá vo
 - [x] Implementar *Hover de Documentação* nas chamadas dos identificadores para mostrar o ProtheusDOC;
 - [x] Implementar geração de HTML das documentações (Será necessário apoio da comunidade);
 - [x] Implementar *Diagnóstico* da sintaxe e de valores preenchidos dos principais atributos ProtheusDoc;
+- [x] Adicionar no IntelliSense todas as **palavras/words** do editor aberto;
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções do fonte;
 - Outras solicitações de melhorias pendentes: [Veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues?q=is:issue+is:open+label:enhancement)
 <!-- - [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade); -->

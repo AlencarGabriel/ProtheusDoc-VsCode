@@ -6,6 +6,23 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.8.0] - 2021-03-22
+
+### Added
+
+- Parâmetro Opcional no ProtheusDoc [#50](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/50).
+
+### Changed
+
+- Atualizado dependencia npm **protheusdoc-html** para **^1.1.4**.
+
+### Fixed
+
+- `findAdvpl` causes high CPU [#57](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/57).
+- Link dos métodos está vindo errado [#41](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/41).
+
+---
+
 ## [0.7.6] - 2021-01-22
 
 ### Changed
