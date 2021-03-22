@@ -203,13 +203,19 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 	 * Busca o numero da linha que contém o identificador.
 	 * @param identificador identificador do ProtheusDoc.
 	 */
-	function findLine(identificador: string): number {
-		let expressionProtheusDoc2 = new RegExp("(\\{Protheus\\.doc\\}\\s*)(" + escapeRegExp(identificador.trim()) + ")", "i");
+	function findLine(identificador: string, className: string): number {
+		let regexGeneral = new RegExp("(\\{Protheus\\.doc\\}\\s*)(" + escapeRegExp(identificador.trim()) + ")", "i");
+		let regexMethod = new RegExp(`(\\{Protheus\\.doc\\}\\s*)(${className.trim()}::${escapeRegExp(identificador.trim())})`, "i");
 		let texts = text.split("\n");
 
 		// Percorre o array das linhas para verificar onde está a declaração do identificador
 		for (let line = 0; line < texts.length; line++) {
-			let match = texts[line].match(expressionProtheusDoc2);
+			let match = texts[line].match(regexGeneral);
+
+			// Caso não tenha encontrado a ocorrência pela expressão geral e tenha class name, trata como método
+			if (match === null && className.trim() !== "") {
+				match = texts[line].match(regexMethod);
+			}
 
 			if (match !== null && match.index !== undefined) {
 				return line;
@@ -229,7 +235,7 @@ export function searchProtheusDocInFile(text: string, uri: vscode.Uri) {
 			// let docIndex = documentations.findIndex(e => e.identifier.trim().toUpperCase() === doc.identifier.trim().toUpperCase());
 
 			// Adiciona a linha correspondente a documentação
-			doc.lineNumber = findLine(doc.identifier);
+			doc.lineNumber = findLine(doc.identifier, doc.className);
 
 			// Caso a documentação já exista na lista altera
 			// if (docIndex >= 0) {
