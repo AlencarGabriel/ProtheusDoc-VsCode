@@ -10,6 +10,7 @@ import { WhatsNewManager } from './vscode-whats-new/Manager';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ProtheusDocDiagnostics } from './objects/ProtheusDocDiagnostics';
+import { CompletionAuthor } from './objects/Completions/CompletionAuthor';
 
 let documentations: Documentation[];
 let _wordsDocument: Array<string> = [];
@@ -71,10 +72,11 @@ export function activate(context: vscode.ExtensionContext) {
 				// const line = document.lineAt(position.line).text;
 				// const prefix = line.slice(0, position.character);
 				const util = new Utils;
-				let list = new vscode.CompletionList;
+				let list = new vscode.CompletionList();
 
 				// Adiciona o Completion "Add ProtheusDoc Block"
 				list.items.push(new CompletionAddBlock(document, position));
+				list.items.push(new CompletionAuthor(position));
 
 				// Adiciona o Completion de todas as palavras encontradas no Documento
 				// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.

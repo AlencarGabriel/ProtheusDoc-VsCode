@@ -6,13 +6,6 @@
         ],
         "description": "Identifica o tipo do ProtheusDoc que está sendo documentado. "
     },
-    "AUTHOR": {
-        "prefix": "@author",
-        "body": [
-            "@author ${1:author_name}"
-        ],
-        "description": "Texto com o nome do autor. "
-    },
     "SINCE": {
         "prefix": "@since",
         "body": [
