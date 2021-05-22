@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { findAdvpl } from '../extension';
+import { findAdvpl } from '../../extension';
 
 export class CompletionAddBlock extends vscode.CompletionItem {
     constructor(document: vscode.TextDocument, position: vscode.Position) {

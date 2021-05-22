@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { ELanguageSupport, ProtheusDoc } from './objects/ProtheusDoc';
-import { CompletionAddBlock } from './objects/CompletionAddBlock';
+import { CompletionAddBlock } from './objects/Completions/CompletionAddBlock';
 import { ProtheusDocDecorator } from './objects/ProtheusDocDecorator';
 import { Documentation, ProtheusDocToDoc } from './objects/Documentation';
 import { Utils } from './objects/Utils';
