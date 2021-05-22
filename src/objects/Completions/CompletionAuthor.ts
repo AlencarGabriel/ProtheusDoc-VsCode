@@ -13,7 +13,7 @@ export class CompletionAuthor extends vscode.CompletionItem {
             new vscode.Position(position.line, position.character));
 
         this.insertText = new vscode.SnippetString('@author ${1:' + this._util.getAuthor() + '}');
-        this.detail = "Texto com o nome do autor";
+        this.detail = "Texto com o nome do autor. (ProtheusDoc for VsCode (AdvPL))";
         this.documentation = new vscode.MarkdownString().appendCodeblock("@author author_name");
     }
 }

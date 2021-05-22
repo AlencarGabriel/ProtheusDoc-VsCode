@@ -11,6 +11,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ProtheusDocDiagnostics } from './objects/ProtheusDocDiagnostics';
 import { CompletionAuthor } from './objects/Completions/CompletionAuthor';
+import { CompletionHistory } from './objects/Completions/CompletionHistory';
 
 let documentations: Documentation[];
 let _wordsDocument: Array<string> = [];
@@ -77,6 +78,7 @@ export function activate(context: vscode.ExtensionContext) {
 				// Adiciona o Completion "Add ProtheusDoc Block"
 				list.items.push(new CompletionAddBlock(document, position));
 				list.items.push(new CompletionAuthor(position));
+				list.items.push(new CompletionHistory(position));
 
 				// Adiciona o Completion de todas as palavras encontradas no Documento
 				// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
