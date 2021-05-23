@@ -13,13 +13,6 @@
         ],
         "description": "Identifica a partir de quando, uma determinada funcionalidade foi implementada. "
     },
-    "VERSION": {
-        "prefix": "@version",
-        "body": [
-            "@version ${1:version}"
-        ],
-        "description": "Indica para qual versão de produto ou mesmo servidor, que uma determinada funcionalidade requer."
-    },
     "PARAM": {
         "prefix": "@param",
         "body": [
