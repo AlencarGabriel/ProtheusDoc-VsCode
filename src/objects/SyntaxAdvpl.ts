@@ -109,7 +109,7 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
         if (params) {
             params.forEach(element => {
                 result += "@param " + element.paramName
-                    + ", " + (element.paramType === ETypesAdvpl.U ? this.getTabStop("param_type,numeric,character,date,codeblock,logical,array,object,variadic", true) : element.paramType.toString()) // Tratamento para parâmetros não tratados
+                    + ", " + (element.paramType === ETypesAdvpl.U ? this.getTabStop("variant,array,character,codeblock,date,decimal,json,logical,numeric,object,variadic", true) : element.paramType.toString()) // Tratamento para parâmetros não tratados
                     + ", " + this.getTabStop(element.paramDescription) + "\n";
             });
         }
@@ -125,7 +125,7 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
 
         if (param) {
             if (param.paramType === ETypesAdvpl.U) {
-                return "@return " + this.getTabStop("return_type,numeric,character,date,codeblock,logical,array,object,variadic", true) + ", " + this.getTabStop(param.paramDescription) + "\n";
+                return "@return " + this.getTabStop("variant,array,character,codeblock,date,decimal,json,logical,numeric,object,variadic", true) + ", " + this.getTabStop(param.paramDescription) + "\n";
             } else {
                 return "@return " + param.paramType.toString() + ", " + this.getTabStop(param.paramDescription) + "\n";
             }

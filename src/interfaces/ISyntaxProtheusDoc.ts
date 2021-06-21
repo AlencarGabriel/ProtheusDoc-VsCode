@@ -10,7 +10,7 @@ export enum ETypesDoc {
 }
 
 export enum ETypesAdvpl {
-    N = "numeric",
+    N = "numeric", // double ou integer
     C = "character",
     D = "date",
     B = "codeblock",
@@ -18,7 +18,9 @@ export enum ETypesAdvpl {
     A = "array",
     O = "object",
     H = "variadic",
-    U = "param_type"
+    U = "variant",
+    J = "json",
+    F = "decimal"
 }
 
 /**
@@ -54,6 +56,12 @@ export function convertTypeAdvpl(type: String, isChar: boolean = true): ETypesAd
             case "H":
                 return ETypesAdvpl.H;
 
+            case "J":
+                return ETypesAdvpl.J;
+
+            case "F":
+                return ETypesAdvpl.F;
+
             default:
                 // console.log("Type '" + type + "' is not implemented.");
                 return ETypesAdvpl.U;
@@ -61,6 +69,12 @@ export function convertTypeAdvpl(type: String, isChar: boolean = true): ETypesAd
     } else {
         switch (type.toUpperCase()) {
             case ETypesAdvpl.N.toString().toUpperCase():
+                return ETypesAdvpl.N;
+
+            case "INTEGER":
+                return ETypesAdvpl.N;
+
+            case "DOUBLE":
                 return ETypesAdvpl.N;
 
             case ETypesAdvpl.C.toString().toUpperCase():
@@ -89,6 +103,12 @@ export function convertTypeAdvpl(type: String, isChar: boolean = true): ETypesAd
 
             case ETypesAdvpl.H.toString().toUpperCase():
                 return ETypesAdvpl.H;
+
+            case ETypesAdvpl.J.toString().toUpperCase():
+                return ETypesAdvpl.J;
+
+            case ETypesAdvpl.F.toString().toUpperCase():
+                return ETypesAdvpl.F;
 
             default:
                 return ETypesAdvpl.U;

@@ -263,13 +263,11 @@ export class TransformAdvpl implements ITransformProtheusDoc {
         let paramameter = param.match(this._expressionParam);
 
         if (paramameter) {
-
             return {
                 paramName: paramameter[1] === undefined ? "" : paramameter[1].trim(),
                 paramType: convertTypeAdvpl(paramameter[3] === undefined ? paramameter[2].trim() : paramameter[3].trim(), false),
                 paramDescription: isReturn ? "return_description" : "param_description"
             };
-
         } else {
             return {
                 paramName: param.trim(),

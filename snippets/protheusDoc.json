@@ -16,14 +16,14 @@
     "PARAM": {
         "prefix": "@param",
         "body": [
-            "@param ${1:param_name}, ${2|param_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${3:param_description}"
+            "@param ${1:param_name}, ${2|param_type,array,character,codeblock,date,decimal,json,logical,numeric,object,variadic,variant|}, ${3:param_description}"
         ],
         "description": "Adiciona uma especificação de parâmetro (de função ou método), identificando-o como parameter-name."
     },
     "RETURN": {
         "prefix": "@return",
         "body": [
-            "@return ${1|return_type,numeric,character,date,codeblock,logical,array,object,variadic|}, ${2:return_description}"
+            "@return ${1|return_type,array,character,codeblock,date,decimal,json,logical,numeric,object,variadic,variant|}, ${2:return_description}"
         ],
         "description": "Especifica o retorno (de função ou método)."
     },

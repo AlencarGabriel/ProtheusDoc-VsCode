@@ -184,7 +184,7 @@ export class ProtheusDocDiagnostics {
                 });
             }
 
-            if (!this.validAttr(match[3]) || !match[3].match(/numeric|character|date|codeblock|logical|array|object|variadic/i)) {
+            if (!this.validAttr(match[3]) || !match[3].match(/array|character|codeblock|date|decimal|json|logical|numeric|object|variadic|variant/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Tipo do parâmetro não informado ou inválido.',
@@ -227,7 +227,7 @@ export class ProtheusDocDiagnostics {
             const startPos = document.positionAt(match.index);
             const endPos = document.positionAt(match.index + match[0].length);
 
-            if (!this.validAttr(match[2]) || !match[2].match(/numeric|character|date|codeblock|logical|array|object|variadic/i)) {
+            if (!this.validAttr(match[2]) || !match[2].match(/array|character|codeblock|date|decimal|json|logical|numeric|object|variadic|variant/i)) {
                 diagnostics.push({
                     code: '',
                     message: 'Tipo do retorno não informado ou inválido.',
