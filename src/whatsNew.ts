@@ -10,7 +10,7 @@ export class WhatsNewDocContentProvider implements ContentProvider {
             message: `<b>ProtheusDoc for VsCode</b> é uma extensão de suporte aos recursos e snippets de documentação TOTVS ProtheusDoc para VsCode.
                       Ela detecta a sintaxe da função, método ou classe e gera uma documentação dinâmica no formato ProtheusDoc.
                       Saiba mais <a href="https://gabrielalencar.dev/2020/01/29/ProtheusDoc-for-VsCode/">neste post</a>.`,
-            notice: `Agora as documentações ProtheusDoc são diagnosticadas! Caso estejam em desacordo com a convenção, Warnings serão apresentados.
+            notice: `As documentações ProtheusDoc são diagnosticadas! Caso estejam em desacordo com a convenção, Warnings serão apresentados.
                      <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Diagnóstico-das-documentações">Saiba mais</a>.<br><br>
                      Já conhece a nossa <b>comunidade de discussões</b>? <a href="https://github.com/AlencarGabriel/ProtheusDoc-VsCode/discussions">Acesse-a</a>
                      e veja os artigos e discussões sobre esta extensão. Faça parte você também!`};
@@ -24,20 +24,35 @@ export class WhatsNewDocContentProvider implements ContentProvider {
         //         href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/44\">Issue #44</a>)`
         // });
 
+        // changeLog.push({
+        //     kind: ChangeLogKind.NEW, message: `Implementado tratamento para uso e funcionamento do <b>parâmetro opcional</b> nas documentações ProtheusDoc - (<a title=\"Open Issue #50\"
+        //     href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/50\">Issue #50</a> | <a title=\"Documentação da Feature\"
+        //         href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documenta%C3%A7%C3%B5es#par%C3%A2metros-opcionais\">Documentação</a>)`
+        // });
+
         changeLog.push({
-            kind: ChangeLogKind.NEW, message: `Implementado tratamento para uso e funcionamento do <b>parâmetro opcional</b> nas documentações ProtheusDoc - (<a title=\"Open Issue #50\"
-            href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/50\">Issue #50</a> | <a title=\"Documentação da Feature\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/wiki/Hover-de-documenta%C3%A7%C3%B5es#par%C3%A2metros-opcionais\">Documentação</a>)`
+            kind: ChangeLogKind.NEW, message: `Tornar snippet <code>@history</code> dinâmico - <a title=\"Open Issue #7\"
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/7\">Saiba mais</a>.`
         });
 
         changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `<code>findAdvpl</code> causes high CPU - (<a title=\"Open Issue #57\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/57\">Issue #57</a>)`
+            kind: ChangeLogKind.NEW, message: `Tornar snippet <code>@author</code> dinâmico - <a title=\"Open Issue #33\"
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/33\">Saiba mais</a>.`
         });
 
         changeLog.push({
-            kind: ChangeLogKind.FIXED, message: `Link dos métodos está vindo errado - (<a title=\"Open Issue #41\"
-                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/41\">Issue #41</a>)`
+            kind: ChangeLogKind.NEW, message: `Tornar snippet <code>@version</code> dinâmico - <a title=\"Open Issue #65\"
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/65\">Saiba mais</a>.`
+        });
+
+        changeLog.push({
+            kind: ChangeLogKind.NEW, message: `Atualizar os tipos permitidos de acordo com a tabela oficial - <a title=\"Open Issue #64\"
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/64#issuecomment-868015318\">Saiba mais</a>.`
+        });
+
+        changeLog.push({
+            kind: ChangeLogKind.NEW, message: `Tipo de Conteúdo Undefined nas tags <code>@param</code> e <code>@return</code> - <a title=\"Open Issue #63\"
+                href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/63#issuecomment-868016801\">Saiba mais</a>.`
         });
 
         return changeLog;

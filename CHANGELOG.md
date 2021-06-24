@@ -6,6 +6,18 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.9.0] - 2021-06-24
+
+### Added
+
+- Tornar snippet `@history` dinâmico [#7](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/7).
+- Tornar snippet `@author` dinâmico [#33](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/33).
+- Tornar snippet `@version` dinâmico [#65](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/65).
+- Atualizar os tipos permitidos de acordo com a tabela oficial [#64](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/64).
+- Tipo de Conteúdo Undefined nas tags `@param` e `@return` [#63](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/63).
+
+---
+
 ## [0.8.0] - 2021-03-22
 
 ### Added
