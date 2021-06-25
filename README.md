@@ -42,7 +42,7 @@ Acesse a Wiki para conhecer os recursos, comandos e atalhos da extensão. Lá vo
 - [x] Implementar *Diagnóstico* da sintaxe e de valores preenchidos dos principais atributos ProtheusDoc;
 - [x] Adicionar no IntelliSense todas as **palavras/words** do editor aberto;
 - [ ] Implementar função para criar comentários no cabeçalho de todas as funções do fonte;
-- Outras solicitações de melhorias pendentes: [Veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues?q=is:issue+is:open+label:enhancement)
+- Outras solicitações de melhorias pendentes: [Veja aqui](https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues?q=is:issue+is:open+label:enhancement) ![GitHub issues by-label](https://img.shields.io/github/issues/AlencarGabriel/PRotheusDoc-VsCode/enhancement)
 <!-- - [ ] Implementar sintaxe do 4gl (Será necessário apoio da comunidade); -->
 
 ---
