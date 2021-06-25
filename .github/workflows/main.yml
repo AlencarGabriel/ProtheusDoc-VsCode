@@ -7,10 +7,33 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm install
-      - uses: lannonbr/vsce-action@master
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install NPM
+        run: npm install
+      - name: Publish Marketplace
+        uses: lannonbr/vsce-action@master
         with:
           args: "publish -p $VSCE_TOKEN"
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+  release:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install VSCE
+        run: sudo npm i -g vsce
+      - name: Install NPM
+        run: npm install
+      - name: Package
+        run: vsce package
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          body_path: release-body.md
+          files: "*.vsix"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
