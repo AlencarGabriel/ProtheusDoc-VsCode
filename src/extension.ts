@@ -36,64 +36,67 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(addGenerateHTMLFilesOpened());
 	context.subscriptions.push(addGenerateHTMLFile());
 
-	vscode.languages.registerHoverProvider(ELanguageSupport.advpl, {
-		provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
-			let symbol = document.getText(document.getWordRangeAtPosition(position));
-			let _docs = new Array<vscode.MarkdownString>();
-
-			// Tratamento para User Functions
-			// tslint:disable-next-line: curly
-			if (symbol.toUpperCase().startsWith("U_"))
-				symbol = symbol.substr(2);
-
-			// Filtra a ocorrência do Hover na tabela de documentações
-			let documentation = documentations.filter(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
-
-			if (documentation) {
-
-				// Verifica se existe documentação do identificador no arquivo atual (Static Function/Method)
-				let docInFile = documentation.filter(doc => doc.file.fsPath === document.uri.fsPath);
-
-				// Se a documentação estiver definida no fonte posicionado, retorna somente do fonte atual
-				if (docInFile.length > 0) {
-					docInFile.forEach(doc => { _docs.push(doc.getHover()); });
-				} else {
-					// Se a documentação não estiver definida no fonte atual, lista todas as ocorrências caso exista
-					documentation.forEach(doc => { _docs.push(doc.getHover()); });
+	const tdsVscode: vscode.Extension<any> | undefined = vscode.extensions.getExtension("TOTVS.tds-vscode");
+	if (tdsVscode?.packageJSON["version"] < "1.4.0") {
+		context.subscriptions.push(
+			vscode.languages.registerHoverProvider(ELanguageSupport.advpl, {
+			provideHover(document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) {
+				let symbol = document.getText(document.getWordRangeAtPosition(position));
+				let _docs = new Array<vscode.MarkdownString>();
+	
+				// Tratamento para User Functions
+				// tslint:disable-next-line: curly
+				if (symbol.toUpperCase().startsWith("U_"))
+					symbol = symbol.substr(2);
+	
+				// Filtra a ocorrência do Hover na tabela de documentações
+				let documentation = documentations.filter(doc => doc.identifier.trim().toUpperCase() === symbol.trim().toUpperCase());
+	
+				if (documentation) {
+	
+					// Verifica se existe documentação do identificador no arquivo atual (Static Function/Method)
+					let docInFile = documentation.filter(doc => doc.file.fsPath === document.uri.fsPath);
+	
+					// Se a documentação estiver definida no fonte posicionado, retorna somente do fonte atual
+					if (docInFile.length > 0) {
+						docInFile.forEach(doc => { _docs.push(doc.getHover()); });
+					} else {
+						// Se a documentação não estiver definida no fonte atual, lista todas as ocorrências caso exista
+						documentation.forEach(doc => { _docs.push(doc.getHover()); });
+					}
 				}
+	
+				return new vscode.Hover(_docs);
 			}
-
-			return new vscode.Hover(_docs);
-		}
-	});
-
-	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
-		[ELanguageSupport.advpl],
-		{
-			provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
-				// const line = document.lineAt(position.line).text;
-				// const prefix = line.slice(0, position.character);
-				const util = new Utils;
-				let list = new vscode.CompletionList();
-
-				// Adiciona o Completion "Add ProtheusDoc Block"
-				list.items.push(new CompletionAddBlock(document, position));
-				list.items.push(new CompletionAuthor(position));
-				list.items.push(new CompletionHistory(position));
-				list.items.push(new CompletionVersion(position));
-
-				// Adiciona o Completion de todas as palavras encontradas no Documento
-				// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
-				if (util.getUseSuggestCustom()) {
-					// Obs.: Necessário fazer assim pois o uso de Completion Provider faz
-					//  com que o VsCode pare de mostrar os itens de texto no IntelliSense.
-					_wordsDocument.map(word => list.items.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text)));
+		}),
+		vscode.languages.registerCompletionItemProvider(
+			[ELanguageSupport.advpl],
+			{
+				provideCompletionItems: (document: vscode.TextDocument, position: vscode.Position, _token: vscode.CancellationToken) => {
+					// const line = document.lineAt(position.line).text;
+					// const prefix = line.slice(0, position.character);
+					const util = new Utils;
+					let list = new vscode.CompletionList();
+	
+					// Adiciona o Completion "Add ProtheusDoc Block"
+					list.items.push(new CompletionAddBlock(document, position));
+					list.items.push(new CompletionAuthor(position));
+					list.items.push(new CompletionHistory(position));
+					list.items.push(new CompletionVersion(position));
+	
+					// Adiciona o Completion de todas as palavras encontradas no Documento
+					// Verifica se o usuário deseja utilizar a sugestão de texto customizada da extensão no IntelliSense.
+					if (util.getUseSuggestCustom()) {
+						// Obs.: Necessário fazer assim pois o uso de Completion Provider faz
+						//  com que o VsCode pare de mostrar os itens de texto no IntelliSense.
+						_wordsDocument.map(word => list.items.push(new vscode.CompletionItem(word, vscode.CompletionItemKind.Text)));
+					}
+	
+					return list;
 				}
-
-				return list;
-			}
-		})
-	);
+			})
+		);
+	}
 
 	vscode.window.onDidChangeActiveTextEditor(editor => {
 

@@ -34,7 +34,7 @@ export class Utils {
 			return authorDefault.trim();
 		}
 		else {
-			return os.userInfo({ encoding: this.getEncoding() }).username;
+			return os.userInfo().username;
 		}
 	}
 
