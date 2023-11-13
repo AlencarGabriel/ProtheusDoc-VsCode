@@ -305,7 +305,7 @@
 		"@types/semver": "^7.3.4",
 		"@types/vscode": "^1.52.0",
 		"glob": "^7.1.5",
-		"mocha": "^6.2.3",
+		"mocha": "^10.2.0",
 		"tslint": "^5.20.0",
 		"typescript": "^3.9.7",
 		"vscode-test": "^1.4.1"
