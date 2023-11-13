@@ -2,7 +2,7 @@
 	"name": "protheusdoc-vscode",
 	"displayName": "ProtheusDoc for VsCode (AdvPL)",
 	"description": "Suporte à documentação TOTVS ProtheusDoc para VsCode.",
-	"version": "0.9.0",
+	"version": "0.10.0",
 	"publisher": "AlencarGabriel",
 	"icon": "images/Icon.png",
 	"homepage": "https://github.com/AlencarGabriel/ProtheusDoc-VsCode",
@@ -312,7 +312,7 @@
 	},
 	"dependencies": {
 		"opn": "^6.0.0",
-		"protheusdoc-html": "^1.1.4",
+		"protheusdoc-html": "^1.1.8",
 		"semver": "^7.3.4"
 	}
 }

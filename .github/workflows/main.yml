@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install NPM
-        run: npm install
+        run: npm ci
       - name: Publish Marketplace
         uses: lannonbr/vsce-action@master
         with:
@@ -26,7 +26,7 @@ jobs:
       - name: Install VSCE
         run: sudo npm i -g vsce
       - name: Install NPM
-        run: npm install
+        run: npm ci
       - name: Package
         run: vsce package
       - name: Release

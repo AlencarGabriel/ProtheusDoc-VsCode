@@ -4,4 +4,3 @@ node_modules
 *.vsix
 extras
 .vscode/settings.json
-package-lock.json
