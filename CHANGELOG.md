@@ -6,7 +6,7 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
-## [0.10.0] - 2023-11-10
+## [0.10.0] - 2023-11-13
 
 ### Changed
 
