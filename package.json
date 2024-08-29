@@ -151,10 +151,13 @@
 						"type": "string",
 						"default": "",
 						"examples": [
-							"12.1.23",
-							"12.1.25",
-							"12.1.27",
-							"12.1.33"
+							"12.1.023",
+							"12.1.025",
+							"12.1.027",
+							"12.1.033",
+							"12.1.2210",
+							"12.1.2310",
+							"12.1.2410"
 						],
 						"description": "Versão padrão do identificador das documentações ProtheusDoc."
 					},
