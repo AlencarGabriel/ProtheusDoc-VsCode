@@ -173,7 +173,7 @@
 					},
 					"protheusDoc.usa_workspace_doc": {
 						"type": "boolean",
-						"default": true,
+						"default": false,
 						"description": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela.",
 						"markdownDescription": "Define se será adicionado todas as documentações da Workspace na tabela de documentações. Em caso de `false` somente os fontes que tiveram interação serão adicionados na tabela."
 					},
