@@ -289,6 +289,11 @@
 						"type": "number",
 						"default": 5120,
 						"description": "Máximo de arquivos para pesquisa da tabela de documentações."
+					},
+					"protheusDoc.dateLocale": {
+						"type": "string",
+						"default": "",
+						"markdownDescription": "Locale a ser usado na formatação de datas (ex.: pt-BR, en-US, ja-JP, de-DE). Vazio usa o locale do sistema."
 					}
 				}
 			}

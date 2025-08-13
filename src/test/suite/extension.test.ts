@@ -7,6 +7,7 @@ import { SyntaxAdvpl } from '../../objects/SyntaxAdvpl';
 import { ETypesDoc, ETypesAdvpl } from '../../interfaces/ISyntaxProtheusDoc';
 import { ProtheusDoc, ELanguageSupport } from '../../objects/ProtheusDoc';
 import { TransformAdvpl } from '../../objects/TransformAdvpl';
+import { Utils } from '../../objects/Utils';
 // import * as myExtension from '../extension';
 
 suite('Extension Test Suite', () => {
@@ -19,11 +20,13 @@ suite('Extension Test Suite', () => {
 
 	test('syntaxAdvpl', () => {
 		let syntax = new SyntaxAdvpl();
+		let util = new Utils();
+		let locale = util.getDateLocale();
 
 		assert.equal(syntax.getIdentifier("fTest"), "/*/{Protheus.doc} fTest\n\n");
 		assert.equal(syntax.getType(ETypesDoc.function), "@type function\n");
 		assert.equal(syntax.getAuthor("Gabriel Alencar"), "@author Gabriel Alencar\n");
-		assert.equal(syntax.getSince(new Date()), "@since " + new Date().toLocaleDateString() + "\n");
+		assert.equal(syntax.getSince(new Date()), "@since " + new Date().toLocaleDateString(locale) + "\n");
 		assert.equal(syntax.getVersion("12.1.17"), "@version 12.1.17\n");
 		assert.equal(syntax.getParams([{ paramName: "cName", paramType: ETypesAdvpl.C, paramDescription: "Descrição." }]), "@param cName, character, Descrição.\n");
 		assert.equal(syntax.getReturn({ paramType: ETypesAdvpl.L, paramDescription: "Funcionou ou não." }), "@return logical, Funcionou ou não.\n");

@@ -210,4 +210,16 @@ export class Utils {
 			return 5120;
 		}
 	}
+
+	/**
+	 * Busca se foi definido um datelocale, que será utilizado na formatação da data do @Since
+	 */
+	public getDateLocale(): string | undefined {
+		let dateLocale: string | undefined = (this.getConfig().get<string>('dateLocale') || '').trim();
+
+		if (dateLocale === '') {
+			dateLocale = undefined;
+		}
+		return dateLocale
+	}
 }
