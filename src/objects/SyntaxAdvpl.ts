@@ -3,6 +3,7 @@ import { ISyntaxProtheusDoc, ETypesDoc, ETypesAdvpl } from '../interfaces/ISynta
 import { IParamsProtheusDoc } from '../interfaces/IParamsProtheusDoc';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Utils } from '../objects/Utils';
 
 /**
  * Busca no Package JSON os exemplos de versões definidos para sugerir no atributo @version.
@@ -85,7 +86,9 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
     public getSince(date: Date | String): String {
 
         if (date instanceof Date) {
-            return "@since " + this.getTabStop(date.toLocaleDateString()) + "\n";
+            let util = new Utils();
+		    let locale = util.getDateLocale();
+            return "@since " + this.getTabStop(date.toLocaleDateString(locale)) + "\n";
         } else {
             return "@since " + this.getTabStop(date) + "\n";
         }
