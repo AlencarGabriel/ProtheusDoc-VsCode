@@ -31,13 +31,17 @@ export class WhatsNewDocContentProvider implements ContentProvider {
 		// });
 
 		changeLog.push({
-			kind: ChangeLogKind.CHANGED, message: `Alterado default da configuração <b>protheusDoc.usa_workspace_doc</b> para <b>false</b>, fazendo a extensão carregar mais rápido - <a title=\"Open Pull Request #93\"
-				href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/pull/93\">Saiba mais</a>.`
+		    kind: ChangeLogKind.NEW, message: `Adicionado configuração <b>protheusDoc.dateLocale</b> que permite definir um locale específico para extensão. Afeta a data default do <b>@Since</b> - <a title=\"Open Issue #91\"
+				href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/91\">Saiba mais</a>`
+		});
+
+		changeLog.push({
+			kind: ChangeLogKind.CHANGED, message: `Atualizado lista de releases Protheus ativas na configuração <b>protheusDoc.versao_default</b>`
 		});
 
 		// changeLog.push({
 		// 	kind: ChangeLogKind.FIXED, message: `Sintaxe incorreta na busca da tipagem de retorno dos métodos - <a title=\"Open Issue #72\"
-		// 		href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/72\">Saiba mais</a>.`
+		// 		href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/72\">Saiba mais</a>`
 		// });
 
 		return changeLog;
