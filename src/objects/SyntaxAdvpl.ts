@@ -30,9 +30,11 @@ function getVersionValues(): string[] {
  */
 export class SyntaxAdvpl implements ISyntaxProtheusDoc {
     private _countTabStop: number;
+    private _util: Utils;
 
     constructor() {
         this._countTabStop = 0;
+        this._util = new Utils();
     }
 
     /**
@@ -86,8 +88,7 @@ export class SyntaxAdvpl implements ISyntaxProtheusDoc {
     public getSince(date: Date | String): String {
 
         if (date instanceof Date) {
-            let util = new Utils();
-		    let locale = util.getDateLocale();
+		    let locale = this._util.getDateLocale();
             return "@since " + this.getTabStop(date.toLocaleDateString(locale)) + "\n";
         } else {
             return "@since " + this.getTabStop(date) + "\n";

@@ -215,11 +215,12 @@ export class Utils {
 	 * Busca se foi definido um datelocale, que será utilizado na formatação da data do @Since
 	 */
 	public getDateLocale(): string | undefined {
-		let dateLocale: string | undefined = (this.getConfig().get<string>('dateLocale') || '').trim();
+		let dateLocale: string | undefined = this.getConfig().get<string>('dateLocale', '').trim();
 
 		if (dateLocale === '') {
 			dateLocale = undefined;
 		}
-		return dateLocale
+
+		return dateLocale;
 	}
 }
