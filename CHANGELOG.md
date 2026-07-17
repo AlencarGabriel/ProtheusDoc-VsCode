@@ -6,6 +6,14 @@ All notable changes to the "protheusdoc-vscode" extension will be documented in 
 
 ---
 
+## [0.11.1] - 2026-07-17
+
+### Added
+
+- Adicionado publicação para o **Open VSX Registry**.
+
+---
+
 ## [0.11.0] - 2025-08-13
 
 ### Added

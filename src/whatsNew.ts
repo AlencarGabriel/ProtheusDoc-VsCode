@@ -31,6 +31,10 @@ export class WhatsNewDocContentProvider implements ContentProvider {
 		// });
 
 		changeLog.push({
+		    kind: ChangeLogKind.NEW, message: `Adicionado publicação da extensão para o <b>Open VSX Registry</b>`
+		});
+
+		changeLog.push({
 		    kind: ChangeLogKind.NEW, message: `Adicionado configuração <b>protheusDoc.dateLocale</b> que permite definir um locale específico para extensão. Afeta a data default do <b>@Since</b> - <a title=\"Open Issue #91\"
 				href=\"https://github.com/AlencarGabriel/ProtheusDoc-VsCode/issues/91\">Saiba mais</a>`
 		});
